@@ -2,7 +2,7 @@ export declare const STALK_REMOVE_ROOM_ACCESS = "STALK_REMOVE_ROOM_ACCESS";
 export declare const STALK_REMOVE_ROOM_ACCESS_FAILURE = "STALK_REMOVE_ROOM_ACCESS_FAILURE";
 export declare const STALK_REMOVE_ROOM_ACCESS_SUCCESS = "STALK_REMOVE_ROOM_ACCESS_SUCCESS";
 export declare const STALK_REMOVE_ROOM_ACCESS_CANCELLED = "STALK_REMOVE_ROOM_ACCESS_CANCELLED";
-export declare const removeRoomAccess: (room_id: string) => {
+export declare const removeRoomAccess: (roomId: string) => {
     type: string;
     payload: string;
 };

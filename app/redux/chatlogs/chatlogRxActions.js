@@ -17,17 +17,17 @@ const Rx = require("rxjs/Rx");
 const { ajax } = Rx.Observable;
 const starter_1 = require("stalk-js/starter");
 const ServiceProvider = require("../../services/ServiceProvider");
-const ChitChatFactory_1 = require("../../ChitChatFactory");
-const getStore = () => ChitChatFactory_1.ChitChatFactory.getInstance().store;
-const authReducer = () => ChitChatFactory_1.ChitChatFactory.getInstance().authStore;
+const InternalStore_1 = require("../../InternalStore");
+// const getStore = () => ChitChatFactory.getInstance().store;
+const authReducer = () => InternalStore_1.default.authStore;
 exports.STALK_REMOVE_ROOM_ACCESS = "STALK_REMOVE_ROOM_ACCESS";
 exports.STALK_REMOVE_ROOM_ACCESS_FAILURE = "STALK_REMOVE_ROOM_ACCESS_FAILURE";
 exports.STALK_REMOVE_ROOM_ACCESS_SUCCESS = "STALK_REMOVE_ROOM_ACCESS_SUCCESS";
 exports.STALK_REMOVE_ROOM_ACCESS_CANCELLED = "STALK_REMOVE_ROOM_ACCESS_CANCELLED";
-exports.removeRoomAccess = (room_id) => ({ type: exports.STALK_REMOVE_ROOM_ACCESS, payload: room_id });
+exports.removeRoomAccess = (roomId) => ({ type: exports.STALK_REMOVE_ROOM_ACCESS, payload: roomId });
 const removeRoomAccess_Success = (payload) => ({ type: exports.STALK_REMOVE_ROOM_ACCESS_SUCCESS, payload });
 const removeRoomAccess_Cancelled = () => ({ type: exports.STALK_REMOVE_ROOM_ACCESS_CANCELLED });
-const removeRoomAccess_Failure = error => ({ type: exports.STALK_REMOVE_ROOM_ACCESS_FAILURE, payload: error });
+const removeRoomAccess_Failure = (error) => ({ type: exports.STALK_REMOVE_ROOM_ACCESS_FAILURE, payload: error });
 exports.removeRoomAccess_Epic = action$ => (action$.ofType(exports.STALK_REMOVE_ROOM_ACCESS)
     .mergeMap(action => {
     let { _id } = authReducer().user;
@@ -42,7 +42,7 @@ exports.removeRoomAccess_Epic = action$ => (action$.ofType(exports.STALK_REMOVE_
         return removeRoomAccess_Failure(result.message);
     }
 })
-    .do(x => {
+    .do((x) => {
     if (x.type === exports.STALK_REMOVE_ROOM_ACCESS_SUCCESS) {
         waitForRemovedRoom(x.payload);
     }
@@ -117,7 +117,7 @@ exports.getLastAccessRoom_Epic = action$ => (action$.ofType(exports.GET_LAST_ACC
     return ServiceProvider.getLastAccessRoomInfo(user_id)
         .then(response => response.json())
         .then(json => json)
-        .catch(err => err);
+        .catch((err) => err);
 })
-    .map(json => getLastAccessRoomSuccess(json.result))
-    .catch(json => Rx.Observable.of(getLastAccessRoomFailure(json.message))));
+    .map((json) => getLastAccessRoomSuccess(json.result))
+    .catch((json) => Rx.Observable.of(getLastAccessRoomFailure(json.message))));

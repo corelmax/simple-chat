@@ -3,11 +3,11 @@
  *
  * This is pure function for redux app.
  */
-
+import { AnyAction } from "redux";
 import * as ChatlogsActions from "../chatlogs/chatlogsActions";
 import * as ChatlogRxActions from "../chatlogs/chatlogRxActions";
 
-import * as actions from "../../../../actions/";
+import * as chatlistsRx from "../actions/chatlistsRx";
 
 import { Record } from "immutable";
 
@@ -17,14 +17,14 @@ const defaultChatlog = {
     state: "",
     chatsLog: [],
     roomAccess: null,
-    error: ""
-}
+    error: "",
+};
 
-// Define our record types with a typescript interface 
+// Define our record types with a typescript interface
 interface IChatlog {
     isFetching: boolean;
     state: string;
-    chatsLog: Array<any>;
+    chatsLog: any[];
     roomAccess: any;
     error: string;
 }
@@ -41,22 +41,22 @@ export class ChatLogRecorder extends Record(defaultChatlog) {
     get<T extends keyof IChatlog>(value: T): IChatlog[T] {
 
         // super.get() is mapped to the original get() function on Record
-        return super.get(value)
+        return super.get(value);
     }
 
 }
 export const chatlogInitRecord = new ChatLogRecorder(defaultChatlog);
 
-export function chatlogReducer(state = chatlogInitRecord, action) {
+export function chatlogReducer(state = chatlogInitRecord, action: AnyAction) {
     switch (action.type) {
         case ChatlogsActions.ON_CHATLOG_CHANGE: {
-            let prev = state.get("chatsLog") as Array<any>;
-            let next = prev.filter(log => log.rid != action.payload.rid);
+            const prev = state.get("chatsLog") as any[];
+            const next = prev.filter((log) => log.rid !== action.payload.rid);
 
             next.push(action.payload);
             return state.set("chatsLog", next);
         }
-        case actions.GET_RECENT_MESSAGE_SUCCESS: {
+        case chatlistsRx.GET_RECENT_MESSAGE_SUCCESS: {
             return state.set("chatsLog", action.payload);
         }
 
@@ -64,11 +64,10 @@ export function chatlogReducer(state = chatlogInitRecord, action) {
             return state.set("isFetching", true);
         }
         case ChatlogRxActions.GET_LAST_ACCESS_ROOM_SUCCESS: {
-            let data = action.payload;
+            const data = action.payload;
             if (Array.isArray(data) && data.length > 0) {
                 return state.set("roomAccess", data[0].roomAccess).set("isFetching", false);
-            }
-            else {
+            } else {
                 return state.set("isFetching", false);
             }
         }
@@ -90,13 +89,12 @@ export function chatlogReducer(state = chatlogInitRecord, action) {
                 .set("state", ChatlogRxActions.STALK_REMOVE_ROOM_ACCESS);
         }
         case ChatlogRxActions.STALK_REMOVE_ROOM_ACCESS_SUCCESS: {
-            let data = action.payload;
+            const data = action.payload;
             if (Array.isArray(data) && data.length > 0) {
                 return state.set("roomAccess", data[0].roomAccess)
                     .set("isFetching", false)
                     .set("state", ChatlogRxActions.STALK_REMOVE_ROOM_ACCESS_SUCCESS);
-            }
-            else {
+            } else {
                 return state.set("isFetching", false)
                     .set("state", ChatlogRxActions.STALK_REMOVE_ROOM_ACCESS_SUCCESS);
             }

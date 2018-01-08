@@ -311,43 +311,43 @@ class ChatsLogComponent {
                                     } else { console.warn(err, res); }
                                 });
                             */
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         case index_1.MessageType[index_1.MessageType.Sticker]:
                             displayMsg = sender + " sent a sticker.";
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         case index_1.MessageType[index_1.MessageType.Voice]:
                             displayMsg = sender + " sent a voice message.";
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         case index_1.MessageType[index_1.MessageType.Image]:
                             displayMsg = sender + " sent a image.";
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         case index_1.MessageType[index_1.MessageType.Video]:
                             displayMsg = sender + " sent a video.";
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         case index_1.MessageType[index_1.MessageType.Location]:
                             displayMsg = sender + " sent a location.";
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         case index_1.MessageType[index_1.MessageType.File]:
-                            self.setLogProp(log, displayMsg, function (log) {
-                                self.addChatLog(log, done);
+                            self.setLogProp(log, displayMsg, (newLog) => {
+                                self.addChatLog(newLog, done);
                             });
                             break;
                         default:
@@ -358,8 +358,8 @@ class ChatsLogComponent {
             }
             else {
                 const displayMsg = "Start Chatting Now!";
-                self.setLogProp(log, displayMsg, function (log) {
-                    self.addChatLog(log, done);
+                self.setLogProp(log, displayMsg, (newLog) => {
+                    self.addChatLog(newLog, done);
                 });
             }
         });

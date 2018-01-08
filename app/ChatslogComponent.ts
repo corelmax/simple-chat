@@ -19,7 +19,6 @@ import {
 import * as CryptoHelper from "./utils/CryptoHelper";
 import InternalStore from "./InternalStore";
 import * as chatroomService from "./services/ChatroomService";
-// import * as chatlogActionsHelper from "./redux/chatlogs/chatlogActionsHelper";
 
 export type ChatLogMap = Map<string, ChatLog>;
 export type UnreadMap = Map<string, IUnread>;
@@ -357,43 +356,43 @@ export class ChatsLogComponent {
                                 } else { console.warn(err, res); }
                             });
                         */
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     case MessageType[MessageType.Sticker]:
                         displayMsg = sender + " sent a sticker.";
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     case MessageType[MessageType.Voice]:
                         displayMsg = sender + " sent a voice message.";
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     case MessageType[MessageType.Image]:
                         displayMsg = sender + " sent a image.";
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     case MessageType[MessageType.Video]:
                         displayMsg = sender + " sent a video.";
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     case MessageType[MessageType.Location]:
                         displayMsg = sender + " sent a location.";
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     case MessageType[MessageType.File]:
-                        self.setLogProp(log, displayMsg, function (log) {
-                            self.addChatLog(log, done);
+                        self.setLogProp(log, displayMsg, (newLog) => {
+                            self.addChatLog(newLog, done);
                         });
                         break;
                     default:
@@ -403,8 +402,8 @@ export class ChatsLogComponent {
             }
         } else {
             const displayMsg = "Start Chatting Now!";
-            self.setLogProp(log, displayMsg, function (log) {
-                self.addChatLog(log, done);
+            self.setLogProp(log, displayMsg, (newLog) => {
+                self.addChatLog(newLog, done);
             });
         }
     }

@@ -6,7 +6,7 @@ export declare class ChatRoomComponent implements ChatEvents.IChatServerEvents {
     private static instance;
     static getInstance(): ChatRoomComponent;
     static createInstance(datamanager: any): ChatRoomComponent;
-    chatroomDelegate: (eventName: string, data: MessageImp | Array<MessageImp>) => void;
+    chatroomDelegate: (eventName: string, data: MessageImp | MessageImp[]) => void;
     outsideRoomDelegete: (eventName: string, data: any) => void;
     private roomId;
     getRoomId(): string;

@@ -16,10 +16,7 @@ import { decryptionText, hashComputation } from "./utils/CryptoHelper";
 import { ISecureService, SecureServiceFactory } from "./index";
 
 import { MessageType, IMessage, RoomAccessData } from "stalk-js/starter/models";
-import {
-    MessageImp,
-    Room, IMember
-} from "./models/index";
+import { MessageImp, Room, IMember } from "./models/index";
 
 // import { imagesPath } from "../consts/StickerPath";
 import InternalStore from "./InternalStore";
@@ -41,7 +38,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         return ChatRoomComponent.instance;
     }
 
-    public chatroomDelegate: (eventName: string, data: MessageImp | Array<MessageImp>) => void;
+    public chatroomDelegate: (eventName: string, data: MessageImp | MessageImp[]) => void;
     public outsideRoomDelegete: (eventName: string, data: any) => void;
     private roomId: string;
     public getRoomId(): string {

@@ -10,7 +10,9 @@
         "member-ordering": false,
         "member-access": false,
         "new-parens": false,
-        "no-console": false
+        "no-console": false,
+        "max-classes-per-file": false,
+        "align": false
     },
     "rulesDirectory": []
 }

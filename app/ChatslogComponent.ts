@@ -26,18 +26,18 @@ export type UnreadMap = Map<string, IUnread>;
 export interface IUnread { message: IMessage; rid: string; count: number; }
 export class Unread { message: IMessage; rid: string; count: number; }
 
-export async function getUnreadMessage(user_id: string, roomAccess: RoomAccessData) {
-    let response = await chatroomService.getUnreadMessage(roomAccess.roomId, user_id, roomAccess.accessTime.toString());
-    let value = await response.json();
+export async function getUnreadMessage(userId: string, roomAccess: RoomAccessData) {
+    const response = await chatroomService.getUnreadMessage(roomAccess.roomId,
+        userId, roomAccess.accessTime.toString());
+    const value = await response.json();
 
     if (value.success) {
-        let unread = value.result as IUnread;
+        const unread = value.result as IUnread;
         unread.rid = roomAccess.roomId;
-        let decoded = await CryptoHelper.decryptionText(unread.message as MessageImp);
+        const decoded = await CryptoHelper.decryptionText(unread.message as MessageImp);
 
         return unread;
-    }
-    else {
+    } else {
         throw new Error(value.message);
     }
 }
@@ -45,12 +45,12 @@ export async function getUnreadMessage(user_id: string, roomAccess: RoomAccessDa
 export class ChatsLogComponent {
     dataListener: DataListener;
 
-    private chatlog_count: number = 0;
-    public _isReady: boolean;
-    public onReady: (rooms: Array<Room>) => void;
+    private chatlogCount: number = 0;
+    public isReady: boolean;
+    public onReady: (rooms: Room[]) => void;
     public getRoomsInfoCompleteEvent: () => void;
     private chatslog = new Map<string, ChatLog>();
-    public getChatsLog(): Array<ChatLog> {
+    public getChatsLog(): ChatLog[] {
         return Array.from(this.chatslog.values());
     }
 
@@ -58,16 +58,16 @@ export class ChatsLogComponent {
     public getUnreadMessageMap(): UnreadMap {
         return this.unreadMessageMap;
     }
-    public setUnreadMessageMap(unreads: Array<IUnread>) {
-        unreads.map(v => {
+    public setUnreadMessageMap(unreads: IUnread[]) {
+        unreads.map((v) => {
             this.unreadMessageMap.set(v.rid, v);
         });
     }
     public addUnreadMessage(unread: IUnread) {
         this.unreadMessageMap.set(unread.rid, unread);
     }
-    public getUnreadItem(room_id: string) {
-        return this.unreadMessageMap.get(room_id);
+    public getUnreadItem(roomId: string) {
+        return this.unreadMessageMap.get(roomId);
     }
     public updatedLastAccessTimeEvent: (data: RoomAccessData) => void;
     onUpdatedLastAccessTime(data: RoomAccessData) {
@@ -79,8 +79,9 @@ export class ChatsLogComponent {
     constructor() {
         console.log("Create ChatsLogComponent");
 
-        this._isReady = false;
-        let backendFactory = BackendFactory.getInstance();
+        const backendFactory = BackendFactory.getInstance();
+
+        this.isReady = false;
         this.dataListener = backendFactory.dataListener;
 
         this.dataListener.addOnRoomAccessListener(this.onAccessRoom.bind(this));
@@ -106,16 +107,16 @@ export class ChatsLogComponent {
     }
 
     onAccessRoom(dataEvent: StalkAccount) {
-        let self = this;
+        const self = this;
 
         this.unreadMessageMap.clear();
         this.chatslog.clear();
 
         const roomAccess = dataEvent.roomAccess as RoomAccessData[];
-        let results = new Array<Room>();
+        const results = new Array<Room>();
 
         const done = () => {
-            self._isReady = true;
+            self.isReady = true;
 
             if (!!self.onReady) {
                 self.onReady(results);
@@ -149,36 +150,37 @@ export class ChatsLogComponent {
         }
     }
 
-    public getUnreadMessages(user_id: string, roomAccess: RoomAccessData[], callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void) {
+    public getUnreadMessages(userId: string, roomAccess: RoomAccessData[],
+        callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void) {
         const self = this;
         const unreadLogs = new Array<IUnread>();
 
         // create a queue object with concurrency 2
-        const q = async.queue(function (task: RoomAccessData, callback: () => void) {
+        const q = async.queue((task: RoomAccessData, cb: () => void) => {
             if (!!task.roomId && !!task.accessTime) {
-                self.getUnreadMessage(user_id, task).then((value) => {
+                self.getUnreadMessage(userId, task).then((value) => {
                     unreadLogs.push(value);
-                    callback();
+                    cb();
                 }).catch((err) => {
                     if (err) {
                         console.warn("getUnreadMessage", err);
                     }
-                    callback();
+                    cb();
                 });
             } else {
-                callback();
+                cb();
             }
         }, 10);
 
         // assign a callback
-        q.drain = function () {
+        q.drain = () => {
             console.log("getUnreadMessages from your roomAccess is done.");
             callback(undefined, unreadLogs);
         };
 
         // add some items to the queue (batch-wise)
         if (roomAccess && roomAccess.length > 0) {
-            q.push(roomAccess, function (err) {
+            q.push(roomAccess, (err) => {
                 if (!!err) {
                     console.error("getUnreadMessage err", err);
                 }
@@ -188,8 +190,9 @@ export class ChatsLogComponent {
         }
     }
 
-    public async getUnreadMessage(user_id: string, roomAccess: RoomAccessData) {
-        const response = await chatroomService.getUnreadMessage(roomAccess.roomId, user_id, roomAccess.accessTime.toString());
+    public async getUnreadMessage(userId: string, roomAccess: RoomAccessData) {
+        const response = await chatroomService.getUnreadMessage(roomAccess.roomId,
+            userId, roomAccess.accessTime.toString());
         const value = await response.json();
 
         console.log("getUnreadMessage result: ", value);
@@ -223,10 +226,10 @@ export class ChatsLogComponent {
         return roomInfo;
     }
 
-    private async getRoomInfo(room_id: string) {
+    private async getRoomInfo(roomId: string) {
         const self = this;
 
-        const response = await chatroomService.getRoomInfo(room_id);
+        const response = await chatroomService.getRoomInfo(roomId);
         const json = await response.json();
 
         if (json.success) {
@@ -239,11 +242,11 @@ export class ChatsLogComponent {
         }
     }
 
-    public getRoomsInfo(user_id: string, chatrooms: Room[]) {
+    public getRoomsInfo(userId: string, chatrooms: Room[]) {
         const self = this;
 
         // create a queue object with concurrency 2
-        const q = async.queue(function (task, callback) {
+        const q = async.queue((task, callback) => {
             const value = task as IUnread;
             const rooms = chatrooms.filter((v) => v._id === value.rid);
             const roomInfo = (rooms.length > 0) ? rooms[0] : undefined;
@@ -282,7 +285,7 @@ export class ChatsLogComponent {
         }, 10);
 
         // assign a callback
-        q.drain = function () {
+        q.drain = () => {
             console.log("getRoomsInfo Completed.");
             if (self.getRoomsInfoCompleteEvent()) {
                 self.getRoomsInfoCompleteEvent();
@@ -291,7 +294,7 @@ export class ChatsLogComponent {
 
         this.unreadMessageMap.forEach((value, key, map) => {
             // add some items to the queue
-            q.push(value, function (err) { });
+            q.push(value, console.warn);
         });
     }
 
@@ -300,7 +303,7 @@ export class ChatsLogComponent {
 
         return new Promise((resolve, rejected) => {
             // create a queue object with concurrency 2
-            const q = async.queue(function (task, callback) {
+            const q = async.queue((task, callback) => {
                 const unread = task as IUnread;
                 const rooms = chatrooms.filter((v) => v._id === unread.rid);
                 const room = (rooms.length > 0) ? rooms[0] : undefined;
@@ -314,13 +317,13 @@ export class ChatsLogComponent {
             }, 2);
 
             // assign a callback
-            q.drain = function () {
+            q.drain = () => {
                 resolve(self.chatslog);
             };
 
             this.unreadMessageMap.forEach((value, key, map) => {
                 // add some items to the queue
-                q.push(value, function (err) { });
+                q.push(value, console.warn);
             });
         });
     }
@@ -411,10 +414,12 @@ export class ChatsLogComponent {
 
         callback(log);
     }
+
     private addChatLog(chatLog: ChatLog, done: () => void) {
         this.chatslog.set(chatLog.id, chatLog);
         done();
     }
+
     public async checkRoomInfo(unread: IUnread, chatrooms: Room[]) {
         const self = this;
 
@@ -446,19 +451,19 @@ export class ChatsLogComponent {
     }
 
     public getChatsLogCount(): number {
-        return this.chatlog_count;
+        return this.chatlogCount;
     }
     public increaseChatsLogCount(num: number) {
-        this.chatlog_count += num;
+        this.chatlogCount += num;
     }
     public decreaseChatsLogCount(num: number) {
-        this.chatlog_count -= num;
+        this.chatlogCount -= num;
     }
     public calculateChatsLogCount() {
-        this.chatlog_count = 0;
+        this.chatlogCount = 0;
         this.unreadMessageMap.forEach((value, key) => {
             const count = value.count;
-            this.chatlog_count += count;
+            this.chatlogCount += count;
         });
     }
 }

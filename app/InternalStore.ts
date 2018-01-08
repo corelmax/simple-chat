@@ -1,5 +1,8 @@
 import { IStalkConfig, IApiConfig } from "stalk-js/starter";
 
+import { ChatsLogComponent } from "./ChatslogComponent";
+import { ChatRoomComponent } from "./ChatRoomComponent";
+
 export interface IAuthStore {
     user: { _id: string, username: string };
     api_token: string;
@@ -23,4 +26,9 @@ export default new class InternalStore {
         this.apiConfig = config;
     }
     public getApiConfig(): IApiConfig { return this.apiConfig; }
+
+    chatlogInstance: ChatsLogComponent;
+    public createChatLogInstance() {
+        this.chatlogInstance = new ChatsLogComponent();
+    }
 };

@@ -14,20 +14,20 @@ export declare class Unread {
     rid: string;
     count: number;
 }
-export declare function getUnreadMessage(user_id: string, roomAccess: RoomAccessData): Promise<IUnread>;
+export declare function getUnreadMessage(userId: string, roomAccess: RoomAccessData): Promise<IUnread>;
 export declare class ChatsLogComponent {
     dataListener: DataListener;
-    private chatlog_count;
-    _isReady: boolean;
-    onReady: (rooms: Array<Room>) => void;
+    private chatlogCount;
+    isReady: boolean;
+    onReady: (rooms: Room[]) => void;
     getRoomsInfoCompleteEvent: () => void;
     private chatslog;
-    getChatsLog(): Array<ChatLog>;
+    getChatsLog(): ChatLog[];
     private unreadMessageMap;
     getUnreadMessageMap(): UnreadMap;
-    setUnreadMessageMap(unreads: Array<IUnread>): void;
+    setUnreadMessageMap(unreads: IUnread[]): void;
     addUnreadMessage(unread: IUnread): void;
-    getUnreadItem(room_id: string): IUnread | undefined;
+    getUnreadItem(roomId: string): IUnread | undefined;
     updatedLastAccessTimeEvent: (data: RoomAccessData) => void;
     onUpdatedLastAccessTime(data: RoomAccessData): void;
     constructor();
@@ -37,11 +37,11 @@ export declare class ChatsLogComponent {
     onAccessRoom(dataEvent: StalkAccount): void;
     addNewRoomAccessEvent: (data: any) => void;
     onAddRoomAccess(dataEvent: any): void;
-    getUnreadMessages(user_id: string, roomAccess: RoomAccessData[], callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void): void;
-    getUnreadMessage(user_id: string, roomAccess: RoomAccessData): Promise<IUnread>;
+    getUnreadMessages(userId: string, roomAccess: RoomAccessData[], callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void): void;
+    getUnreadMessage(userId: string, roomAccess: RoomAccessData): Promise<IUnread>;
     private decorateRoomInfoData(roomInfo);
-    private getRoomInfo(room_id);
-    getRoomsInfo(user_id: string, chatrooms: Room[]): void;
+    private getRoomInfo(roomId);
+    getRoomsInfo(userId: string, chatrooms: Room[]): void;
     manageChatLog(chatrooms: Room[]): Promise<ChatLogMap>;
     private organizeChatLogMap(unread, roomInfo, done);
     private setLogProp(log, displayMessage, callback);

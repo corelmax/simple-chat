@@ -24,14 +24,14 @@ const chatroomService = require("./services/ChatroomService");
 class Unread {
 }
 exports.Unread = Unread;
-function getUnreadMessage(user_id, roomAccess) {
+function getUnreadMessage(userId, roomAccess) {
     return __awaiter(this, void 0, void 0, function* () {
-        let response = yield chatroomService.getUnreadMessage(roomAccess.roomId, user_id, roomAccess.accessTime.toString());
-        let value = yield response.json();
+        const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, userId, roomAccess.accessTime.toString());
+        const value = yield response.json();
         if (value.success) {
-            let unread = value.result;
+            const unread = value.result;
             unread.rid = roomAccess.roomId;
-            let decoded = yield CryptoHelper.decryptionText(unread.message);
+            const decoded = yield CryptoHelper.decryptionText(unread.message);
             return unread;
         }
         else {
@@ -42,13 +42,13 @@ function getUnreadMessage(user_id, roomAccess) {
 exports.getUnreadMessage = getUnreadMessage;
 class ChatsLogComponent {
     constructor() {
-        this.chatlog_count = 0;
+        this.chatlogCount = 0;
         this.chatslog = new Map();
         this.unreadMessageMap = new Map();
         this.chatListeners = new Array();
         console.log("Create ChatsLogComponent");
-        this._isReady = false;
-        let backendFactory = BackendFactory_1.BackendFactory.getInstance();
+        const backendFactory = BackendFactory_1.BackendFactory.getInstance();
+        this.isReady = false;
         this.dataListener = backendFactory.dataListener;
         this.dataListener.addOnRoomAccessListener(this.onAccessRoom.bind(this));
         this.dataListener.addOnChatListener(this.onChat.bind(this));
@@ -62,15 +62,15 @@ class ChatsLogComponent {
         return this.unreadMessageMap;
     }
     setUnreadMessageMap(unreads) {
-        unreads.map(v => {
+        unreads.map((v) => {
             this.unreadMessageMap.set(v.rid, v);
         });
     }
     addUnreadMessage(unread) {
         this.unreadMessageMap.set(unread.rid, unread);
     }
-    getUnreadItem(room_id) {
-        return this.unreadMessageMap.get(room_id);
+    getUnreadItem(roomId) {
+        return this.unreadMessageMap.get(roomId);
     }
     onUpdatedLastAccessTime(data) {
         if (!!this.updatedLastAccessTimeEvent) {
@@ -91,13 +91,13 @@ class ChatsLogComponent {
         });
     }
     onAccessRoom(dataEvent) {
-        let self = this;
+        const self = this;
         this.unreadMessageMap.clear();
         this.chatslog.clear();
         const roomAccess = dataEvent.roomAccess;
-        let results = new Array();
+        const results = new Array();
         const done = () => {
-            self._isReady = true;
+            self.isReady = true;
             if (!!self.onReady) {
                 self.onReady(results);
             }
@@ -124,34 +124,34 @@ class ChatsLogComponent {
             this.addNewRoomAccessEvent(dataEvent);
         }
     }
-    getUnreadMessages(user_id, roomAccess, callback) {
+    getUnreadMessages(userId, roomAccess, callback) {
         const self = this;
         const unreadLogs = new Array();
         // create a queue object with concurrency 2
-        const q = async.queue(function (task, callback) {
+        const q = async.queue((task, cb) => {
             if (!!task.roomId && !!task.accessTime) {
-                self.getUnreadMessage(user_id, task).then((value) => {
+                self.getUnreadMessage(userId, task).then((value) => {
                     unreadLogs.push(value);
-                    callback();
+                    cb();
                 }).catch((err) => {
                     if (err) {
                         console.warn("getUnreadMessage", err);
                     }
-                    callback();
+                    cb();
                 });
             }
             else {
-                callback();
+                cb();
             }
         }, 10);
         // assign a callback
-        q.drain = function () {
+        q.drain = () => {
             console.log("getUnreadMessages from your roomAccess is done.");
             callback(undefined, unreadLogs);
         };
         // add some items to the queue (batch-wise)
         if (roomAccess && roomAccess.length > 0) {
-            q.push(roomAccess, function (err) {
+            q.push(roomAccess, (err) => {
                 if (!!err) {
                     console.error("getUnreadMessage err", err);
                 }
@@ -161,9 +161,9 @@ class ChatsLogComponent {
             callback(undefined, undefined);
         }
     }
-    getUnreadMessage(user_id, roomAccess) {
+    getUnreadMessage(userId, roomAccess) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, user_id, roomAccess.accessTime.toString());
+            const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, userId, roomAccess.accessTime.toString());
             const value = yield response.json();
             console.log("getUnreadMessage result: ", value);
             if (value.success) {
@@ -193,10 +193,10 @@ class ChatsLogComponent {
             return roomInfo;
         });
     }
-    getRoomInfo(room_id) {
+    getRoomInfo(roomId) {
         return __awaiter(this, void 0, void 0, function* () {
             const self = this;
-            const response = yield chatroomService.getRoomInfo(room_id);
+            const response = yield chatroomService.getRoomInfo(roomId);
             const json = yield response.json();
             if (json.success) {
                 const roomInfos = json.result;
@@ -208,10 +208,10 @@ class ChatsLogComponent {
             }
         });
     }
-    getRoomsInfo(user_id, chatrooms) {
+    getRoomsInfo(userId, chatrooms) {
         const self = this;
         // create a queue object with concurrency 2
-        const q = async.queue(function (task, callback) {
+        const q = async.queue((task, callback) => {
             const value = task;
             const rooms = chatrooms.filter((v) => v._id === value.rid);
             const roomInfo = (rooms.length > 0) ? rooms[0] : undefined;
@@ -247,7 +247,7 @@ class ChatsLogComponent {
             }
         }, 10);
         // assign a callback
-        q.drain = function () {
+        q.drain = () => {
             console.log("getRoomsInfo Completed.");
             if (self.getRoomsInfoCompleteEvent()) {
                 self.getRoomsInfoCompleteEvent();
@@ -255,14 +255,14 @@ class ChatsLogComponent {
         };
         this.unreadMessageMap.forEach((value, key, map) => {
             // add some items to the queue
-            q.push(value, function (err) { });
+            q.push(value, console.warn);
         });
     }
     manageChatLog(chatrooms) {
         const self = this;
         return new Promise((resolve, rejected) => {
             // create a queue object with concurrency 2
-            const q = async.queue(function (task, callback) {
+            const q = async.queue((task, callback) => {
                 const unread = task;
                 const rooms = chatrooms.filter((v) => v._id === unread.rid);
                 const room = (rooms.length > 0) ? rooms[0] : undefined;
@@ -274,12 +274,12 @@ class ChatsLogComponent {
                 });
             }, 2);
             // assign a callback
-            q.drain = function () {
+            q.drain = () => {
                 resolve(self.chatslog);
             };
             this.unreadMessageMap.forEach((value, key, map) => {
                 // add some items to the queue
-                q.push(value, function (err) { });
+                q.push(value, console.warn);
             });
         });
     }
@@ -403,19 +403,19 @@ class ChatsLogComponent {
         });
     }
     getChatsLogCount() {
-        return this.chatlog_count;
+        return this.chatlogCount;
     }
     increaseChatsLogCount(num) {
-        this.chatlog_count += num;
+        this.chatlogCount += num;
     }
     decreaseChatsLogCount(num) {
-        this.chatlog_count -= num;
+        this.chatlogCount -= num;
     }
     calculateChatsLogCount() {
-        this.chatlog_count = 0;
+        this.chatlogCount = 0;
         this.unreadMessageMap.forEach((value, key) => {
             const count = value.count;
-            this.chatlog_count += count;
+            this.chatlogCount += count;
         });
     }
 }

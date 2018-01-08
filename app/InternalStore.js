@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ChatslogComponent_1 = require("./ChatslogComponent");
 exports.default = new class InternalStore {
     setAuth(newState) {
         this.authStore = Object.assign({}, newState);
@@ -12,4 +13,7 @@ exports.default = new class InternalStore {
         this.apiConfig = config;
     }
     getApiConfig() { return this.apiConfig; }
+    createChatLogInstance() {
+        this.chatlogInstance = new ChatslogComponent_1.ChatsLogComponent();
+    }
 };

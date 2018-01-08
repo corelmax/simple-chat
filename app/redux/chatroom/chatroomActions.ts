@@ -17,7 +17,7 @@ import * as R from "ramda";
 import { Store } from "redux";
 import { createAction } from "redux-actions";
 
-import * as chatroomService from "../../services/chatroomService";
+import * as chatroomService from "../../services/ChatroomService";
 import * as MessageService from "../../services/MessageService";
 
 import * as NotificationManager from "../stalkBridge/stalkNotificationActions";

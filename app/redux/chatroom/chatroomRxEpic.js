@@ -19,7 +19,7 @@ const { ajax, fromPromise } = Rx.Observable;
 const ChatRoomComponent_1 = require("../../ChatRoomComponent");
 const chatroomActions_1 = require("./chatroomActions");
 const ServiceUtils_1 = require("../../services/ServiceUtils");
-const chatroomService = require("../../services/chatroomService");
+const chatroomService = require("../../services/ChatroomService");
 const MessageService_1 = require("../../services/MessageService");
 // import config from "../../../../../configs/config";
 const configStore_1 = require("../configStore");

@@ -15,7 +15,7 @@ import {
     checkOlderMessages, getNewerMessageFromNet, GET_NEWER_MESSAGE_SUCCESS,
 } from "./chatroomActions";
 import { apiHeaders } from "../../services/ServiceUtils";
-import * as chatroomService from "../../services/chatroomService";
+import * as chatroomService from "../../services/ChatroomService";
 import { updateMessagesReader } from "../../services/MessageService";
 
 // import config from "../../../../../configs/config";
@@ -36,7 +36,8 @@ const cancelFetchPrivateChatRoom = () => ({ type: FETCH_PRIVATE_CHATROOM_CANCELL
 const fetchPrivateChatRoomFailure = (payload: any) => ({ type: FETCH_PRIVATE_CHATROOM_FAILURE, payload });
 export const getPrivateChatRoom_Epic = (action$) =>
     action$.ofType(FETCH_PRIVATE_CHATROOM)
-        .mergeMap((action) => fromPromise(chatroomService.getPrivateChatroom(action.payload.ownerId, action.payload.roommateId)))
+        .mergeMap((action) =>
+            fromPromise(chatroomService.getPrivateChatroom(action.payload.ownerId, action.payload.roommateId)))
         .mergeMap((response) => fromPromise(response.json()))
         .map((json) => {
             if (json.success) {
@@ -57,7 +58,8 @@ export const CREATE_PRIVATE_CHATROOM_SUCCESS = "CREATE_PRIVATE_CHATROOM_SUCCESS"
 export const CREATE_PRIVATE_CHATROOM_CANCELLED = "CREATE_PRIVATE_CHATROOM_CANCELLED";
 export const CREATE_PRIVATE_CHATROOM_FAILURE = "CREATE_PRIVATE_CHATROOM_FAILURE";
 
-export const createPrivateChatRoom = (owner, roommate) => ({ type: CREATE_PRIVATE_CHATROOM, payload: { owner, roommate } });
+export const createPrivateChatRoom = (owner, roommate) =>
+    ({ type: CREATE_PRIVATE_CHATROOM, payload: { owner, roommate } });
 const createPrivateChatRoomSuccess = (payload) => ({ type: CREATE_PRIVATE_CHATROOM_SUCCESS, payload });
 const createPrivateRoomCancelled = () => ({ type: CREATE_PRIVATE_CHATROOM_CANCELLED });
 const createPrivateChatRoomFailure = (payload) => ({ type: CREATE_PRIVATE_CHATROOM_FAILURE, payload });

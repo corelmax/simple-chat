@@ -1,26 +1,26 @@
 import { IStalkConfig, IApiConfig } from "stalk-js/starter";
 
-export type AuthStore = {
+export interface IAuthStore {
     user: { _id: string, username: string };
     api_token: string;
-};
+}
 
 export default new class InternalStore {
-    authStore: AuthStore;
-    setAuth(newState: AuthStore) {
+    authStore: IAuthStore;
+    setAuth(newState: IAuthStore) {
         this.authStore = { ...newState };
     }
+    appStateEvent: string;
 
     config: IStalkConfig;
-    public initConfig(_config: IStalkConfig) {
-        this.config = _config;
+    public initConfig(config: IStalkConfig) {
+        this.config = config;
     }
     public getConfig(): IStalkConfig { return this.config; }
 
-
     apiConfig: IApiConfig;
-    public initApiConfig(_config: IApiConfig) {
-        this.apiConfig = _config;
+    public initApiConfig(config: IApiConfig) {
+        this.apiConfig = config;
     }
     public getApiConfig(): IApiConfig { return this.apiConfig; }
-}
+};

@@ -8,7 +8,9 @@
         "ordered-imports": false,
         "object-literal-sort-keys": false,
         "member-ordering": false,
-        "member-access": false
+        "member-access": false,
+        "new-parens": false,
+        "no-console": false
     },
     "rulesDirectory": []
 }

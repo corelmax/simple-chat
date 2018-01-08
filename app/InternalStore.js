@@ -4,12 +4,12 @@ exports.default = new class InternalStore {
     setAuth(newState) {
         this.authStore = Object.assign({}, newState);
     }
-    initConfig(_config) {
-        this.config = _config;
+    initConfig(config) {
+        this.config = config;
     }
     getConfig() { return this.config; }
-    initApiConfig(_config) {
-        this.apiConfig = _config;
+    initApiConfig(config) {
+        this.apiConfig = config;
     }
     getApiConfig() { return this.apiConfig; }
 };

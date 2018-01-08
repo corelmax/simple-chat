@@ -1,5 +1,5 @@
 import { IMessage } from "stalk-js/starter/models";
-import { Room } from "stalk-js/starter/simpleChat/models";
+import { Room, IMember } from "../../models";
 /**
  * ChatRoomActionsType
  */
@@ -35,14 +35,14 @@ export declare const GET_PERSISTEND_CHATROOM = "GET_PERSISTEND_CHATROOM";
 export declare const GET_PERSISTEND_CHATROOM_SUCCESS = "GET_PERSISTEND_CHATROOM_SUCCESS";
 export declare const GET_PERSISTEND_CHATROOM_FAILURE = "GET_PERSISTEND_CHATROOM_FAILURE";
 export declare const getPersistendChatroom: (roomId: string) => (dispatch: any) => any;
-export declare const getRoom: (room_id: string) => any;
+export declare const getRoom: (room_id: string) => Room | null;
 export declare const createChatRoom: (myUser: any, contactUser: any) => {
-    owner: any;
-    contact: any;
+    owner: IMember;
+    contact: IMember;
 } | null;
 export declare const UPDATED_CHATROOMS = "UPDATED_CHATROOMS";
-export declare const updatedChatRoomSuccess: (chatrooms: any[]) => {
+export declare const updatedChatRoomSuccess: (chatrooms: Room[]) => {
     type: string;
-    payload: any[];
+    payload: Room[];
 };
-export declare const updateChatRoom: (rooms: any[]) => (dispatch: any) => void;
+export declare const updateChatRoom: (rooms: Room[]) => (dispatch: any) => void;

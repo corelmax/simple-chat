@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
 }) as Reducer<{
     stalkReducer: any,
     chatroomReducer: any,
-    chatlogReducer: any
+    chatlogReducer: any,
 }>;
 
 export default rootReducer;

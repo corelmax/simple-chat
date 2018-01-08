@@ -4,9 +4,8 @@ const redux_1 = require("redux");
 const rootReducer_1 = require("./rootReducer");
 const middlewares = [];
 if (process.env.NODE_ENV === `development`) {
-    const logger = require("redux-logger");
-    const _logger = logger.createLogger();
-    middlewares.push(_logger);
+    const logger = require("redux-logger").createLogger();
+    middlewares.push(logger);
 }
 const createStoreWithMiddleware = redux_1.applyMiddleware(...middlewares)(redux_1.createStore);
 function configureStore() {

@@ -1,9 +1,9 @@
 ﻿/**
- * Copyright 2016 Ahoo Studio.co.th.
+ * Copyright 2016-2018 Ahoo Studio.co.th.
  *
  * This is pure function for redux app.
  */
-
+import { AnyAction } from "redux";
 import * as immutable from "immutable";
 
 import {
@@ -69,7 +69,7 @@ export class ChatRoomRecoder extends immutable.Record(chatroomDefaults) {
     // }
 }
 export const chatRoomRecoder = new ChatRoomRecoder(chatroomDefaults);
-export const chatroomReducer = (state = chatRoomRecoder, action: any) => {
+export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
     switch (action.type) {
         case GET_ALL_CHATROOM_SUCCESS: {
             return state.set("chatrooms", action.payload);

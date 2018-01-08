@@ -1,9 +1,4 @@
 "use strict";
-/**
- * Copyright 2016 Ahoo Studio.co.th.
- *
- * This is pure function for redux app.
- */
 Object.defineProperty(exports, "__esModule", { value: true });
 const immutable = require("immutable");
 const chatroomActions_1 = require("./chatroomActions");

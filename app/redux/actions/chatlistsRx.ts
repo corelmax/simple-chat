@@ -26,6 +26,9 @@ const getAuthStore = () => InternalStore.authStore;
 const GET_ALL_CHATROOM = "GET_ALL_CHATROOM";
 export const GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";
 export const GET_ALL_CHATROOM_FAILURE = "GET_ALL_CHATROOM_FAILURE";
+const getAllChatRoomRequest = createAction(GET_ALL_CHATROOM);
+const getAllChatRoomSuccess = createAction(GET_ALL_CHATROOM_SUCCESS, (payload: any) => payload);
+const getAllChatRoomFailure = createAction(GET_ALL_CHATROOM_FAILURE, (error: any) => error);
 
 export const getAllChatRoom = () => {
     store.dispatch(getAllChatRoomRequest());
@@ -40,9 +43,6 @@ export const getAllChatRoom = () => {
         console.log("done");
     });
 };
-const getAllChatRoomRequest = createAction(GET_ALL_CHATROOM);
-const getAllChatRoomSuccess = createAction(GET_ALL_CHATROOM_SUCCESS, (payload) => payload);
-const getAllChatRoomFailure = createAction(GET_ALL_CHATROOM_FAILURE, (error) => error);
 
 const GET_RECENT_MESSAGE = "GET_RECENT_MESSAGE";
 export const GET_RECENT_MESSAGE_SUCCESS = "GET_RECENT_MESSAGE_SUCCESS";

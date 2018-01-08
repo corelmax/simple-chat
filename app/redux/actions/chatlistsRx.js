@@ -29,6 +29,9 @@ const getAuthStore = () => InternalStore_1.default.authStore;
 const GET_ALL_CHATROOM = "GET_ALL_CHATROOM";
 exports.GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";
 exports.GET_ALL_CHATROOM_FAILURE = "GET_ALL_CHATROOM_FAILURE";
+const getAllChatRoomRequest = redux_actions_1.createAction(GET_ALL_CHATROOM);
+const getAllChatRoomSuccess = redux_actions_1.createAction(exports.GET_ALL_CHATROOM_SUCCESS, (payload) => payload);
+const getAllChatRoomFailure = redux_actions_1.createAction(exports.GET_ALL_CHATROOM_FAILURE, (error) => error);
 exports.getAllChatRoom = () => {
     configStore_1.store.dispatch(getAllChatRoomRequest());
     const observable = ajax.get(`${getApiConfig().chatroom}/all`, ServiceUtils_1.apiHeaders());
@@ -41,9 +44,6 @@ exports.getAllChatRoom = () => {
         console.log("done");
     });
 };
-const getAllChatRoomRequest = redux_actions_1.createAction(GET_ALL_CHATROOM);
-const getAllChatRoomSuccess = redux_actions_1.createAction(exports.GET_ALL_CHATROOM_SUCCESS, (payload) => payload);
-const getAllChatRoomFailure = redux_actions_1.createAction(exports.GET_ALL_CHATROOM_FAILURE, (error) => error);
 const GET_RECENT_MESSAGE = "GET_RECENT_MESSAGE";
 exports.GET_RECENT_MESSAGE_SUCCESS = "GET_RECENT_MESSAGE_SUCCESS";
 exports.GET_RECENT_MESSAGE_FAILURE = "GET_RECENT_MESSAGE_FAILURE";

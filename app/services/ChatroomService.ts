@@ -17,7 +17,7 @@ export const getRoomInfo = (room_id: string): Promise<any> => {
 export const getUnreadMessage = (room_id: string, user_id: string, lastAccessTime: string): Promise<any> => {
     return fetch(`${getConfig().chatroom}/unreadMessage?room_id=${room_id}&user_id=${user_id}&lastAccessTime=${lastAccessTime}`, {
         method: "GET",
-        headers: apiHeaders()
+        headers: apiHeaders(),
     });
 };
 
@@ -31,8 +31,8 @@ export const getOlderMessagesCount = (room_id: string, topEdgeMessageTime: strin
 export const getNewerMessages = (room_id: string, lastMessageTime: Date) => {
     return fetch(`${getConfig().chatroom}/getChatHistory`, {
         body: JSON.stringify({
-            room_id: room_id,
-            lastMessageTime: lastMessageTime
+            room_id,
+            lastMessageTime
         }),
         method: "POST",
         headers: apiHeaders()
@@ -44,8 +44,8 @@ export const getPrivateChatroom = (ownerId: string, roommateId: string) => {
         method: "POST",
         headers: apiHeaders(),
         body: JSON.stringify({
-            ownerId: ownerId,
-            roommateId: roommateId
-        })
+            ownerId,
+            roommateId
+        }),
     });
 };

@@ -21,8 +21,6 @@ const index_2 = require("./models/index");
 const CryptoHelper = require("./utils/CryptoHelper");
 const InternalStore_1 = require("./InternalStore");
 const chatroomService = require("./services/ChatroomService");
-// import * as chatlogActionsHelper from "./redux/chatlogs/chatlogActionsHelper";
-const avatar = require("./assets/ic_account_circle_black_48dp/web/ic_account_circle_black_48dp_2x.png");
 class Unread {
 }
 exports.Unread = Unread;
@@ -84,7 +82,7 @@ class ChatsLogComponent {
     }
     onChat(message) {
         console.log("ChatsLogComponent.onChat", message);
-        let self = this;
+        const self = this;
         CryptoHelper.decryptionText(message).then((decoded) => {
             // Provide chatslog service.
             self.chatListeners.map((v, i, a) => {
@@ -96,7 +94,7 @@ class ChatsLogComponent {
         let self = this;
         this.unreadMessageMap.clear();
         this.chatslog.clear();
-        let roomAccess = dataEvent.roomAccess;
+        const roomAccess = dataEvent.roomAccess;
         let results = new Array();
         const done = () => {
             self._isReady = true;
@@ -106,12 +104,13 @@ class ChatsLogComponent {
         };
         async.each(roomAccess, (item, resultCallback) => {
             self.getRoomInfo(item.roomId)
-                .then(room => {
+                .then((room) => {
                 results.push(room);
                 resultCallback();
-            }).catch(err => {
-                if (err)
+            }).catch((err) => {
+                if (err) {
                     console.warn("getRoomInfo", err);
+                }
                 resultCallback();
             });
         }, (err) => {
@@ -126,15 +125,15 @@ class ChatsLogComponent {
         }
     }
     getUnreadMessages(user_id, roomAccess, callback) {
-        let self = this;
-        let unreadLogs = new Array();
+        const self = this;
+        const unreadLogs = new Array();
         // create a queue object with concurrency 2
-        let q = async.queue(function (task, callback) {
+        const q = async.queue(function (task, callback) {
             if (!!task.roomId && !!task.accessTime) {
-                self.getUnreadMessage(user_id, task).then(value => {
+                self.getUnreadMessage(user_id, task).then((value) => {
                     unreadLogs.push(value);
                     callback();
-                }).catch(err => {
+                }).catch((err) => {
                     if (err) {
                         console.warn("getUnreadMessage", err);
                     }
@@ -153,8 +152,9 @@ class ChatsLogComponent {
         // add some items to the queue (batch-wise)
         if (roomAccess && roomAccess.length > 0) {
             q.push(roomAccess, function (err) {
-                if (!!err)
+                if (!!err) {
                     console.error("getUnreadMessage err", err);
+                }
             });
         }
         else {
@@ -163,13 +163,13 @@ class ChatsLogComponent {
     }
     getUnreadMessage(user_id, roomAccess) {
         return __awaiter(this, void 0, void 0, function* () {
-            let response = yield chatroomService.getUnreadMessage(roomAccess.roomId, user_id, roomAccess.accessTime.toString());
-            let value = yield response.json();
+            const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, user_id, roomAccess.accessTime.toString());
+            const value = yield response.json();
             console.log("getUnreadMessage result: ", value);
             if (value.success) {
-                let unread = value.result;
+                const unread = value.result;
                 unread.rid = roomAccess.roomId;
-                let decoded = yield CryptoHelper.decryptionText(unread.message);
+                const decoded = yield CryptoHelper.decryptionText(unread.message);
                 return unread;
             }
             else {
@@ -181,9 +181,10 @@ class ChatsLogComponent {
         return __awaiter(this, void 0, void 0, function* () {
             if (roomInfo.type === index_2.RoomType.privateChat) {
                 if (Array.isArray(roomInfo.members)) {
-                    let others = roomInfo.members.filter((value) => value._id !== InternalStore_1.default.authStore.user._id);
+                    const others = roomInfo.members.filter((value) => value._id !== InternalStore_1.default.authStore.user._id);
                     if (others.length > 0) {
-                        let contact = others[0];
+                        const contact = others[0];
+                        const avatar = require("./assets/ic_account_circle_black.png");
                         roomInfo.owner = (contact.username) ? contact.username : "EMPTY ROOM";
                         roomInfo.image = (contact.avatar) ? contact.avatar : avatar;
                     }
@@ -194,12 +195,12 @@ class ChatsLogComponent {
     }
     getRoomInfo(room_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let self = this;
-            let response = yield chatroomService.getRoomInfo(room_id);
-            let json = yield response.json();
+            const self = this;
+            const response = yield chatroomService.getRoomInfo(room_id);
+            const json = yield response.json();
             if (json.success) {
-                let roomInfos = json.result;
-                let room = yield self.decorateRoomInfoData(roomInfos[0]);
+                const roomInfos = json.result;
+                const room = yield self.decorateRoomInfoData(roomInfos[0]);
                 return Promise.resolve(room);
             }
             else {
@@ -208,15 +209,15 @@ class ChatsLogComponent {
         });
     }
     getRoomsInfo(user_id, chatrooms) {
-        let self = this;
+        const self = this;
         // create a queue object with concurrency 2
-        let q = async.queue(function (task, callback) {
-            let value = task;
-            let rooms = chatrooms.filter(v => v._id === value.rid);
-            let roomInfo = (rooms.length > 0) ? rooms[0] : undefined;
+        const q = async.queue(function (task, callback) {
+            const value = task;
+            const rooms = chatrooms.filter((v) => v._id === value.rid);
+            const roomInfo = (rooms.length > 0) ? rooms[0] : undefined;
             if (!!roomInfo) {
-                self.decorateRoomInfoData(roomInfo).then(room => {
-                    chatrooms.forEach(v => {
+                self.decorateRoomInfoData(roomInfo).then((room) => {
+                    chatrooms.forEach((v) => {
                         if (v._id === room._id) {
                             v = room;
                         }
@@ -224,14 +225,14 @@ class ChatsLogComponent {
                     self.organizeChatLogMap(value, room, function done() {
                         callback();
                     });
-                }).catch(err => {
+                }).catch((err) => {
                     callback();
                 });
             }
             else {
                 console.log("Can't find roomInfo from persisted data: ", value.rid);
-                self.getRoomInfo(value.rid).then(room => {
-                    chatrooms.forEach(v => {
+                self.getRoomInfo(value.rid).then((room) => {
+                    chatrooms.forEach((v) => {
                         if (v._id === room._id) {
                             v = room;
                         }
@@ -239,7 +240,7 @@ class ChatsLogComponent {
                     self.organizeChatLogMap(value, room, function done() {
                         callback();
                     });
-                }).catch(err => {
+                }).catch((err) => {
                     console.warn(err);
                     callback();
                 });
@@ -258,13 +259,13 @@ class ChatsLogComponent {
         });
     }
     manageChatLog(chatrooms) {
-        let self = this;
+        const self = this;
         return new Promise((resolve, rejected) => {
             // create a queue object with concurrency 2
-            let q = async.queue(function (task, callback) {
-                let unread = task;
-                let rooms = chatrooms.filter(v => v._id === unread.rid);
-                let room = (rooms.length > 0) ? rooms[0] : undefined;
+            const q = async.queue(function (task, callback) {
+                const unread = task;
+                const rooms = chatrooms.filter((v) => v._id === unread.rid);
+                const room = (rooms.length > 0) ? rooms[0] : undefined;
                 if (!room) {
                     callback();
                 }
@@ -284,8 +285,8 @@ class ChatsLogComponent {
     }
     organizeChatLogMap(unread, roomInfo, done) {
         return __awaiter(this, void 0, void 0, function* () {
-            let self = this;
-            let log = new ChatLog_1.default(roomInfo);
+            const self = this;
+            const log = new ChatLog_1.default(roomInfo);
             log.setNotiCount(unread.count);
             if (!!unread.message) {
                 log.setLastMessageTime(unread.message.createTime.toString());
@@ -298,7 +299,7 @@ class ChatsLogComponent {
                         console.warn("get sender contact fail", err.message);
                     }
                 }
-                let sender = (!!contact) ? contact.username : "";
+                const sender = (!!contact) ? contact.username : "";
                 if (unread.message.body !== null) {
                     let displayMsg = unread.message.body;
                     switch (`${unread.message.type}`) {
@@ -356,7 +357,7 @@ class ChatsLogComponent {
                 }
             }
             else {
-                let displayMsg = "Start Chatting Now!";
+                const displayMsg = "Start Chatting Now!";
                 self.setLogProp(log, displayMsg, function (log) {
                     self.addChatLog(log, done);
                 });
@@ -373,13 +374,13 @@ class ChatsLogComponent {
     }
     checkRoomInfo(unread, chatrooms) {
         return __awaiter(this, void 0, void 0, function* () {
-            let self = this;
-            let rooms = (!!chatrooms && chatrooms.length > 0) ? chatrooms.filter(v => v._id === unread.rid) : [];
-            let roomInfo = rooms[0];
+            const self = this;
+            const rooms = (!!chatrooms && chatrooms.length > 0) ? chatrooms.filter((v) => v._id === unread.rid) : [];
+            const roomInfo = rooms[0];
             if (!roomInfo) {
                 console.warn("No have roomInfo in room store.", unread.rid);
-                let room = yield self.getRoomInfo(unread.rid);
-                let p = new Promise((resolve, rejected) => {
+                const room = yield self.getRoomInfo(unread.rid);
+                const p = new Promise((resolve, rejected) => {
                     if (!room) {
                         rejected();
                     }
@@ -393,7 +394,7 @@ class ChatsLogComponent {
             }
             else {
                 console.log("organize chats log of room: ", roomInfo.owner);
-                let p = new Promise((resolve, rejected) => {
+                const p = new Promise((resolve, rejected) => {
                     this.organizeChatLogMap(unread, roomInfo, () => {
                         resolve();
                     });
@@ -413,7 +414,7 @@ class ChatsLogComponent {
     calculateChatsLogCount() {
         this.chatlog_count = 0;
         this.unreadMessageMap.forEach((value, key) => {
-            let count = value.count;
+            const count = value.count;
             this.chatlog_count += count;
         });
     }

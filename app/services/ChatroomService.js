@@ -16,7 +16,7 @@ exports.getRoomInfo = (room_id) => {
 exports.getUnreadMessage = (room_id, user_id, lastAccessTime) => {
     return fetch(`${getConfig().chatroom}/unreadMessage?room_id=${room_id}&user_id=${user_id}&lastAccessTime=${lastAccessTime}`, {
         method: "GET",
-        headers: ServiceUtils_1.apiHeaders()
+        headers: ServiceUtils_1.apiHeaders(),
     });
 };
 exports.getOlderMessagesCount = (room_id, topEdgeMessageTime, queryMessage) => {
@@ -28,8 +28,8 @@ exports.getOlderMessagesCount = (room_id, topEdgeMessageTime, queryMessage) => {
 exports.getNewerMessages = (room_id, lastMessageTime) => {
     return fetch(`${getConfig().chatroom}/getChatHistory`, {
         body: JSON.stringify({
-            room_id: room_id,
-            lastMessageTime: lastMessageTime
+            room_id,
+            lastMessageTime
         }),
         method: "POST",
         headers: ServiceUtils_1.apiHeaders()
@@ -40,8 +40,8 @@ exports.getPrivateChatroom = (ownerId, roommateId) => {
         method: "POST",
         headers: ServiceUtils_1.apiHeaders(),
         body: JSON.stringify({
-            ownerId: ownerId,
-            roommateId: roommateId
-        })
+            ownerId,
+            roommateId
+        }),
     });
 };

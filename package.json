@@ -4,7 +4,7 @@
   "description": "simple chat for stalk-js implementation.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "nattapon.r <nattapon.r@live.com>",
   "license": "ISC",
@@ -17,9 +17,11 @@
     "stalk-js": "git+https://github.com/mzget/s-talk-js-client.git#feature/starter_kit"
   },
   "devDependencies": {
+    "@types/jest": "^22.0.1",
     "@types/node": "^8.5.7",
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.2.3",
+    "jest": "^22.0.4",
     "redux-logger": "^3.0.6"
   }
 }

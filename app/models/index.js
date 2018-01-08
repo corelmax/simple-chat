@@ -7,3 +7,4 @@ __export(require("./ChatLog"));
 __export(require("./Room"));
 __export(require("./MessageImp"));
 __export(require("./MemberImp"));
+__export(require("./FileType"));

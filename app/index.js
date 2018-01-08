@@ -6,5 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./ChatslogComponent"));
 __export(require("./ChatRoomComponent"));
 __export(require("./InternalStore"));
+var configStore_1 = require("./redux/configStore");
+exports.store = configStore_1.store;
 __export(require("./utils/CryptoHelper"));
 __export(require("./utils/secure/SecureServiceFactory"));

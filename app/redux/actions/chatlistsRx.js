@@ -25,7 +25,6 @@ const { ajax } = Rx.Observable;
 const config = () => InternalStore_1.default.config;
 const getApiConfig = () => InternalStore_1.default.apiConfig;
 const getAuthStore = () => InternalStore_1.default.authStore;
-// import Store from "../redux/configureStore";
 const GET_ALL_CHATROOM = "GET_ALL_CHATROOM";
 exports.GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";
 exports.GET_ALL_CHATROOM_FAILURE = "GET_ALL_CHATROOM_FAILURE";

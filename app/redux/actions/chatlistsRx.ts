@@ -8,7 +8,6 @@ import { getUnreadMessage } from "../../ChatslogComponent";
 import { StalkAccount, RoomAccessData } from "stalk-js/starter/models";
 import { createAction } from "redux-actions";
 import * as Rx from "rxjs/Rx";
-import { Store } from "redux";
 
 import { getLastAccessRoom, STALK_INIT_CHATLOG, ON_CHATLOG_CHANGE } from "../chatlogs";
 import { withToken, apiHeaders } from "../../services/ServiceUtils";
@@ -20,8 +19,6 @@ const { ajax } = Rx.Observable;
 const config = () => InternalStore.config;
 const getApiConfig = () => InternalStore.apiConfig;
 const getAuthStore = () => InternalStore.authStore;
-
-// import Store from "../redux/configureStore";
 
 const GET_ALL_CHATROOM = "GET_ALL_CHATROOM";
 export const GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";

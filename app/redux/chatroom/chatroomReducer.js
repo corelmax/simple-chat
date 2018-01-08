@@ -40,6 +40,9 @@ exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
         case chatlistsRx_1.GET_ALL_CHATROOM_SUCCESS: {
             return state.set("chatrooms", action.payload);
         }
+        case chatlistsRx_1.GET_ALL_CHATROOM_FAILURE: {
+            return state;
+        }
         case chatroomActions.JOIN_ROOM_FAILURE: {
             return state.set("state", chatroomActions.JOIN_ROOM_FAILURE)
                 .set("chatDisabled", true);

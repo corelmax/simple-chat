@@ -19,7 +19,7 @@ import * as StalkBridgeActions from "../stalkBridge/stalkBridgeActions";
 import * as chatlogsActions from "../chatlogs/chatlogsActions";
 
 import { Room, MessageImp } from "../../models";
-import { GET_ALL_CHATROOM_SUCCESS } from "../actions/chatlistsRx";
+import { GET_ALL_CHATROOM_SUCCESS, GET_ALL_CHATROOM_FAILURE } from "../actions/chatlistsRx";
 
 // Define our record defaults
 const chatroomDefaults = {
@@ -74,6 +74,10 @@ export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
         case GET_ALL_CHATROOM_SUCCESS: {
             return state.set("chatrooms", action.payload);
         }
+        case GET_ALL_CHATROOM_FAILURE: {
+            return state;
+        }
+
         case chatroomActions.JOIN_ROOM_FAILURE: {
             return state.set("state", chatroomActions.JOIN_ROOM_FAILURE)
                 .set("chatDisabled", true);

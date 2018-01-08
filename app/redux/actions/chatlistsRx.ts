@@ -49,6 +49,7 @@ export const GET_RECENT_MESSAGE_SUCCESS = "GET_RECENT_MESSAGE_SUCCESS";
 export const GET_RECENT_MESSAGE_FAILURE = "GET_RECENT_MESSAGE_FAILURE";
 const getRecentMessageSuccess = createAction(GET_RECENT_MESSAGE_SUCCESS, (payload) => payload);
 const getRecentMessageFailure = createAction(GET_RECENT_MESSAGE_FAILURE, (error) => error);
+
 export const getRecentMessage_Epic = (action$) =>
     action$.filter((action) => action.type === GET_ALL_CHATROOM_SUCCESS || action.type === ON_CHATLOG_CHANGE)
         .mergeMap((action) => {

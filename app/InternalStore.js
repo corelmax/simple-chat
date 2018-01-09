@@ -11,7 +11,7 @@ exports.default = new class InternalStore {
         this.store = Object.assign({}, store);
     }
     setAuth(newState) {
-        this.authStore = Object.assign({}, newState);
+        this.authStore = newState;
     }
     initConfig(config) {
         this.config = config;

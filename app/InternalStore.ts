@@ -19,7 +19,7 @@ export default new class InternalStore {
 
     authStore: IAuthStore;
     setAuth(newState: IAuthStore) {
-        this.authStore = { ...newState };
+        this.authStore = newState;
     }
 
     appStateEvent: string;

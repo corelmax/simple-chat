@@ -13,7 +13,8 @@ import { ChatEvents } from "stalk-js";
 import * as chatroomService from "./services/ChatroomService";
 
 import { decryptionText, hashComputation } from "./utils/CryptoHelper";
-import { ISecureService, SecureServiceFactory } from "./index";
+import { ISecureService } from "./utils/secure/ISecureService";
+import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
 
 import { MessageType, IMessage, RoomAccessData } from "stalk-js/starter/models";
 import { MessageImp, Room, IMember } from "./models/index";
@@ -73,8 +74,8 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         });
     }
 
-    saveMessages = (chatMessages: Array<MessageImp>, message: MessageImp) => {
-        let self = this;
+    saveMessages = (chatMessages: MessageImp[], message: MessageImp) => {
+        const self = this;
         chatMessages.push(message);
 
         self.dataManager.messageDAL.saveData(self.roomId, chatMessages)
@@ -90,7 +91,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         let self = this;
         this.dataManager.messageDAL.getData(this.roomId)
             .then((chats: IMessage[]) => {
-                let chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
+                const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
 
                 if (message.type === MessageType[MessageType.Text]) {
                     decryptionText(message)
@@ -98,13 +99,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                             self.saveMessages(chatMessages, message);
                         })
                         .catch((err) => self.saveMessages(chatMessages, message));
-                }
-                // else if (message.type === MessageType[MessageType.Sticker]) {
-                //     let sticker_id = parseInt(message.body);
-                //     message.src = imagesPath[sticker_id].img;
-                //     saveMessages(chatMessages);
-                // }
-                else {
+                } else {
                     self.saveMessages(chatMessages, message);
                 }
             }).catch((err) => {
@@ -117,8 +112,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
         if (this.roomId === message.rid) {
             this.saveToPersisted(message);
-        }
-        else {
+        } else {
             console.log("this msg come from other room.");
 
             if (!!this.outsideRoomDelegete) {

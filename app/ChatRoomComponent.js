@@ -19,7 +19,7 @@ const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
 const stalk_js_1 = require("stalk-js");
 const chatroomService = require("./services/ChatroomService");
 const CryptoHelper_1 = require("./utils/CryptoHelper");
-const index_1 = require("./index");
+const SecureServiceFactory_1 = require("./utils/secure/SecureServiceFactory");
 const models_1 = require("stalk-js/starter/models");
 const getConfig = () => BackendFactory_1.BackendFactory.getInstance().config;
 // const getStore = () => ChitChatFactory.getInstance().store;
@@ -28,7 +28,7 @@ class ChatRoomComponent {
     constructor(dataManager) {
         this.updateMessageQueue = new Array();
         this.saveMessages = (chatMessages, message) => {
-            let self = this;
+            const self = this;
             chatMessages.push(message);
             self.dataManager.messageDAL.saveData(self.roomId, chatMessages)
                 .then((chats) => {
@@ -39,7 +39,7 @@ class ChatRoomComponent {
             });
         };
         console.log("ChatRoomComponent: constructor");
-        this.secure = index_1.SecureServiceFactory.getService();
+        this.secure = SecureServiceFactory_1.SecureServiceFactory.getService();
         const backendFactory = BackendFactory_1.BackendFactory.getInstance();
         this.dataManager = dataManager;
         this.dataListener = backendFactory.dataListener;
@@ -72,7 +72,7 @@ class ChatRoomComponent {
         let self = this;
         this.dataManager.messageDAL.getData(this.roomId)
             .then((chats) => {
-            let chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
+            const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
             if (message.type === models_1.MessageType[models_1.MessageType.Text]) {
                 CryptoHelper_1.decryptionText(message)
                     .then((decoded) => {

@@ -102,8 +102,8 @@ exports.getPersistendMessage = (roomId) => __awaiter(this, void 0, void 0, funct
     try {
         const result = yield ChatRoomComponent_1.ChatRoomComponent.getInstance().getPersistentMessage(roomId);
         getStore().dispatch(getPersistendMessageSuccess(result));
-        getStore().dispatch(chatroomActions_1.checkOlderMessages());
-        getStore().dispatch(chatroomActions_1.getNewerMessageFromNet());
+        chatroomActions_1.checkOlderMessages();
+        chatroomActions_1.getNewerMessageFromNet();
     }
     catch (ex) {
         getStore().dispatch(getPersistendMessageFailure(ex.message));

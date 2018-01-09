@@ -114,9 +114,8 @@ export const getPersistendMessage = async (roomId: string) => {
     try {
         const result = await ChatRoomComponent.getInstance().getPersistentMessage(roomId);
         getStore().dispatch(getPersistendMessageSuccess(result));
-
-        getStore().dispatch(checkOlderMessages());
-        getStore().dispatch(getNewerMessageFromNet());
+        checkOlderMessages();
+        getNewerMessageFromNet();
     } catch (ex) {
         getStore().dispatch(getPersistendMessageFailure(ex.message));
     }

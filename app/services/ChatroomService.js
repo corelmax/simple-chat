@@ -7,32 +7,34 @@ const starter_1 = require("stalk-js/starter");
 const InternalStore_1 = require("../InternalStore");
 const ServiceUtils_1 = require("./ServiceUtils");
 const getConfig = () => starter_1.BackendFactory.getInstance().getApiConfig();
-exports.getRoomInfo = (room_id) => {
-    return fetch(`${getConfig().chatroom}/roomInfo?room_id=${room_id}`, {
+exports.getRoomInfo = (roomId) => {
+    return fetch(`${getConfig().chatroom}/roomInfo?room_id=${roomId}`, {
         method: "GET",
-        headers: ServiceUtils_1.withToken(ServiceUtils_1.apiHeaders())(InternalStore_1.default.authStore.api_token)
+        headers: ServiceUtils_1.withToken(ServiceUtils_1.apiHeaders())(InternalStore_1.default.authStore.api_token),
     });
 };
-exports.getUnreadMessage = (room_id, user_id, lastAccessTime) => {
-    return fetch(`${getConfig().chatroom}/unreadMessage?room_id=${room_id}&user_id=${user_id}&lastAccessTime=${lastAccessTime}`, {
+exports.getUnreadMessage = (roomId, userId, lastAccessTime) => {
+    return fetch(`${getConfig().chatroom}/unreadMessage?
+    room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
         method: "GET",
         headers: ServiceUtils_1.apiHeaders(),
     });
 };
-exports.getOlderMessagesCount = (room_id, topEdgeMessageTime, queryMessage) => {
-    return fetch(`${getConfig().chatroom}/olderMessagesCount/?message=${queryMessage}&room_id=${room_id}&topEdgeMessageTime=${topEdgeMessageTime}`, {
+exports.getOlderMessagesCount = (roomId, topEdgeMessageTime, queryMessage) => {
+    return fetch(`${getConfig().chatroom}/olderMessagesCount/?
+    message=${queryMessage}&room_id=${roomId}&topEdgeMessageTime=${topEdgeMessageTime}`, {
         method: "GET",
-        headers: ServiceUtils_1.apiHeaders()
+        headers: ServiceUtils_1.apiHeaders(),
     });
 };
-exports.getNewerMessages = (room_id, lastMessageTime) => {
+exports.getNewerMessages = (roomId, lastMessageTime) => {
     return fetch(`${getConfig().chatroom}/getChatHistory`, {
         body: JSON.stringify({
-            room_id,
-            lastMessageTime
+            roomId,
+            lastMessageTime,
         }),
         method: "POST",
-        headers: ServiceUtils_1.apiHeaders()
+        headers: ServiceUtils_1.apiHeaders(),
     });
 };
 exports.getPrivateChatroom = (ownerId, roommateId) => {
@@ -41,7 +43,7 @@ exports.getPrivateChatroom = (ownerId, roommateId) => {
         headers: ServiceUtils_1.apiHeaders(),
         body: JSON.stringify({
             ownerId,
-            roommateId
+            roommateId,
         }),
     });
 };

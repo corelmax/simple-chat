@@ -5,3 +5,6 @@ const InternalStore_1 = require("../app/InternalStore");
 test("test", () => {
     expect(InternalStore_1.default.config).toBeUndefined();
 });
+test("test dataManager", () => {
+    expect(InternalStore_1.default.dataManager).toBeDefined();
+});

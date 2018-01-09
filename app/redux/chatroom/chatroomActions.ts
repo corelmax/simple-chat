@@ -192,13 +192,13 @@ export function sendMessage(message: IMessage) {
             if (!!server) {
                 const msg = {};
                 msg.data = message;
-                msg["x-api-key"] = config.Stalk.apiKey;
-                msg["api-version"] = config.Stalk.apiVersion;
-                server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
-                    if (result.code !== 200) {
-                        sendMessageResponse(result, null);
+                msg["x-api-key"] = getConfig().apiKey;
+                msg["api-version"] = getConfig().apiVersion;
+                server.getSocket().request("chat.chatHandler.pushByUids", msg, (response) => {
+                    if (response.code !== 200) {
+                        sendMessageResponse(response, null);
                     } else {
-                        sendMessageResponse(null, result);
+                        sendMessageResponse(null, response);
                     }
                 });
             } else {
@@ -212,8 +212,8 @@ export function sendMessage(message: IMessage) {
         if (!!server) {
             const msg = {};
             msg.data = message;
-            msg["x-api-key"] = config.Stalk.apiKey;
-            msg["api-version"] = config.Stalk.apiVersion;
+            msg["x-api-key"] = getConfig().apiKey;
+            msg["api-version"] = getConfig().apiVersion;
             server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
                 if (result.code !== 200) {
                     sendMessageResponse(result, null);

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ChatslogComponent_1 = require("./ChatslogComponent");
 exports.default = new class InternalStore {
     initStore(store) {
-        this.store = store;
+        this.store = Object.assign({}, store);
     }
     setAuth(newState) {
         this.authStore = Object.assign({}, newState);

@@ -12,7 +12,7 @@ export interface IAuthStore {
 export default new class InternalStore {
     store: Store<any>;
     public initStore(store: Store<any>) {
-        this.store = store;
+        this.store = { ...store };
     }
 
     authStore: IAuthStore;

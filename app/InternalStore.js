@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ChatslogComponent_1 = require("./ChatslogComponent");
 exports.default = new class InternalStore {
+    constructor() {
+        this.dataManager = Object.create(null);
+    }
     initStore(store) {
         this.store = Object.assign({}, store);
     }

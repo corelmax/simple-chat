@@ -9,8 +9,8 @@
  */
 import { IMessageDAL } from "./IMessageDAL";
 export declare class NodeMessageDAL implements IMessageDAL {
-    getData(rid: any): Promise<any>;
-    saveData(rid: any, chatRecord: any): Promise<any>;
-    removeData(rid: any, callback: any): void;
+    getData(rid: string): Promise<any>;
+    saveData(rid: string, chatRecord: any): Promise<any>;
+    removeData(rid: string, callback: any): void;
     clearData(next: any): void;
 }

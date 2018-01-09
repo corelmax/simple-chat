@@ -40,7 +40,7 @@ export default new class InternalStore {
         this.chatlogInstance = new ChatsLogComponent();
     }
 
-    dataManager: IDataManager;
+    dataManager: IDataManager = Object.create(null);
     /**
      * React.js please use MessageDAL module.
      * React-Native please use NodeMessageDAL instead.

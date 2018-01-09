@@ -5,6 +5,7 @@ class NodeMessageDAL {
     getData(rid) {
         return store.get(rid);
     }
+    ;
     saveData(rid, chatRecord) {
         return store.save(rid, chatRecord).then(() => {
             return store.get(rid);

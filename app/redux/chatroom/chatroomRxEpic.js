@@ -93,21 +93,22 @@ const GET_PERSISTEND_MESSAGE = "GET_PERSISTEND_MESSAGE";
 const GET_PERSISTEND_MESSAGE_CANCELLED = "GET_PERSISTEND_MESSAGE_CANCELLED";
 exports.GET_PERSISTEND_MESSAGE_SUCCESS = "GET_PERSISTEND_MESSAGE_SUCCESS";
 const GET_PERSISTEND_MESSAGE_FAILURE = "GET_PERSISTEND_MESSAGE_FAILURE";
+const getPersistendMessageRequest = redux_actions_1.createAction(GET_PERSISTEND_MESSAGE, (paylaod) => paylaod);
+const getPersistendMessageCancel = redux_actions_1.createAction(GET_PERSISTEND_MESSAGE_CANCELLED);
+const getPersistendMessageSuccess = redux_actions_1.createAction(exports.GET_PERSISTEND_MESSAGE_SUCCESS, (payload) => payload);
+const getPersistendMessageFailure = redux_actions_1.createAction(GET_PERSISTEND_MESSAGE_FAILURE, (error) => error);
 exports.getPersistendMessage = (roomId) => __awaiter(this, void 0, void 0, function* () {
-    getStore().dispatch({ type: GET_PERSISTEND_MESSAGE, payload: roomId });
+    getStore().dispatch(getPersistendMessageRequest(roomId));
     try {
         const result = yield ChatRoomComponent_1.ChatRoomComponent.getInstance().getPersistentMessage(roomId);
-        getStore().dispatch(getPersistendMessage_success(result));
+        getStore().dispatch(getPersistendMessageSuccess(result));
         getStore().dispatch(chatroomActions_1.checkOlderMessages());
         getStore().dispatch(chatroomActions_1.getNewerMessageFromNet());
     }
     catch (ex) {
-        getStore().dispatch(getPersistendMessage_failure(ex.message));
+        getStore().dispatch(getPersistendMessageFailure(ex.message));
     }
 });
-const getPersistendMessage_cancel = () => ({ type: GET_PERSISTEND_MESSAGE_CANCELLED });
-const getPersistendMessage_success = (payload) => ({ type: exports.GET_PERSISTEND_MESSAGE_SUCCESS, payload });
-const getPersistendMessage_failure = (error) => ({ type: GET_PERSISTEND_MESSAGE_FAILURE, payload: error });
 exports.UPDATE_MESSAGES_READ = "UPDATE_MESSAGES_READ";
 exports.UPDATE_MESSAGES_READ_SUCCESS = "UPDATE_MESSAGES_READ_SUCCESS";
 exports.UPDATE_MESSAGES_READ_FAILUER = "UPDATE_MESSAGES_READ_FAILURE";

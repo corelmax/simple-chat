@@ -19,4 +19,12 @@ exports.default = new class InternalStore {
     createChatLogInstance() {
         this.chatlogInstance = new ChatslogComponent_1.ChatsLogComponent();
     }
+    /**
+     * React.js please use MessageDAL module.
+     * React-Native please use NodeMessageDAL instead.
+     * @param storageObj
+     */
+    setStorage(storageObj) {
+        this.dataManager.messageDAL = Object.assign({}, storageObj);
+    }
 };

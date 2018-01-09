@@ -18,6 +18,7 @@ import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
 
 import { MessageType, IMessage, RoomAccessData } from "stalk-js/starter/models";
 import { MessageImp, Room, IMember } from "./models/index";
+import { IDataManager } from "./IDataManager";
 
 // import { imagesPath } from "../consts/StickerPath";
 import InternalStore from "./InternalStore";
@@ -31,7 +32,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
     public static getInstance() {
         return ChatRoomComponent.instance;
     }
-    public static createInstance(datamanager: any) {
+    public static createInstance(datamanager: IDataManager) {
         if (!ChatRoomComponent.instance) {
             ChatRoomComponent.instance = new ChatRoomComponent(datamanager);
         }
@@ -49,12 +50,12 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         this.roomId = rid;
     }
     private secure: ISecureService;
-    private dataManager: any;
+    private dataManager: IDataManager;
     private dataListener: DataListener;
 
     private updateMessageQueue = new Array<MessageImp>();
 
-    constructor(dataManager: any) {
+    constructor(dataManager: IDataManager) {
         console.log("ChatRoomComponent: constructor");
 
         this.secure = SecureServiceFactory.getService();
@@ -85,10 +86,10 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                     self.chatroomDelegate(ON_MESSAGE_CHANGE, chatMessages);
                 }
             });
-    };
+    }
 
     saveToPersisted(message: MessageImp) {
-        let self = this;
+        const self = this;
         this.dataManager.messageDAL.getData(this.roomId)
             .then((chats: IMessage[]) => {
                 const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
@@ -125,9 +126,9 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
     public onLeaveRoom(data) { }
 
-    private async messageReadTick(messageQueue: MessageImp[], room_id: string) {
+    private async messageReadTick(messageQueue: MessageImp[], roomId: string) {
         let chatMessages = Object.create(null) as any[];
-        const chats = await this.dataManager.messageDAL.getData(room_id);
+        const chats = await this.dataManager.messageDAL.getData(roomId);
         chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array<MessageImp>();
 
         messageQueue.forEach((message) => {
@@ -140,7 +141,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
             });
         });
 
-        const results = await this.dataManager.messageDAL.saveData(room_id, chatMessages);
+        const results = await this.dataManager.messageDAL.saveData(roomId, chatMessages);
         if (!!this.chatroomDelegate) {
             this.chatroomDelegate(ON_MESSAGE_CHANGE, results);
         }

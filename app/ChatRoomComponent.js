@@ -69,7 +69,7 @@ class ChatRoomComponent {
         this.roomId = rid;
     }
     saveToPersisted(message) {
-        let self = this;
+        const self = this;
         this.dataManager.messageDAL.getData(this.roomId)
             .then((chats) => {
             const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
@@ -101,10 +101,10 @@ class ChatRoomComponent {
     }
     onRoomJoin(data) { }
     onLeaveRoom(data) { }
-    messageReadTick(messageQueue, room_id) {
+    messageReadTick(messageQueue, roomId) {
         return __awaiter(this, void 0, void 0, function* () {
             let chatMessages = Object.create(null);
-            const chats = yield this.dataManager.messageDAL.getData(room_id);
+            const chats = yield this.dataManager.messageDAL.getData(roomId);
             chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
             messageQueue.forEach((message) => {
                 chatMessages.some((value) => {
@@ -114,7 +114,7 @@ class ChatRoomComponent {
                     }
                 });
             });
-            const results = yield this.dataManager.messageDAL.saveData(room_id, chatMessages);
+            const results = yield this.dataManager.messageDAL.saveData(roomId, chatMessages);
             if (!!this.chatroomDelegate) {
                 this.chatroomDelegate(exports.ON_MESSAGE_CHANGE, results);
             }

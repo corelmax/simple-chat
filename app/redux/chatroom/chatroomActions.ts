@@ -48,7 +48,7 @@ export function initChatRoom(currentRoom: Room) {
         });
     }
 
-    const chatroomComp = ChatRoomComponent.createInstance();
+    const chatroomComp = ChatRoomComponent.createInstance(InternalStore.storageObj);
     chatroomComp.setRoomId(currentRoom._id);
 
     NotificationManager.unsubscribeGlobalNotifyMessageEvent();

@@ -102,22 +102,25 @@ const GET_PERSISTEND_MESSAGE = "GET_PERSISTEND_MESSAGE";
 const GET_PERSISTEND_MESSAGE_CANCELLED = "GET_PERSISTEND_MESSAGE_CANCELLED";
 export const GET_PERSISTEND_MESSAGE_SUCCESS = "GET_PERSISTEND_MESSAGE_SUCCESS";
 const GET_PERSISTEND_MESSAGE_FAILURE = "GET_PERSISTEND_MESSAGE_FAILURE";
+
+const getPersistendMessageRequest = createAction(GET_PERSISTEND_MESSAGE, (paylaod: string) => paylaod);
+const getPersistendMessageCancel = createAction(GET_PERSISTEND_MESSAGE_CANCELLED);
+const getPersistendMessageSuccess = createAction(GET_PERSISTEND_MESSAGE_SUCCESS, (payload: any) => payload);
+const getPersistendMessageFailure = createAction(GET_PERSISTEND_MESSAGE_FAILURE, (error: any) => error);
+
 export const getPersistendMessage = async (roomId: string) => {
-    getStore().dispatch({ type: GET_PERSISTEND_MESSAGE, payload: roomId });
+    getStore().dispatch(getPersistendMessageRequest(roomId));
 
     try {
         const result = await ChatRoomComponent.getInstance().getPersistentMessage(roomId);
-        getStore().dispatch(getPersistendMessage_success(result));
+        getStore().dispatch(getPersistendMessageSuccess(result));
 
         getStore().dispatch(checkOlderMessages());
         getStore().dispatch(getNewerMessageFromNet());
     } catch (ex) {
-        getStore().dispatch(getPersistendMessage_failure(ex.message));
+        getStore().dispatch(getPersistendMessageFailure(ex.message));
     }
 };
-const getPersistendMessage_cancel = () => ({ type: GET_PERSISTEND_MESSAGE_CANCELLED });
-const getPersistendMessage_success = (payload) => ({ type: GET_PERSISTEND_MESSAGE_SUCCESS, payload });
-const getPersistendMessage_failure = (error) => ({ type: GET_PERSISTEND_MESSAGE_FAILURE, payload: error });
 
 export const UPDATE_MESSAGES_READ = "UPDATE_MESSAGES_READ";
 export const UPDATE_MESSAGES_READ_SUCCESS = "UPDATE_MESSAGES_READ_SUCCESS";

@@ -3,6 +3,7 @@ import { IStalkConfig, IApiConfig } from "stalk-js/starter";
 
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { ChatRoomComponent } from "./ChatRoomComponent";
+import { IDataManager } from "./IDataManager";
 
 export interface IAuthStore {
     user: { _id: string, username: string };
@@ -37,5 +38,15 @@ export default new class InternalStore {
     chatlogInstance: ChatsLogComponent;
     public createChatLogInstance() {
         this.chatlogInstance = new ChatsLogComponent();
+    }
+
+    dataManager: IDataManager;
+    /**
+     * React.js please use MessageDAL module.
+     * React-Native please use NodeMessageDAL instead.
+     * @param storageObj
+     */
+    setStorage(storageObj: any) {
+        this.dataManager.messageDAL = { ...storageObj };
     }
 };

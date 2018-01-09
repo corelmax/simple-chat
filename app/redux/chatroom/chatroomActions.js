@@ -48,7 +48,7 @@ function initChatRoom(currentRoom) {
             }
         });
     }
-    const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.createInstance();
+    const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.createInstance(InternalStore_1.default.storageObj);
     chatroomComp.setRoomId(currentRoom._id);
     NotificationManager.unsubscribeGlobalNotifyMessageEvent();
     chatroomComp.chatroomDelegate = onChatRoomDelegate;

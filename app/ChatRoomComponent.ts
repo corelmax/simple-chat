@@ -184,7 +184,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
                 async.forEach(chats, function iterator(chat, result) {
                     if (chat.type === MessageType[MessageType.Text]) {
-                        if (getConfig().appConfig.encryption === true) {
+                        if (InternalStore.encryption === true) {
                             self.secure.decryption(chat.body).then((res) => {
                                 chat.body = res;
 
@@ -204,8 +204,8 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                 });
             });
 
-            const chats = await prom;
-            return chats;
+            const chatResult = await prom;
+            return chatResult;
         } else {
             console.log("chatMessages is empty!");
             return new Array<IMessage>();
@@ -282,10 +282,10 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                     let histories = new Array<IMessage>();
                     histories = value.result;
                     if (histories.length > 0) {
-                        async.forEach(histories, function (chat, cb) {
+                        async.forEach(histories, (chat, cb) => {
                             if (chat.type === MessageType[MessageType.Text]) {
-                                if (getConfig().appConfig.encryption === true) {
-                                    self.secure.decryption(chat.body).then(function (res) {
+                                if (InternalStore.encryption === true) {
+                                    self.secure.decryption(chat.body).then((res) => {
                                         chat.body = res;
                                         cb(null);
                                     }).catch((err) => {

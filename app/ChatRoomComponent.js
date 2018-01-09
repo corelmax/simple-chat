@@ -148,7 +148,7 @@ class ChatRoomComponent {
                     const chats = messages.slice(0);
                     async.forEach(chats, function iterator(chat, result) {
                         if (chat.type === models_1.MessageType[models_1.MessageType.Text]) {
-                            if (getConfig().appConfig.encryption === true) {
+                            if (InternalStore_1.default.encryption === true) {
                                 self.secure.decryption(chat.body).then((res) => {
                                     chat.body = res;
                                     result(null);
@@ -167,8 +167,8 @@ class ChatRoomComponent {
                         resolve(chats);
                     });
                 });
-                const chats = yield prom;
-                return chats;
+                const chatResult = yield prom;
+                return chatResult;
             }
             else {
                 console.log("chatMessages is empty!");
@@ -246,10 +246,10 @@ class ChatRoomComponent {
                         let histories = new Array();
                         histories = value.result;
                         if (histories.length > 0) {
-                            async.forEach(histories, function (chat, cb) {
+                            async.forEach(histories, (chat, cb) => {
                                 if (chat.type === models_1.MessageType[models_1.MessageType.Text]) {
-                                    if (getConfig().appConfig.encryption === true) {
-                                        self.secure.decryption(chat.body).then(function (res) {
+                                    if (InternalStore_1.default.encryption === true) {
+                                        self.secure.decryption(chat.body).then((res) => {
                                             chat.body = res;
                                             cb(null);
                                         }).catch((err) => {

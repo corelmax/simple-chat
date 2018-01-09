@@ -7,7 +7,6 @@ import * as async from "async";
 
 import { DataListener } from "stalk-js/starter/DataListener";
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
-import ChatLog from "./models/ChatLog";
 import {
     IMessage, MessageType, IMessageMeta,
     RoomAccessData, StalkAccount,
@@ -16,6 +15,7 @@ import {
     Room, RoomStatus, RoomType,
     MessageImp, MemberImp,
 } from "./models/index";
+import ChatLog from "./models/ChatLog";
 import * as CryptoHelper from "./utils/CryptoHelper";
 import InternalStore from "./InternalStore";
 import * as chatroomService from "./services/ChatroomService";

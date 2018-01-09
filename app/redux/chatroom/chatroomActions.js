@@ -29,6 +29,7 @@ const chatroomRxEpic_1 = require("./chatroomRxEpic");
 const InternalStore_1 = require("../../InternalStore");
 const getConfig = () => InternalStore_1.default.config;
 const getStore = () => InternalStore_1.default.store;
+const authReducer = () => InternalStore_1.default.authStore;
 /**
  * ChatRoomActionsType
  */
@@ -103,69 +104,63 @@ exports.ON_MESSAGE_CHANGED = "ON_MESSAGE_CHANGED";
 const onMessageChangedAction = redux_actions_1.createAction(exports.ON_MESSAGE_CHANGED, (messages) => messages);
 const onEarlyMessageReady = (data) => ({ type: exports.ON_EARLY_MESSAGE_READY, payload: data });
 function checkOlderMessages() {
-    return (dispatch) => {
-        const room = getStore().getState().chatroomReducer.room;
-        ChatRoomComponent_1.ChatRoomComponent.getInstance().getTopEdgeMessageTime().then((res) => {
-            chatroomService.getOlderMessagesCount(room._id, res.toString(), false)
-                .then((response) => response.json())
-                .then((result) => {
-                console.log("getOlderMessagesCount", result);
-                if (result.success && result.result > 0) {
-                    //               console.log("onOlderMessageReady is true ! Show load earlier message on top view.");
-                    dispatch(onEarlyMessageReady(true));
-                }
-                else {
-                    //                console.log("onOlderMessageReady is false ! Don't show load earlier message on top view.");
-                    dispatch(onEarlyMessageReady(false));
-                }
-            }).catch((err) => {
-                console.warn("getOlderMessagesCount fail", err);
-                dispatch(onEarlyMessageReady(false));
-            });
+    const room = getStore().getState().chatroomReducer.room;
+    ChatRoomComponent_1.ChatRoomComponent.getInstance().getTopEdgeMessageTime().then((res) => {
+        chatroomService.getOlderMessagesCount(room._id, res.toString(), false)
+            .then((response) => response.json())
+            .then((result) => {
+            console.log("getOlderMessagesCount", result);
+            if (result.success && result.result > 0) {
+                // console.log("onOlderMessageReady is true ! Show load earlier message on top view.");
+                getStore().dispatch(onEarlyMessageReady(true));
+            }
+            else {
+                // console.log("onOlderMessageReady is false ! Don't show load earlier message on top view.");
+                getStore().dispatch(onEarlyMessageReady(false));
+            }
+        }).catch((err) => {
+            console.warn("getOlderMessagesCount fail", err);
+            getStore().dispatch(onEarlyMessageReady(false));
         });
-    };
+    });
 }
 exports.checkOlderMessages = checkOlderMessages;
 exports.LOAD_EARLY_MESSAGE_SUCCESS = "LOAD_EARLY_MESSAGE_SUCCESS";
 const loadEarlyMessage_success = (payload) => ({ type: exports.LOAD_EARLY_MESSAGE_SUCCESS, payload });
-function loadEarlyMessageChunk(room_id) {
-    return (dispatch) => {
-        ChatRoomComponent_1.ChatRoomComponent.getInstance().getOlderMessageChunk(room_id).then((docs) => {
-            dispatch(loadEarlyMessage_success(docs));
-            // @check older message again.
-            dispatch(checkOlderMessages());
-            // # update messages read.
-            if (docs.length > 0) {
-                dispatch(chatroomRxEpic_1.updateMessagesRead(docs, room_id));
-            }
-        }).catch((err) => {
-            console.warn("loadEarlyMessageChunk fail", err);
-        });
-    };
+function loadEarlyMessageChunk(roomId) {
+    ChatRoomComponent_1.ChatRoomComponent.getInstance().getOlderMessageChunk(roomId).then((docs) => {
+        getStore().dispatch(loadEarlyMessage_success(docs));
+        // @check older message again.
+        getStore().dispatch(checkOlderMessages());
+        // # update messages read.
+        if (docs.length > 0) {
+            getStore().dispatch(chatroomRxEpic_1.updateMessagesRead(docs, roomId));
+        }
+    }).catch((err) => {
+        console.warn("loadEarlyMessageChunk fail", err);
+    });
 }
 exports.loadEarlyMessageChunk = loadEarlyMessageChunk;
 exports.GET_NEWER_MESSAGE = "GET_NEWER_MESSAGE";
 exports.GET_NEWER_MESSAGE_FAILURE = "GET_NEWER_MESSAGE_FAILURE";
 exports.GET_NEWER_MESSAGE_SUCCESS = "GET_NEWER_MESSAGE_SUCCESS";
 const getNewerMessage = redux_actions_1.createAction(exports.GET_NEWER_MESSAGE);
-const getNewerMessage_failure = redux_actions_1.createAction(exports.GET_NEWER_MESSAGE_FAILURE);
-const getNewerMessage_success = redux_actions_1.createAction(exports.GET_NEWER_MESSAGE_SUCCESS, (messages) => messages);
+const getNewerMessageFailure = redux_actions_1.createAction(exports.GET_NEWER_MESSAGE_FAILURE);
+const getNewerMessageSuccess = redux_actions_1.createAction(exports.GET_NEWER_MESSAGE_SUCCESS, (messages) => messages);
 function getNewerMessageFromNet() {
-    return (dispatch) => {
-        dispatch(getNewerMessage());
-        ChatRoomComponent_1.ChatRoomComponent.getInstance().getNewerMessageRecord((results, room_id) => {
-            dispatch(getNewerMessage_success(results));
-            // # update messages read.
-            if (results.length > 0) {
-                dispatch(chatroomRxEpic_1.updateMessagesRead(results, room_id));
-            }
-        }).catch((err) => {
-            if (err) {
-                console.warn("getNewerMessageRecord fail", err);
-            }
-            dispatch(getNewerMessage_failure());
-        });
-    };
+    getStore().dispatch(getNewerMessage());
+    ChatRoomComponent_1.ChatRoomComponent.getInstance().getNewerMessageRecord((results, room_id) => {
+        getStore().dispatch(getNewerMessageSuccess(results));
+        // # update messages read.
+        if (results.length > 0) {
+            getStore().dispatch(chatroomRxEpic_1.updateMessagesRead(results, room_id));
+        }
+    }).catch((err) => {
+        if (err) {
+            console.warn("getNewerMessageRecord fail", err);
+        }
+        getStore().dispatch(getNewerMessageFailure());
+    });
 }
 exports.getNewerMessageFromNet = getNewerMessageFromNet;
 function getMessages() {
@@ -179,41 +174,17 @@ exports.getMessages = getMessages;
 const SEND_MESSAGE_REQUEST = "SEND_MESSAGE_REQUEST";
 const SEND_MESSAGE_SUCCESS = "SEND_MESSAGE_SUCCESS";
 exports.SEND_MESSAGE_FAILURE = "SEND_MESSAGE_FAILURE";
-const send_message_request = () => ({ type: SEND_MESSAGE_REQUEST });
-const send_message_success = () => ({ type: SEND_MESSAGE_SUCCESS });
-const send_message_failure = (error) => ({ type: exports.SEND_MESSAGE_FAILURE, payload: error });
+const sendMessageRequest = () => ({ type: SEND_MESSAGE_REQUEST });
+const sendMessageSuccess = () => ({ type: SEND_MESSAGE_SUCCESS });
+const sendMessageFailure = (error) => ({ type: exports.SEND_MESSAGE_FAILURE, payload: error });
 function sendMessage(message) {
-    return (dispatch) => {
-        dispatch(send_message_request());
-        const backendFactory = starter_1.BackendFactory.getInstance();
-        const server = backendFactory.getServer();
-        if (message.type === models_1.MessageType[models_1.MessageType.Text] && getConfig().appConfig.encryption === true) {
-            const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
-            secure.encryption(message.body).then((result) => {
-                message.body = result;
-                if (!!server) {
-                    const msg = {};
-                    msg.data = message;
-                    msg["x-api-key"] = config.Stalk.apiKey;
-                    msg["api-version"] = config.Stalk.apiVersion;
-                    server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
-                        if (result.code !== 200) {
-                            dispatch(sendMessageResponse(result, null));
-                        }
-                        else {
-                            dispatch(sendMessageResponse(null, result));
-                        }
-                    });
-                }
-                else {
-                    console.warn("Stalk server not initialized");
-                }
-            }).catch((err) => {
-                console.warn(err);
-                dispatch(send_message_failure(err));
-            });
-        }
-        else {
+    getStore().dispatch(sendMessageRequest());
+    const backendFactory = starter_1.BackendFactory.getInstance();
+    const server = backendFactory.getServer();
+    if (message.type === models_1.MessageType[models_1.MessageType.Text] && getConfig().appConfig.encryption === true) {
+        const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
+        secure.encryption(message.body).then((result) => {
+            message.body = result;
             if (!!server) {
                 const msg = {};
                 msg.data = message;
@@ -221,80 +192,98 @@ function sendMessage(message) {
                 msg["api-version"] = config.Stalk.apiVersion;
                 server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
                     if (result.code !== 200) {
-                        dispatch(sendMessageResponse(result, null));
+                        getStore().dispatch(sendMessageResponse(result, null));
                     }
                     else {
-                        dispatch(sendMessageResponse(null, result));
+                        getStore().dispatch(sendMessageResponse(null, result));
                     }
                 });
             }
             else {
                 console.warn("Stalk server not initialized");
             }
-        }
-    };
-}
-exports.sendMessage = sendMessage;
-function sendMessageResponse(err, res) {
-    return (dispatch) => {
-        if (!!err) {
-            dispatch(send_message_failure(err.message));
-        }
-        else {
-            console.log("sendMessageResponse!", res);
-            const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.getInstance();
-            if (res.code === stalk_js_1.HttpStatusCode.success && res.data.hasOwnProperty("resultMsg")) {
-                const _msg = Object.assign({}, res.data.resultMsg);
-                if (_msg.type === models_1.MessageType[models_1.MessageType.Text] && getConfig().appConfig.encryption) {
-                    const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
-                    secure.decryption(_msg.body).then((res) => {
-                        _msg.body = res;
-                        chatroomComp.saveToPersisted(_msg);
-                        dispatch(send_message_success());
-                    }).catch((err) => {
-                        console.error(err);
-                        _msg.body = err.toString();
-                        chatroomComp.saveToPersisted(_msg);
-                        dispatch(send_message_success());
-                    });
-                }
-                else {
-                    chatroomComp.saveToPersisted(_msg);
-                    dispatch(send_message_success());
-                }
-            }
-            else {
-                dispatch(send_message_failure(res.message));
-            }
-        }
-    };
-}
-const JOIN_ROOM_REQUEST = "JOIN_ROOM_REQUEST";
-exports.JOIN_ROOM_SUCCESS = "JOIN_ROOM_SUCCESS";
-exports.JOIN_ROOM_FAILURE = "JOIN_ROOM_FAILURE";
-const joinRoom_request = () => ({ type: JOIN_ROOM_REQUEST });
-const joinRoom_success = (data) => ({ type: exports.JOIN_ROOM_SUCCESS, payload: data });
-const joinRoom_failure = (error) => ({ type: exports.JOIN_ROOM_FAILURE, payload: error });
-function joinRoom(roomId, token, username) {
-    return (dispatch) => {
-        dispatch(joinRoom_request());
-        const backendFactory = starter_1.BackendFactory.getInstance();
-        const server = backendFactory.getServer();
+        }).catch((err) => {
+            console.warn(err);
+            getStore().dispatch(sendMessageFailure(err));
+        });
+    }
+    else {
         if (!!server) {
-            server.getLobby().joinRoom(token, username, roomId, (err, res) => {
-                console.log("JoinChatRoomRequest value", res);
-                if (err || res.code !== stalk_js_1.HttpStatusCode.success) {
-                    dispatch(joinRoom_failure(err));
+            const msg = {};
+            msg.data = message;
+            msg["x-api-key"] = config.Stalk.apiKey;
+            msg["api-version"] = config.Stalk.apiVersion;
+            server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
+                if (result.code !== 200) {
+                    getStore().dispatch(sendMessageResponse(result, null));
                 }
                 else {
-                    dispatch(joinRoom_success());
+                    getStore().dispatch(sendMessageResponse(null, result));
                 }
             });
         }
         else {
-            dispatch(joinRoom_failure("Chat service not available."));
+            console.warn("Stalk server not initialized");
         }
-    };
+    }
+}
+exports.sendMessage = sendMessage;
+function sendMessageResponse(err, res) {
+    if (!!err) {
+        getStore().dispatch(sendMessageFailure(err.message));
+    }
+    else {
+        console.log("sendMessageResponse!", res);
+        const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.getInstance();
+        if (res.code === stalk_js_1.HttpStatusCode.success && res.data.hasOwnProperty("resultMsg")) {
+            const tempmsg = Object.assign({}, res.data.resultMsg);
+            if (tempmsg.type === models_1.MessageType[models_1.MessageType.Text] && getConfig().appConfig.encryption) {
+                const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
+                secure.decryption(tempmsg.body).then((res) => {
+                    tempmsg.body = res;
+                    chatroomComp.saveToPersisted(tempmsg);
+                    getStore().dispatch(sendMessageSuccess());
+                }).catch((err) => {
+                    console.error(err);
+                    tempmsg.body = err.toString();
+                    chatroomComp.saveToPersisted(tempmsg);
+                    getStore().dispatch(sendMessageSuccess());
+                });
+            }
+            else {
+                chatroomComp.saveToPersisted(tempmsg);
+                getStore().dispatch(sendMessageSuccess());
+            }
+        }
+        else {
+            getStore().dispatch(sendMessageFailure(res.message));
+        }
+    }
+}
+const JOIN_ROOM_REQUEST = "JOIN_ROOM_REQUEST";
+exports.JOIN_ROOM_SUCCESS = "JOIN_ROOM_SUCCESS";
+exports.JOIN_ROOM_FAILURE = "JOIN_ROOM_FAILURE";
+const joinRoomRequest = () => ({ type: JOIN_ROOM_REQUEST });
+const joinRoomSuccess = (data) => ({ type: exports.JOIN_ROOM_SUCCESS, payload: data });
+const joinRoomFailure = (error) => ({ type: exports.JOIN_ROOM_FAILURE, payload: error });
+function joinRoom(roomId, token, username) {
+    getStore().dispatch(joinRoomRequest());
+    const backendFactory = starter_1.BackendFactory.getInstance();
+    const server = backendFactory.getServer();
+    if (!!server) {
+        server.getLobby().joinRoom(token, username, roomId, (err, res) => {
+            console.log("JoinChatRoomRequest value", res);
+            if (err || res.code !== stalk_js_1.HttpStatusCode.success) {
+                getStore().dispatch(joinRoomFailure(err));
+            }
+            else {
+                getStore().dispatch(joinRoomSuccess());
+            }
+        });
+    }
+    else {
+        getStore().dispatch(joinRoomFailure("Chat service not available."));
+    }
 }
 exports.joinRoom = joinRoom;
 exports.LEAVE_ROOM = "LEAVE_ROOM";
@@ -302,21 +291,19 @@ exports.LEAVE_ROOM_SUCCESS = "LEAVE_ROOM_SUCCESS";
 const leaveRoom = () => ({ type: exports.LEAVE_ROOM });
 const leaveRoomSuccess = () => ({ type: exports.LEAVE_ROOM_SUCCESS });
 function leaveRoomAction() {
-    return (dispatch) => {
-        const _room = getStore().getState().chatroomReducer.get("room");
-        const { id } = authReducer().user;
-        if (!!_room) {
-            const token = getStore().getState().stalkReducer.stalkToken;
-            const room_id = _room._id;
-            ChatRoomComponent_1.ChatRoomComponent.getInstance().dispose();
-            NotificationManager.regisNotifyNewMessageEvent();
-            dispatch(chatlogRxActions_1.updateLastAccessRoom(room_id, id));
-            dispatch(leaveRoom());
-        }
-        else {
-            dispatch({ type: "" });
-        }
-    };
+    const room = getStore().getState().chatroomReducer.get("room");
+    const { id } = authReducer().user;
+    if (!!room) {
+        const token = getStore().getState().stalkReducer.stalkToken;
+        const roomId = room._id;
+        ChatRoomComponent_1.ChatRoomComponent.getInstance().dispose();
+        NotificationManager.regisNotifyNewMessageEvent();
+        getStore().dispatch(chatlogRxActions_1.updateLastAccessRoom(roomId, id));
+        getStore().dispatch(leaveRoom());
+    }
+    else {
+        getStore().dispatch({ type: "" });
+    }
 }
 exports.leaveRoomAction = leaveRoomAction;
 exports.DISABLE_CHATROOM = "DISABLE_CHATROOM";
@@ -329,11 +316,11 @@ exports.GET_PERSISTEND_CHATROOM_SUCCESS = "GET_PERSISTEND_CHATROOM_SUCCESS";
 exports.GET_PERSISTEND_CHATROOM_FAILURE = "GET_PERSISTEND_CHATROOM_FAILURE";
 const getPersistChatroomFail = (error) => ({ type: exports.GET_PERSISTEND_CHATROOM_FAILURE, payload: error });
 const getPersistChatroomSuccess = (roomInfo) => ({ type: exports.GET_PERSISTEND_CHATROOM_SUCCESS, payload: roomInfo });
-exports.getPersistendChatroom = (roomId) => ((dispatch) => {
-    dispatch({ type: exports.GET_PERSISTEND_CHATROOM, payload: roomId });
+exports.getPersistendChatroom = (roomId) => {
+    getStore().dispatch({ type: exports.GET_PERSISTEND_CHATROOM, payload: roomId });
     const { chatrooms } = getStore().getState().chatroomReducer;
     if (!chatrooms) {
-        return dispatch(getPersistChatroomFail(undefined));
+        getStore().dispatch(getPersistChatroomFail(undefined));
     }
     const rooms = chatrooms.filter((room, index, array) => {
         if (room._id.toString() === roomId) {
@@ -341,19 +328,19 @@ exports.getPersistendChatroom = (roomId) => ((dispatch) => {
         }
     });
     if (rooms.length > 0) {
-        dispatch(getPersistChatroomSuccess(rooms[0]));
+        getStore().dispatch(getPersistChatroomSuccess(rooms[0]));
     }
     else {
-        dispatch(getPersistChatroomFail(rooms));
+        getStore().dispatch(getPersistChatroomFail(rooms));
     }
-});
-exports.getRoom = (room_id) => {
+};
+exports.getRoom = (roomId) => {
     const { chatrooms } = getStore().getState().chatroomReducer;
     if (!chatrooms) {
         return null;
     }
     const rooms = chatrooms.filter((room, index, array) => {
-        if (room._id.toString() === room_id) {
+        if (room._id.toString() === roomId) {
             return room;
         }
     });
@@ -380,16 +367,14 @@ exports.createChatRoom = (myUser, contactUser) => {
 exports.UPDATED_CHATROOMS = "UPDATED_CHATROOMS";
 exports.updatedChatRoomSuccess = (chatrooms) => ({ type: exports.UPDATED_CHATROOMS, payload: chatrooms });
 exports.updateChatRoom = (rooms) => {
-    return (dispatch) => {
-        let chatrooms = getStore().getState().chatroomReducer.get("chatrooms");
-        if (chatrooms) {
-            // R.unionWith(R.eqBy(R.prop('a')), l1, l2);
-            const _newRooms = R.unionWith(R.eqBy(R.prop("_id")), rooms, chatrooms);
-            dispatch(exports.updatedChatRoomSuccess(_newRooms));
-        }
-        else {
-            chatrooms = rooms.slice();
-            dispatch(exports.updatedChatRoomSuccess(chatrooms));
-        }
-    };
+    let chatrooms = getStore().getState().chatroomReducer.get("chatrooms");
+    if (chatrooms) {
+        // R.unionWith(R.eqBy(R.prop('a')), l1, l2);
+        const newRooms = R.unionWith(R.eqBy(R.prop("_id")), rooms, chatrooms);
+        getStore().dispatch(exports.updatedChatRoomSuccess(newRooms));
+    }
+    else {
+        chatrooms = rooms.slice();
+        getStore().dispatch(exports.updatedChatRoomSuccess(chatrooms));
+    }
 };

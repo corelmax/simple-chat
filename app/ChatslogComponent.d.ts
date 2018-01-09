@@ -1,7 +1,7 @@
 import { DataListener } from "stalk-js/starter/DataListener";
-import ChatLog from "./models/ChatLog";
 import { IMessage, RoomAccessData, StalkAccount } from "stalk-js/starter/models/index";
 import { Room, MessageImp } from "./models/index";
+import ChatLog from "./models/ChatLog";
 export declare type ChatLogMap = Map<string, ChatLog>;
 export declare type UnreadMap = Map<string, IUnread>;
 export interface IUnread {

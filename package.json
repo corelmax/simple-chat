@@ -27,6 +27,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.2.3",
     "jest": "^22.0.4",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "typescript": "^2.6.2"
   }
 }

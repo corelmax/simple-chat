@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 const async = require("async");
 const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
-const ChatLog_1 = require("./models/ChatLog");
 const index_1 = require("stalk-js/starter/models/index");
 const index_2 = require("./models/index");
+const ChatLog_1 = require("./models/ChatLog");
 const CryptoHelper = require("./utils/CryptoHelper");
 const InternalStore_1 = require("./InternalStore");
 const chatroomService = require("./services/ChatroomService");

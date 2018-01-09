@@ -36,6 +36,9 @@ export default new class InternalStore {
     }
     public getApiConfig(): IApiConfig { return this.apiConfig; }
 
+    encryption: boolean = false;
+    secret: string = "";
+
     chatlogInstance: ChatsLogComponent;
     public createChatLogInstance() {
         this.chatlogInstance = new ChatsLogComponent();

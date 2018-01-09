@@ -181,7 +181,7 @@ function sendMessage(message) {
     getStore().dispatch(sendMessageRequest());
     const backendFactory = starter_1.BackendFactory.getInstance();
     const server = backendFactory.getServer();
-    if (message.type === models_1.MessageType[models_1.MessageType.Text] && getConfig().appConfig.encryption === true) {
+    if (message.type === models_1.MessageType[models_1.MessageType.Text] && InternalStore_1.default.encryption === true) {
         const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
         secure.encryption(message.body).then((result) => {
             message.body = result;
@@ -192,10 +192,10 @@ function sendMessage(message) {
                 msg["api-version"] = config.Stalk.apiVersion;
                 server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
                     if (result.code !== 200) {
-                        getStore().dispatch(sendMessageResponse(result, null));
+                        sendMessageResponse(result, null);
                     }
                     else {
-                        getStore().dispatch(sendMessageResponse(null, result));
+                        sendMessageResponse(null, result);
                     }
                 });
             }
@@ -215,10 +215,10 @@ function sendMessage(message) {
             msg["api-version"] = config.Stalk.apiVersion;
             server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
                 if (result.code !== 200) {
-                    getStore().dispatch(sendMessageResponse(result, null));
+                    sendMessageResponse(result, null);
                 }
                 else {
-                    getStore().dispatch(sendMessageResponse(null, result));
+                    sendMessageResponse(null, result);
                 }
             });
         }
@@ -237,7 +237,7 @@ function sendMessageResponse(err, res) {
         const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.getInstance();
         if (res.code === stalk_js_1.HttpStatusCode.success && res.data.hasOwnProperty("resultMsg")) {
             const tempmsg = Object.assign({}, res.data.resultMsg);
-            if (tempmsg.type === models_1.MessageType[models_1.MessageType.Text] && getConfig().appConfig.encryption) {
+            if (tempmsg.type === models_1.MessageType[models_1.MessageType.Text] && InternalStore_1.default.encryption) {
                 const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
                 secure.decryption(tempmsg.body).then((res) => {
                     tempmsg.body = res;

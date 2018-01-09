@@ -22,6 +22,8 @@ declare const _default: {
     apiConfig: IApiConfig;
     initApiConfig(config: IApiConfig): void;
     getApiConfig(): IApiConfig;
+    encryption: boolean;
+    secret: string;
     chatlogInstance: ChatsLogComponent;
     createChatLogInstance(): void;
     dataManager: IDataManager;

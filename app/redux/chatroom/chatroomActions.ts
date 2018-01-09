@@ -185,7 +185,7 @@ export function sendMessage(message: IMessage) {
     const backendFactory = BackendFactory.getInstance();
     const server = backendFactory.getServer();
 
-    if (message.type === MessageType[MessageType.Text] && getConfig().appConfig.encryption === true) {
+    if (message.type === MessageType[MessageType.Text] && InternalStore.encryption === true) {
         const secure = SecureServiceFactory.getService();
         secure.encryption(message.body).then((result) => {
             message.body = result;
@@ -196,9 +196,9 @@ export function sendMessage(message: IMessage) {
                 msg["api-version"] = config.Stalk.apiVersion;
                 server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
                     if (result.code !== 200) {
-                        getStore().dispatch(sendMessageResponse(result, null));
+                        sendMessageResponse(result, null);
                     } else {
-                        getStore().dispatch(sendMessageResponse(null, result));
+                        sendMessageResponse(null, result);
                     }
                 });
             } else {
@@ -216,9 +216,9 @@ export function sendMessage(message: IMessage) {
             msg["api-version"] = config.Stalk.apiVersion;
             server.getSocket().request("chat.chatHandler.pushByUids", msg, (result) => {
                 if (result.code !== 200) {
-                    getStore().dispatch(sendMessageResponse(result, null));
+                    sendMessageResponse(result, null);
                 } else {
-                    getStore().dispatch(sendMessageResponse(null, result));
+                    sendMessageResponse(null, result);
                 }
             });
         } else {
@@ -236,7 +236,7 @@ function sendMessageResponse(err, res) {
 
         if (res.code === HttpStatusCode.success && res.data.hasOwnProperty("resultMsg")) {
             const tempmsg = { ...res.data.resultMsg } as IMessage;
-            if (tempmsg.type === MessageType[MessageType.Text] && getConfig().appConfig.encryption) {
+            if (tempmsg.type === MessageType[MessageType.Text] && InternalStore.encryption) {
                 const secure = SecureServiceFactory.getService();
                 secure.decryption(tempmsg.body).then((res) => {
                     tempmsg.body = res;

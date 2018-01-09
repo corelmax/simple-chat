@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ChatslogComponent_1 = require("./ChatslogComponent");
 exports.default = new class InternalStore {
     constructor() {
+        this.encryption = false;
+        this.secret = "";
         this.dataManager = Object.create(null);
     }
     initStore(store) {

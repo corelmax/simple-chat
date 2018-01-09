@@ -30,7 +30,7 @@ exports.getOlderMessagesCount = (roomId, topEdgeMessageTime, queryMessage) => {
 exports.getNewerMessages = (roomId, lastMessageTime) => {
     return fetch(`${getConfig().chatroom}/getChatHistory`, {
         body: JSON.stringify({
-            roomId,
+            room_id: roomId,
             lastMessageTime,
         }),
         method: "POST",

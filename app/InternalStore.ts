@@ -4,6 +4,7 @@ import { IStalkConfig, IApiConfig } from "stalk-js/starter";
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { ChatRoomComponent } from "./ChatRoomComponent";
 import { IDataManager } from "./IDataManager";
+import { IMessageDAL } from "./DAL/IMessageDAL";
 
 export interface IAuthStore {
     user: { _id: string, username: string };
@@ -46,7 +47,7 @@ export default new class InternalStore {
      * React-Native please use NodeMessageDAL instead.
      * @param storageObj
      */
-    setStorage(storageObj: any) {
+    setStorage(storageObj: IMessageDAL) {
         this.dataManager.messageDAL = { ...storageObj };
     }
 };

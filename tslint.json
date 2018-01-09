@@ -12,7 +12,8 @@
         "new-parens": false,
         "no-console": false,
         "max-classes-per-file": false,
-        "align": false
+        "align": false,
+        "no-empty": false
     },
     "rulesDirectory": []
 }

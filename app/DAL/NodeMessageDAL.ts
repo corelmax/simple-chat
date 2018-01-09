@@ -9,22 +9,23 @@
  */
 import { IMessageDAL } from "./IMessageDAL";
 
-const store = require("react-native-simple-store");
+import store from "react-native-simple-store";
 
 export class NodeMessageDAL implements IMessageDAL {
     getData(rid: string): Promise<any> {
         return store.get(rid);
-    };
+    }
 
     saveData(rid: string, chatRecord: any): Promise<any> {
         return store.save(rid, chatRecord).then(() => {
             return store.get(rid) as Promise<any>;
         });
     }
-    removeData(rid: string, callback) {
+    removeData(rid: string, callback: () => void) {
 
     }
 
-    clearData(next) {
+    clearData(next: () => void) {
+
     }
 }

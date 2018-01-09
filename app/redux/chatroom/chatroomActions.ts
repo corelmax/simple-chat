@@ -181,6 +181,7 @@ export const SEND_MESSAGE_FAILURE = "SEND_MESSAGE_FAILURE";
 const sendMessageRequest = () => ({ type: SEND_MESSAGE_REQUEST });
 const sendMessageSuccess = () => ({ type: SEND_MESSAGE_SUCCESS });
 const sendMessageFailure = (error?: any) => ({ type: SEND_MESSAGE_FAILURE, payload: error });
+
 export function sendMessage(message: IMessage) {
     getStore().dispatch(sendMessageRequest());
 

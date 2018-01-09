@@ -3,22 +3,21 @@ import { MessageImp } from "../models/index";
 import { MessageType } from "stalk-js/starter/models";
 
 export const decryptionText = async (message: MessageImp) => {
-    if (!message) return message;
+    if (!message) { return message; }
 
-    let secure = SecureServiceFactory.getService();
+    const secure = SecureServiceFactory.getService();
 
     if (message.type === MessageType[MessageType.Text]) {
-        let result = await secure.decryption(message.body);
+        const result = await secure.decryption(message.body);
         message.body = result;
 
         return message;
-    }
-    else {
+    } else {
         return message;
     }
 };
 
 export const hashComputation = (message: string): Promise<string> => {
-    let secure = SecureServiceFactory.getService();
+    const secure = SecureServiceFactory.getService();
     return secure.hashCompute(message);
 };

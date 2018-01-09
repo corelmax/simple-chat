@@ -11,11 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const SecureServiceFactory_1 = require("./secure/SecureServiceFactory");
 const models_1 = require("stalk-js/starter/models");
 exports.decryptionText = (message) => __awaiter(this, void 0, void 0, function* () {
-    if (!message)
+    if (!message) {
         return message;
-    let secure = SecureServiceFactory_1.SecureServiceFactory.getService();
+    }
+    const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
     if (message.type === models_1.MessageType[models_1.MessageType.Text]) {
-        let result = yield secure.decryption(message.body);
+        const result = yield secure.decryption(message.body);
         message.body = result;
         return message;
     }
@@ -24,6 +25,6 @@ exports.decryptionText = (message) => __awaiter(this, void 0, void 0, function* 
     }
 });
 exports.hashComputation = (message) => {
-    let secure = SecureServiceFactory_1.SecureServiceFactory.getService();
+    const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
     return secure.hashCompute(message);
 };

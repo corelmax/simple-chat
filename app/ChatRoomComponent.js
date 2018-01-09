@@ -32,7 +32,6 @@ class ChatRoomComponent {
         this.saveMessages = (chatMessages, message) => {
             const self = this;
             chatMessages.push(message);
-            console.log(chatMessages);
             self.dataManager.messageDAL.saveData(self.roomId, chatMessages).then((chats) => {
                 if (!!self.chatroomDelegate) {
                     self.chatroomDelegate(stalk_js_1.ChatEvents.ON_CHAT, message);
@@ -72,7 +71,6 @@ class ChatRoomComponent {
     }
     saveToPersisted(message) {
         const self = this;
-        console.log(message);
         this.dataManager.messageDAL.getData(this.roomId).then((chats) => {
             const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
             if (message.type === models_1.MessageType[models_1.MessageType.Text]) {
@@ -289,24 +287,24 @@ class ChatRoomComponent {
             }
         });
     }
-    getOlderMessageChunk(room_id) {
+    getOlderMessageChunk(roomId) {
         return __awaiter(this, void 0, void 0, function* () {
             const self = this;
             function waitForRoomMessages() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const messages = yield self.dataManager.messageDAL.getData(room_id);
+                    const messages = yield self.dataManager.messageDAL.getData(roomId);
                     return messages;
                 });
             }
             function saveRoomMessages(merged) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const value = yield self.dataManager.messageDAL.saveData(room_id, merged);
+                    const value = yield self.dataManager.messageDAL.saveData(roomId, merged);
                     return value;
                 });
             }
             const time = yield self.getTopEdgeMessageTime();
             if (time) {
-                const response = yield chatroomService.getOlderMessagesCount(room_id, time.toString(), true);
+                const response = yield chatroomService.getOlderMessagesCount(roomId, time.toString(), true);
                 const result = yield response.json();
                 console.log("getOlderMessageChunk value", result);
                 // todo

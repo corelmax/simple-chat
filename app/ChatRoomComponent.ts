@@ -79,8 +79,6 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         const self = this;
         chatMessages.push(message);
 
-        console.log(chatMessages);
-
         self.dataManager.messageDAL.saveData(self.roomId, chatMessages).then((chats) => {
             if (!!self.chatroomDelegate) {
                 self.chatroomDelegate(ChatEvents.ON_CHAT, message);
@@ -91,7 +89,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
     saveToPersisted(message: MessageImp) {
         const self = this;
-        console.log(message);
+
         this.dataManager.messageDAL.getData(this.roomId).then((chats: IMessage[]) => {
             const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
 
@@ -319,24 +317,24 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         }
     }
 
-    public async getOlderMessageChunk(room_id: string) {
+    public async getOlderMessageChunk(roomId: string) {
         const self = this;
 
         async function waitForRoomMessages() {
-            const messages = await self.dataManager.messageDAL.getData(room_id) as IMessage[];
+            const messages = await self.dataManager.messageDAL.getData(roomId) as IMessage[];
 
             return messages;
         }
 
         async function saveRoomMessages(merged: IMessage[]) {
-            const value = await self.dataManager.messageDAL.saveData(room_id, merged);
+            const value = await self.dataManager.messageDAL.saveData(roomId, merged);
 
             return value as IMessage[];
         }
 
         const time = await self.getTopEdgeMessageTime() as Date;
         if (time) {
-            const response = await chatroomService.getOlderMessagesCount(room_id, time.toString(), true);
+            const response = await chatroomService.getOlderMessagesCount(roomId, time.toString(), true);
             const result = await response.json();
 
             console.log("getOlderMessageChunk value", result);

@@ -62,7 +62,7 @@ const UPDATE_LAST_ACCESS_ROOM = "UPDATE_LAST_ACCESS_ROOM";
 exports.UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS";
 exports.UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
 const UPDATE_LAST_ACCESS_ROOM_CANCELLED = "UPDATE_LAST_ACCESS_ROOM_CANCELLED";
-exports.updateLastAccessRoom = (room_id, user_id) => ({ type: UPDATE_LAST_ACCESS_ROOM, payload: ({ room_id, user_id }) });
+exports.updateLastAccessRoom = (roomId, userId) => ({ type: UPDATE_LAST_ACCESS_ROOM, payload: ({ roomId, userId }) });
 const updateLastAccessRoomSuccess = (payload) => ({ type: exports.UPDATE_LAST_ACCESS_ROOM_SUCCESS, payload });
 const updateLastAccessRoomFailure = (error) => ({ type: exports.UPDATE_LAST_ACCESS_ROOM_FAILURE, payload: error });
 exports.updateLastAccessRoomCancelled = () => ({ type: UPDATE_LAST_ACCESS_ROOM_CANCELLED });

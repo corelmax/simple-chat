@@ -42,7 +42,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess: RoomAccessData) {
     const chatsLogComp = BackendFactory.getInstance().chatLogComp;
     const { _id } = authReducer().user;
 
-    chatsLogComp.getUnreadMessage(_id, newRoomAccess).then(function(unread) {
+    chatsLogComp.getUnreadMessage(_id, newRoomAccess).then(function (unread) {
         chatsLogComp.addUnreadMessage(unread);
 
         calculateUnreadCount();

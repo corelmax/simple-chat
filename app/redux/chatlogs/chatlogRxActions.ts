@@ -66,7 +66,7 @@ export const UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS"
 export const UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
 const UPDATE_LAST_ACCESS_ROOM_CANCELLED = "UPDATE_LAST_ACCESS_ROOM_CANCELLED";
 
-export const updateLastAccessRoom = (room_id: string, user_id: string) => ({ type: UPDATE_LAST_ACCESS_ROOM, payload: ({ room_id, user_id }) });
+export const updateLastAccessRoom = (roomId: string, userId: string) => ({ type: UPDATE_LAST_ACCESS_ROOM, payload: ({ roomId, userId }) });
 const updateLastAccessRoomSuccess = (payload) => ({ type: UPDATE_LAST_ACCESS_ROOM_SUCCESS, payload });
 const updateLastAccessRoomFailure = (error) => ({ type: UPDATE_LAST_ACCESS_ROOM_FAILURE, payload: error });
 export const updateLastAccessRoomCancelled = () => ({ type: UPDATE_LAST_ACCESS_ROOM_CANCELLED });
@@ -124,6 +124,7 @@ export const GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
 export const getLastAccessRoom = (user_id: string) => ({ type: GET_LAST_ACCESS_ROOM, payload: { user_id } });
 const getLastAccessRoomSuccess = (payload) => ({ type: GET_LAST_ACCESS_ROOM_SUCCESS, payload });
 const getLastAccessRoomFailure = (error) => ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error });
+
 export const getLastAccessRoom_Epic = (action$) => (
     action$.ofType(GET_LAST_ACCESS_ROOM)
         .mergeMap((action) => {

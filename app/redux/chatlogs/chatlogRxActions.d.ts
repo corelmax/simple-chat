@@ -9,11 +9,11 @@ export declare const removeRoomAccess: (roomId: string) => {
 export declare const removeRoomAccess_Epic: (action$: any) => any;
 export declare const UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS";
 export declare const UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
-export declare const updateLastAccessRoom: (room_id: string, user_id: string) => {
+export declare const updateLastAccessRoom: (roomId: string, userId: string) => {
     type: string;
     payload: {
-        room_id: string;
-        user_id: string;
+        roomId: string;
+        userId: string;
     };
 };
 export declare const updateLastAccessRoomCancelled: () => {

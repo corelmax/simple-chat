@@ -291,16 +291,17 @@ export const LEAVE_ROOM = "LEAVE_ROOM";
 export const LEAVE_ROOM_SUCCESS = "LEAVE_ROOM_SUCCESS";
 const leaveRoom = () => ({ type: LEAVE_ROOM });
 const leaveRoomSuccess = () => ({ type: LEAVE_ROOM_SUCCESS });
+
 export function leaveRoomAction() {
     const room = getStore().getState().chatroomReducer.get("room");
-    const { id } = authReducer().user;
+    const { _id } = authReducer().user;
     if (!!room) {
         const token = getStore().getState().stalkReducer.stalkToken;
         const roomId = room._id;
         ChatRoomComponent.getInstance().dispose();
         NotificationManager.regisNotifyNewMessageEvent();
 
-        getStore().dispatch(updateLastAccessRoom(roomId, id));
+        getStore().dispatch(updateLastAccessRoom(roomId, _id));
 
         getStore().dispatch(leaveRoom());
     } else {

@@ -21,8 +21,10 @@ const chatroomService = require("./services/ChatroomService");
 const CryptoHelper_1 = require("./utils/CryptoHelper");
 const SecureServiceFactory_1 = require("./utils/secure/SecureServiceFactory");
 const models_1 = require("stalk-js/starter/models");
+// import { imagesPath } from "../consts/StickerPath";
+const InternalStore_1 = require("./InternalStore");
 const getConfig = () => BackendFactory_1.BackendFactory.getInstance().config;
-// const getStore = () => ChitChatFactory.getInstance().store;
+const getStore = () => InternalStore_1.default.store;
 exports.ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
 class ChatRoomComponent {
     constructor(dataManager) {
@@ -182,29 +184,29 @@ class ChatRoomComponent {
             let lastMessageTime = new Date();
             const getLastMessageTime = (cb) => {
                 const { roomAccess } = getStore().getState().chatlogReducer;
-                async.some(roomAccess, (item, cb) => {
+                async.some(roomAccess, (item, asyncCb) => {
                     if (item.roomId === self.roomId) {
                         lastMessageTime = item.accessTime;
-                        cb(null, true);
+                        asyncCb(undefined, true);
                     }
                     else {
-                        cb(null, false);
+                        asyncCb(undefined, false);
                     }
                 }, (err, result) => {
                     cb(result);
                 });
             };
             const saveMergedMessage = (histories) => __awaiter(this, void 0, void 0, function* () {
-                let _results = new Array();
+                let tempResults = new Array();
                 if (messages && messages.length > 0) {
-                    _results = messages.concat(histories);
+                    tempResults = messages.concat(histories);
                 }
                 else {
-                    _results = histories.slice();
+                    tempResults = histories.slice();
                 }
                 // Save persistent chats log here.
-                const results = yield self.dataManager.messageDAL.saveData(self.roomId, _results);
-                callback(_results, this.roomId);
+                const results = yield self.dataManager.messageDAL.saveData(self.roomId, tempResults);
+                callback(tempResults, this.roomId);
             });
             const getNewerMessage = () => __awaiter(this, void 0, void 0, function* () {
                 try {

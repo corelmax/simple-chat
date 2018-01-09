@@ -26,7 +26,7 @@ export declare class ChatRoomComponent implements ChatEvents.IChatServerEvents {
     onMessageRead(message: IMessage): void;
     onGetMessagesReaders(dataEvent: any): void;
     getPersistentMessage(rid: string): Promise<IMessage[]>;
-    getNewerMessageRecord(callback: (results: IMessage[], room_id: string) => void): Promise<void>;
+    getNewerMessageRecord(callback: (results: IMessage[], roomId: string) => void): Promise<void>;
     private getNewerMessages(lastMessageTime);
     getOlderMessageChunk(room_id: string): Promise<any[]>;
     getTopEdgeMessageTime(): Promise<Date>;

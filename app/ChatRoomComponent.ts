@@ -23,7 +23,7 @@ import { IDataManager } from "./IDataManager";
 // import { imagesPath } from "../consts/StickerPath";
 import InternalStore from "./InternalStore";
 const getConfig = () => BackendFactory.getInstance().config;
-// const getStore = () => ChitChatFactory.getInstance().store;
+const getStore = () => InternalStore.store;
 
 export const ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
 
@@ -212,18 +212,18 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         }
     }
 
-    public async getNewerMessageRecord(callback: (results: IMessage[], room_id: string) => void) {
+    public async getNewerMessageRecord(callback: (results: IMessage[], roomId: string) => void) {
         const self = this;
         let lastMessageTime = new Date();
 
-        const getLastMessageTime = (cb: (boo: boolean) => void) => {
+        const getLastMessageTime = (cb: (boo: boolean | undefined) => void) => {
             const { roomAccess }: { roomAccess: RoomAccessData[] } = getStore().getState().chatlogReducer;
-            async.some(roomAccess, (item, cb) => {
+            async.some(roomAccess, (item, asyncCb) => {
                 if (item.roomId === self.roomId) {
                     lastMessageTime = item.accessTime;
-                    cb(null, true);
+                    asyncCb(undefined, true);
                 } else {
-                    cb(null, false);
+                    asyncCb(undefined, false);
                 }
             }, (err, result) => {
                 cb(result);
@@ -231,16 +231,16 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         };
 
         const saveMergedMessage = async (histories: IMessage[]) => {
-            let _results = new Array();
+            let tempResults = new Array();
             if (messages && messages.length > 0) {
-                _results = messages.concat(histories);
+                tempResults = messages.concat(histories);
             } else {
-                _results = histories.slice();
+                tempResults = histories.slice();
             }
             // Save persistent chats log here.
-            const results = await self.dataManager.messageDAL.saveData(self.roomId, _results) as IMessage[];
+            const results = await self.dataManager.messageDAL.saveData(self.roomId, tempResults) as IMessage[];
 
-            callback(_results, this.roomId);
+            callback(tempResults, this.roomId);
         };
 
         const getNewerMessage = async () => {

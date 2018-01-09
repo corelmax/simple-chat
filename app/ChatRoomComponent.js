@@ -32,8 +32,8 @@ class ChatRoomComponent {
         this.saveMessages = (chatMessages, message) => {
             const self = this;
             chatMessages.push(message);
-            self.dataManager.messageDAL.saveData(self.roomId, chatMessages)
-                .then((chats) => {
+            console.log(chatMessages);
+            self.dataManager.messageDAL.saveData(self.roomId, chatMessages).then((chats) => {
                 if (!!self.chatroomDelegate) {
                     self.chatroomDelegate(stalk_js_1.ChatEvents.ON_CHAT, message);
                     self.chatroomDelegate(exports.ON_MESSAGE_CHANGE, chatMessages);
@@ -72,15 +72,13 @@ class ChatRoomComponent {
     }
     saveToPersisted(message) {
         const self = this;
-        this.dataManager.messageDAL.getData(this.roomId)
-            .then((chats) => {
+        console.log(message);
+        this.dataManager.messageDAL.getData(this.roomId).then((chats) => {
             const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
             if (message.type === models_1.MessageType[models_1.MessageType.Text]) {
-                CryptoHelper_1.decryptionText(message)
-                    .then((decoded) => {
+                CryptoHelper_1.decryptionText(message).then((decoded) => {
                     self.saveMessages(chatMessages, message);
-                })
-                    .catch((err) => self.saveMessages(chatMessages, message));
+                }).catch((err) => self.saveMessages(chatMessages, message));
             }
             else {
                 self.saveMessages(chatMessages, message);

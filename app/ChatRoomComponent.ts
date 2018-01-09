@@ -79,33 +79,32 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         const self = this;
         chatMessages.push(message);
 
-        self.dataManager.messageDAL.saveData(self.roomId, chatMessages)
-            .then((chats) => {
-                if (!!self.chatroomDelegate) {
-                    self.chatroomDelegate(ChatEvents.ON_CHAT, message);
-                    self.chatroomDelegate(ON_MESSAGE_CHANGE, chatMessages);
-                }
-            });
+        console.log(chatMessages);
+
+        self.dataManager.messageDAL.saveData(self.roomId, chatMessages).then((chats) => {
+            if (!!self.chatroomDelegate) {
+                self.chatroomDelegate(ChatEvents.ON_CHAT, message);
+                self.chatroomDelegate(ON_MESSAGE_CHANGE, chatMessages);
+            }
+        });
     }
 
     saveToPersisted(message: MessageImp) {
         const self = this;
-        this.dataManager.messageDAL.getData(this.roomId)
-            .then((chats: IMessage[]) => {
-                const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
+        console.log(message);
+        this.dataManager.messageDAL.getData(this.roomId).then((chats: IMessage[]) => {
+            const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
 
-                if (message.type === MessageType[MessageType.Text]) {
-                    decryptionText(message)
-                        .then((decoded) => {
-                            self.saveMessages(chatMessages, message);
-                        })
-                        .catch((err) => self.saveMessages(chatMessages, message));
-                } else {
+            if (message.type === MessageType[MessageType.Text]) {
+                decryptionText(message).then((decoded) => {
                     self.saveMessages(chatMessages, message);
-                }
-            }).catch((err) => {
-                console.warn("Cannot get persistend message of room", err);
-            });
+                }).catch((err) => self.saveMessages(chatMessages, message));
+            } else {
+                self.saveMessages(chatMessages, message);
+            }
+        }).catch((err) => {
+            console.warn("Cannot get persistend message of room", err);
+        });
     }
 
     public onChat(message: MessageImp) {

@@ -1,3 +1,4 @@
+import { Store } from "redux";
 import { IStalkConfig, IApiConfig } from "stalk-js/starter";
 
 import { ChatsLogComponent } from "./ChatslogComponent";
@@ -9,10 +10,16 @@ export interface IAuthStore {
 }
 
 export default new class InternalStore {
+    store: Store<any>;
+    public initStore(store: Store<any>) {
+        this.store = store;
+    }
+
     authStore: IAuthStore;
     setAuth(newState: IAuthStore) {
         this.authStore = { ...newState };
     }
+
     appStateEvent: string;
 
     config: IStalkConfig;

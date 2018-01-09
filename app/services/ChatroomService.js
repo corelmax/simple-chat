@@ -14,8 +14,8 @@ exports.getRoomInfo = (roomId) => {
     });
 };
 exports.getUnreadMessage = (roomId, userId, lastAccessTime) => {
-    return fetch(`${getConfig().chatroom}/unreadMessage?
-    room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
+    return fetch(`${getConfig().chatroom}/unreadMessage
+    ?room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
         method: "GET",
         headers: ServiceUtils_1.apiHeaders(),
     });

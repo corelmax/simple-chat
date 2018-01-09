@@ -15,8 +15,8 @@ export const getRoomInfo = (roomId: string): Promise<any> => {
 };
 
 export const getUnreadMessage = (roomId: string, userId: string, lastAccessTime: string): Promise<any> => {
-    return fetch(`${getConfig().chatroom}/unreadMessage?
-    room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
+    return fetch(`${getConfig().chatroom}/unreadMessage
+    ?room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
             method: "GET",
             headers: apiHeaders(),
         });

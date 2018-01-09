@@ -26,9 +26,9 @@ const MessageService = require("../../services/MessageService");
 const NotificationManager = require("../stalkBridge/stalkNotificationActions");
 const chatlogRxActions_1 = require("../chatlogs/chatlogRxActions");
 const chatroomRxEpic_1 = require("./chatroomRxEpic");
-const configStore_1 = require("../configStore");
 const InternalStore_1 = require("../../InternalStore");
 const getConfig = () => InternalStore_1.default.config;
+const getStore = () => InternalStore_1.default.store;
 /**
  * ChatRoomActionsType
  */
@@ -90,7 +90,7 @@ function onChatRoomDelegate(event, data) {
         }
     }
     else if (event === ChatRoomComponent_1.ON_MESSAGE_CHANGE) {
-        configStore_1.store.dispatch(onMessageChangedAction(data));
+        getStore().dispatch(onMessageChangedAction(data));
     }
 }
 function onOutSideRoomDelegate(event, data) {
@@ -104,7 +104,7 @@ const onMessageChangedAction = redux_actions_1.createAction(exports.ON_MESSAGE_C
 const onEarlyMessageReady = (data) => ({ type: exports.ON_EARLY_MESSAGE_READY, payload: data });
 function checkOlderMessages() {
     return (dispatch) => {
-        const room = configStore_1.store.getState().chatroomReducer.room;
+        const room = getStore().getState().chatroomReducer.room;
         ChatRoomComponent_1.ChatRoomComponent.getInstance().getTopEdgeMessageTime().then((res) => {
             chatroomService.getOlderMessagesCount(room._id, res.toString(), false)
                 .then((response) => response.json())
@@ -303,10 +303,10 @@ const leaveRoom = () => ({ type: exports.LEAVE_ROOM });
 const leaveRoomSuccess = () => ({ type: exports.LEAVE_ROOM_SUCCESS });
 function leaveRoomAction() {
     return (dispatch) => {
-        const _room = configStore_1.store.getState().chatroomReducer.get("room");
+        const _room = getStore().getState().chatroomReducer.get("room");
         const { id } = authReducer().user;
         if (!!_room) {
-            const token = configStore_1.store.getState().stalkReducer.stalkToken;
+            const token = getStore().getState().stalkReducer.stalkToken;
             const room_id = _room._id;
             ChatRoomComponent_1.ChatRoomComponent.getInstance().dispose();
             NotificationManager.regisNotifyNewMessageEvent();
@@ -331,7 +331,7 @@ const getPersistChatroomFail = (error) => ({ type: exports.GET_PERSISTEND_CHATRO
 const getPersistChatroomSuccess = (roomInfo) => ({ type: exports.GET_PERSISTEND_CHATROOM_SUCCESS, payload: roomInfo });
 exports.getPersistendChatroom = (roomId) => ((dispatch) => {
     dispatch({ type: exports.GET_PERSISTEND_CHATROOM, payload: roomId });
-    const { chatrooms } = configStore_1.store.getState().chatroomReducer;
+    const { chatrooms } = getStore().getState().chatroomReducer;
     if (!chatrooms) {
         return dispatch(getPersistChatroomFail(undefined));
     }
@@ -348,7 +348,7 @@ exports.getPersistendChatroom = (roomId) => ((dispatch) => {
     }
 });
 exports.getRoom = (room_id) => {
-    const { chatrooms } = configStore_1.store.getState().chatroomReducer;
+    const { chatrooms } = getStore().getState().chatroomReducer;
     if (!chatrooms) {
         return null;
     }
@@ -381,7 +381,7 @@ exports.UPDATED_CHATROOMS = "UPDATED_CHATROOMS";
 exports.updatedChatRoomSuccess = (chatrooms) => ({ type: exports.UPDATED_CHATROOMS, payload: chatrooms });
 exports.updateChatRoom = (rooms) => {
     return (dispatch) => {
-        let chatrooms = configStore_1.store.getState().chatroomReducer.get("chatrooms");
+        let chatrooms = getStore().getState().chatroomReducer.get("chatrooms");
         if (chatrooms) {
             // R.unionWith(R.eqBy(R.prop('a')), l1, l2);
             const _newRooms = R.unionWith(R.eqBy(R.prop("_id")), rooms, chatrooms);

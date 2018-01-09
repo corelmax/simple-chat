@@ -10,12 +10,11 @@ import * as StalkNotificationAction from "./stalkNotificationActions";
 
 import { createAction } from "redux-actions";
 
-import { store } from "../configStore";
 import InternalStore from "../../InternalStore";
-
+const getStore = () => InternalStore.store;
 export const getSessionToken = () => {
     const backendFactory = BackendFactory.getInstance();
-    return store.getState().stalkReducer.stalkToken;
+    return getStore().getState().stalkReducer.stalkToken;
 };
 const onGetContactProfileFail = (contactId: string) => { };
 
@@ -30,12 +29,12 @@ export const STALK_LOGOUT_FAILURE = "STALK_LOGOUT_FAILURE";
 const stalkLogoutSuccess = createAction(STALK_LOGOUT_SUCCESS);
 
 export function stalkLogin(user: StalkAccount) {
-    if (store.getState().stalkReducer.isInit) {
+    if (getStore().getState().stalkReducer.isInit) {
         console.log("s-talk service is initiated");
         return;
     }
 
-    store.dispatch({ type: STALK_INIT });
+    getStore().dispatch({ type: STALK_INIT });
 
     const backendFactory = BackendFactory.createInstance(InternalStore.getConfig(), InternalStore.getApiConfig());
 
@@ -53,33 +52,33 @@ export function stalkLogin(user: StalkAccount) {
                             StalkNotificationAction.regisNotifyNewMessageEvent();
                             // StalkPushActions.stalkPushInit();
 
-                            store.dispatch({
+                            getStore().dispatch({
                                 type: STALK_INIT_SUCCESS,
                                 payload: { token: result.token, user },
                             });
                         } else {
                             console.warn("Stalk subscription fail: ");
-                            store.dispatch({ type: STALK_INIT_FAILURE, payload: "Realtime service unavailable." });
+                            getStore().dispatch({ type: STALK_INIT_FAILURE, payload: "Realtime service unavailable." });
                         }
                     }).catch((err) => {
                         console.warn("Stalk subscription fail: ", err);
-                        store.dispatch({ type: STALK_INIT_FAILURE, payload: err });
+                        getStore().dispatch({ type: STALK_INIT_FAILURE, payload: err });
                     });
                 } else {
                     console.warn("Joined chat-server fail: ", result);
-                    store.dispatch({ type: STALK_INIT_FAILURE });
+                    getStore().dispatch({ type: STALK_INIT_FAILURE });
                 }
             }).catch((err) => {
                 console.warn("Cannot checkIn", err);
-                store.dispatch({ type: STALK_INIT_FAILURE });
+                getStore().dispatch({ type: STALK_INIT_FAILURE });
             });
         }).catch((err) => {
             console.warn("Hanshake fail: ", err);
-            store.dispatch({ type: STALK_INIT_FAILURE });
+            getStore().dispatch({ type: STALK_INIT_FAILURE });
         });
     }).catch((err) => {
         console.log("StalkInit Fail.", err);
-        store.dispatch(stalkInitFailure("Realtime service unavailable."));
+        getStore().dispatch(stalkInitFailure("Realtime service unavailable."));
     });
 }
 
@@ -95,13 +94,13 @@ async function stalkManageConnection() {
     const server = backendFactory.getServer();
     if (!!server) {
         server.onSocketReconnect = (data: any) => {
-            store.dispatch(onStalkSocketReconnect(data.type));
+            getStore().dispatch(onStalkSocketReconnect(data.type));
         };
         server.onSocketClose = (data: any) => {
-            store.dispatch(onStalkSocketClose("Connection closed"));
+            getStore().dispatch(onStalkSocketClose("Connection closed"));
         };
         server.onDisconnected = (data: any) => {
-            store.dispatch(onStalkSocketDisconnected("Connection disconnected"));
+            getStore().dispatch(onStalkSocketDisconnected("Connection disconnected"));
         };
     }
 
@@ -110,7 +109,7 @@ async function stalkManageConnection() {
 
 export async function stalkLogout() {
     const backendFactory = BackendFactory.getInstance();
-    store.dispatch(stalkLogoutSuccess());
+    getStore().dispatch(stalkLogoutSuccess());
     try {
         return await backendFactory.logout();
     } catch (ex) {

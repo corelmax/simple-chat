@@ -12,9 +12,8 @@ import { StalkAccount, RoomAccessData } from "stalk-js/starter/models";
 import { ChatRoomComponent } from "../../ChatRoomComponent";
 import * as ServiceProvider from "../../services/ServiceProvider";
 
-import { store } from "../configStore";
 import InternalStore from "../../InternalStore";
-// const getStore = () => ChitChatFactory.getInstance().store;
+const getStore = () => InternalStore.store;
 const authReducer = () => InternalStore.authStore;
 
 export const STALK_REMOVE_ROOM_ACCESS = "STALK_REMOVE_ROOM_ACCESS";
@@ -125,13 +124,13 @@ export const GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
 export const getLastAccessRoom = (user_id: string) => ({ type: GET_LAST_ACCESS_ROOM, payload: { user_id } });
 const getLastAccessRoomSuccess = (payload) => ({ type: GET_LAST_ACCESS_ROOM_SUCCESS, payload });
 const getLastAccessRoomFailure = (error) => ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error });
-export const getLastAccessRoom_Epic = action$ => (
+export const getLastAccessRoom_Epic = (action$) => (
     action$.ofType(GET_LAST_ACCESS_ROOM)
-        .mergeMap(action => {
-            let { user_id } = action.payload;
+        .mergeMap((action) => {
+            const { user_id } = action.payload;
             return ServiceProvider.getLastAccessRoomInfo(user_id)
-                .then(response => response.json())
-                .then(json => json)
+                .then((response) => response.json())
+                .then((json) => json)
                 .catch((err) => err);
         })
         .map((json) => getLastAccessRoomSuccess(json.result))

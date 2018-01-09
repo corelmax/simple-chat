@@ -18,7 +18,7 @@ const { ajax } = Rx.Observable;
 const starter_1 = require("stalk-js/starter");
 const ServiceProvider = require("../../services/ServiceProvider");
 const InternalStore_1 = require("../../InternalStore");
-// const getStore = () => ChitChatFactory.getInstance().store;
+const getStore = () => InternalStore_1.default.store;
 const authReducer = () => InternalStore_1.default.authStore;
 exports.STALK_REMOVE_ROOM_ACCESS = "STALK_REMOVE_ROOM_ACCESS";
 exports.STALK_REMOVE_ROOM_ACCESS_FAILURE = "STALK_REMOVE_ROOM_ACCESS_FAILURE";
@@ -111,12 +111,12 @@ exports.GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
 exports.getLastAccessRoom = (user_id) => ({ type: exports.GET_LAST_ACCESS_ROOM, payload: { user_id } });
 const getLastAccessRoomSuccess = (payload) => ({ type: exports.GET_LAST_ACCESS_ROOM_SUCCESS, payload });
 const getLastAccessRoomFailure = (error) => ({ type: exports.GET_LAST_ACCESS_ROOM_FAILURE, payload: error });
-exports.getLastAccessRoom_Epic = action$ => (action$.ofType(exports.GET_LAST_ACCESS_ROOM)
-    .mergeMap(action => {
-    let { user_id } = action.payload;
+exports.getLastAccessRoom_Epic = (action$) => (action$.ofType(exports.GET_LAST_ACCESS_ROOM)
+    .mergeMap((action) => {
+    const { user_id } = action.payload;
     return ServiceProvider.getLastAccessRoomInfo(user_id)
-        .then(response => response.json())
-        .then(json => json)
+        .then((response) => response.json())
+        .then((json) => json)
         .catch((err) => err);
 })
     .map((json) => getLastAccessRoomSuccess(json.result))

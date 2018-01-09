@@ -5,7 +5,6 @@
  */
 
 import * as Rx from "rxjs/Rx";
-import { Store } from "redux";
 const { ajax } = Rx.Observable;
 import { createAction } from "redux-actions";
 
@@ -17,9 +16,9 @@ import ChatLog from "../../models/chatLog";
 import * as ServiceProvider from "../../services/ServiceProvider";
 import * as chatroomActions from "../chatroom/chatroomActions";
 
-import { store } from "../configStore";
 import InternalStore from "../../InternalStore";
 const authReducer = () => InternalStore.authStore;
+const getStore = () => InternalStore.store;
 
 export const STALK_INIT_CHATLOG = "STALK_INIT_CHATLOG";
 export const STALK_GET_CHATSLOG_COMPLETE = "STALK_GET_CHATSLOG_COMPLETE";
@@ -33,7 +32,7 @@ const listenerImp = (newMsg) => {
     const dataManager = BackendFactory.getInstance().dataManager;
 
     if (!dataManager.isMySelf(newMsg.sender)) {
-        store.dispatch(onChatLogChanged(newMsg));
+        getStore().dispatch(onChatLogChanged(newMsg));
     }
 };
 
@@ -43,7 +42,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess: RoomAccessData) {
     const chatsLogComp = BackendFactory.getInstance().chatLogComp;
     const { _id } = authReducer().user;
 
-    chatsLogComp.getUnreadMessage(_id, newRoomAccess).then(function (unread) {
+    chatsLogComp.getUnreadMessage(_id, newRoomAccess).then(function(unread) {
         chatsLogComp.addUnreadMessage(unread);
 
         calculateUnreadCount();
@@ -60,12 +59,12 @@ export function initChatsLog() {
     const chatsLogComponent = InternalStore.chatlogInstance;
 
     chatsLogComponent.onReady = (rooms: Room[]) => {
-        store.dispatch(chatroomActions.updateChatRoom(rooms));
+        getStore().dispatch(chatroomActions.updateChatRoom(rooms));
 
         getUnreadMessages();
     };
     chatsLogComponent.getRoomsInfoCompleteEvent = () => {
-        const { chatrooms } = store.getState().chatroomReducer;
+        const { chatrooms } = getStore().getState().chatroomReducer;
         chatsLogComponent.manageChatLog(chatrooms).then((chatlog) => {
             getChatsLog();
         });
@@ -76,14 +75,14 @@ export function initChatsLog() {
         getUnreadMessages();
     };
 
-    store.dispatch({ type: STALK_INIT_CHATLOG });
+    getStore().dispatch({ type: STALK_INIT_CHATLOG });
 }
 
 function getUnreadMessages() {
     const chatsLogComp = InternalStore.chatlogInstance;
 
     const { _id } = authReducer().user;
-    const { roomAccess, state } = store.getState().chatlogReducer;
+    const { roomAccess, state } = getStore().getState().chatlogReducer;
 
     chatsLogComp.getUnreadMessages(_id, roomAccess, function done(err, unreadLogs) {
         if (!!unreadLogs) {
@@ -129,7 +128,7 @@ function getChatsLog() {
     const chatsLogComp = InternalStore.chatlogInstance;
     const chatsLog = chatsLogComp.getChatsLog();
 
-    store.dispatch({
+    getStore().dispatch({
         type: STALK_GET_CHATSLOG_COMPLETE,
         payload: chatsLog,
     });
@@ -138,7 +137,7 @@ function getChatsLog() {
 async function onUnreadMessageMapChanged(unread: IUnread) {
     const chatsLogComp = InternalStore.chatlogInstance;
 
-    const { chatrooms }: { chatrooms: Room[] } = store.getState().chatroomReducer;
+    const { chatrooms }: { chatrooms: Room[] } = getStore().getState().chatroomReducer;
 
     try {
         const room = await chatsLogComp.checkRoomInfo(unread, chatrooms);
@@ -150,7 +149,7 @@ async function onUnreadMessageMapChanged(unread: IUnread) {
     }
 
     const chatsLog = chatsLogComp.getChatsLog();
-    store.dispatch({
+    getStore().dispatch({
         type: STALK_CHATLOG_MAP_CHANGED,
         payload: chatsLog,
     });
@@ -159,7 +158,7 @@ async function onUnreadMessageMapChanged(unread: IUnread) {
 function getUnreadMessageComplete() {
     const chatsLogComp = InternalStore.chatlogInstance;
     const { _id } = authReducer().user;
-    const { chatrooms } = store.getState().chatroomReducer;
+    const { chatrooms } = getStore().getState().chatroomReducer;
 
     chatsLogComp.getRoomsInfo(_id, chatrooms);
 
@@ -176,7 +175,7 @@ const getChatLogContact = (chatlog: ChatLog) => {
 };
 
 async function updateRooms(room: Room) {
-    let { chatrooms } = store.getState().chatroomReducer;
+    let { chatrooms } = getStore().getState().chatroomReducer;
 
     if (Array.isArray(chatrooms) && chatrooms.length > 0) {
         chatrooms.forEach((v) => {
@@ -194,5 +193,5 @@ async function updateRooms(room: Room) {
         chatrooms.push(room);
     }
 
-    store.dispatch(chatroomActions.updateChatRoom(chatrooms));
+    getStore().dispatch(chatroomActions.updateChatRoom(chatrooms));
 }

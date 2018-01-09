@@ -16,11 +16,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
 const StalkNotificationAction = require("./stalkNotificationActions");
 const redux_actions_1 = require("redux-actions");
-const configStore_1 = require("../configStore");
 const InternalStore_1 = require("../../InternalStore");
+const getStore = () => InternalStore_1.default.store;
 exports.getSessionToken = () => {
     const backendFactory = BackendFactory_1.BackendFactory.getInstance();
-    return configStore_1.store.getState().stalkReducer.stalkToken;
+    return getStore().getState().stalkReducer.stalkToken;
 };
 const onGetContactProfileFail = (contactId) => { };
 exports.STALK_INIT = "STALK_INIT";
@@ -32,11 +32,11 @@ exports.STALK_LOGOUT_SUCCESS = "STALK_LOGOUT_SUCCESS";
 exports.STALK_LOGOUT_FAILURE = "STALK_LOGOUT_FAILURE";
 const stalkLogoutSuccess = redux_actions_1.createAction(exports.STALK_LOGOUT_SUCCESS);
 function stalkLogin(user) {
-    if (configStore_1.store.getState().stalkReducer.isInit) {
+    if (getStore().getState().stalkReducer.isInit) {
         console.log("s-talk service is initiated");
         return;
     }
-    configStore_1.store.dispatch({ type: exports.STALK_INIT });
+    getStore().dispatch({ type: exports.STALK_INIT });
     const backendFactory = BackendFactory_1.BackendFactory.createInstance(InternalStore_1.default.getConfig(), InternalStore_1.default.getApiConfig());
     backendFactory.stalkInit().then((socket) => {
         backendFactory.handshake(user._id).then((connector) => {
@@ -51,35 +51,35 @@ function stalkLogin(user) {
                             backendFactory.subscriptions();
                             StalkNotificationAction.regisNotifyNewMessageEvent();
                             // StalkPushActions.stalkPushInit();
-                            configStore_1.store.dispatch({
+                            getStore().dispatch({
                                 type: exports.STALK_INIT_SUCCESS,
                                 payload: { token: result.token, user },
                             });
                         }
                         else {
                             console.warn("Stalk subscription fail: ");
-                            configStore_1.store.dispatch({ type: exports.STALK_INIT_FAILURE, payload: "Realtime service unavailable." });
+                            getStore().dispatch({ type: exports.STALK_INIT_FAILURE, payload: "Realtime service unavailable." });
                         }
                     }).catch((err) => {
                         console.warn("Stalk subscription fail: ", err);
-                        configStore_1.store.dispatch({ type: exports.STALK_INIT_FAILURE, payload: err });
+                        getStore().dispatch({ type: exports.STALK_INIT_FAILURE, payload: err });
                     });
                 }
                 else {
                     console.warn("Joined chat-server fail: ", result);
-                    configStore_1.store.dispatch({ type: exports.STALK_INIT_FAILURE });
+                    getStore().dispatch({ type: exports.STALK_INIT_FAILURE });
                 }
             }).catch((err) => {
                 console.warn("Cannot checkIn", err);
-                configStore_1.store.dispatch({ type: exports.STALK_INIT_FAILURE });
+                getStore().dispatch({ type: exports.STALK_INIT_FAILURE });
             });
         }).catch((err) => {
             console.warn("Hanshake fail: ", err);
-            configStore_1.store.dispatch({ type: exports.STALK_INIT_FAILURE });
+            getStore().dispatch({ type: exports.STALK_INIT_FAILURE });
         });
     }).catch((err) => {
         console.log("StalkInit Fail.", err);
-        configStore_1.store.dispatch(stalkInitFailure("Realtime service unavailable."));
+        getStore().dispatch(stalkInitFailure("Realtime service unavailable."));
     });
 }
 exports.stalkLogin = stalkLogin;
@@ -95,13 +95,13 @@ function stalkManageConnection() {
         const server = backendFactory.getServer();
         if (!!server) {
             server.onSocketReconnect = (data) => {
-                configStore_1.store.dispatch(onStalkSocketReconnect(data.type));
+                getStore().dispatch(onStalkSocketReconnect(data.type));
             };
             server.onSocketClose = (data) => {
-                configStore_1.store.dispatch(onStalkSocketClose("Connection closed"));
+                getStore().dispatch(onStalkSocketClose("Connection closed"));
             };
             server.onDisconnected = (data) => {
-                configStore_1.store.dispatch(onStalkSocketDisconnected("Connection disconnected"));
+                getStore().dispatch(onStalkSocketDisconnected("Connection disconnected"));
             };
         }
         return yield server;
@@ -110,7 +110,7 @@ function stalkManageConnection() {
 function stalkLogout() {
     return __awaiter(this, void 0, void 0, function* () {
         const backendFactory = BackendFactory_1.BackendFactory.getInstance();
-        configStore_1.store.dispatch(stalkLogoutSuccess());
+        getStore().dispatch(stalkLogoutSuccess());
         try {
             return yield backendFactory.logout();
         }

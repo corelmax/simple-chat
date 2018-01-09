@@ -4,7 +4,6 @@
  * This is pure function action for redux app.
  */
 import * as Rx from "rxjs/Rx";
-import { Store } from "redux";
 import { createAction } from "redux-actions";
 
 const { ajax, fromPromise } = Rx.Observable;
@@ -18,11 +17,10 @@ import { apiHeaders } from "../../services/ServiceUtils";
 import * as chatroomService from "../../services/ChatroomService";
 import { updateMessagesReader } from "../../services/MessageService";
 
-// import config from "../../../../../configs/config";
-import { store } from "../configStore";
 import InternalStore from "../../InternalStore";
 const getConfig = () => InternalStore.config;
 const authReducer = () => InternalStore.authStore;
+const getStore = () => InternalStore.store;
 
 export const FETCH_PRIVATE_CHATROOM = "FETCH_PRIVATE_CHATROOM";
 export const FETCH_PRIVATE_CHATROOM_FAILURE = "FETCH_PRIVATE_CHATROOM_FAILURE";
@@ -105,16 +103,16 @@ const GET_PERSISTEND_MESSAGE_CANCELLED = "GET_PERSISTEND_MESSAGE_CANCELLED";
 export const GET_PERSISTEND_MESSAGE_SUCCESS = "GET_PERSISTEND_MESSAGE_SUCCESS";
 const GET_PERSISTEND_MESSAGE_FAILURE = "GET_PERSISTEND_MESSAGE_FAILURE";
 export const getPersistendMessage = async (roomId: string) => {
-    store.dispatch({ type: GET_PERSISTEND_MESSAGE, payload: roomId });
+    getStore().dispatch({ type: GET_PERSISTEND_MESSAGE, payload: roomId });
 
     try {
         const result = await ChatRoomComponent.getInstance().getPersistentMessage(roomId);
-        store.dispatch(getPersistendMessage_success(result));
+        getStore().dispatch(getPersistendMessage_success(result));
 
-        store.dispatch(checkOlderMessages());
-        store.dispatch(getNewerMessageFromNet());
+        getStore().dispatch(checkOlderMessages());
+        getStore().dispatch(getNewerMessageFromNet());
     } catch (ex) {
-        store.dispatch(getPersistendMessage_failure(ex.message));
+        getStore().dispatch(getPersistendMessage_failure(ex.message));
     }
 };
 const getPersistendMessage_cancel = () => ({ type: GET_PERSISTEND_MESSAGE_CANCELLED });

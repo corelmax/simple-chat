@@ -21,11 +21,10 @@ const chatroomActions_1 = require("./chatroomActions");
 const ServiceUtils_1 = require("../../services/ServiceUtils");
 const chatroomService = require("../../services/ChatroomService");
 const MessageService_1 = require("../../services/MessageService");
-// import config from "../../../../../configs/config";
-const configStore_1 = require("../configStore");
 const InternalStore_1 = require("../../InternalStore");
 const getConfig = () => InternalStore_1.default.config;
 const authReducer = () => InternalStore_1.default.authStore;
+const getStore = () => InternalStore_1.default.store;
 exports.FETCH_PRIVATE_CHATROOM = "FETCH_PRIVATE_CHATROOM";
 exports.FETCH_PRIVATE_CHATROOM_FAILURE = "FETCH_PRIVATE_CHATROOM_FAILURE";
 exports.FETCH_PRIVATE_CHATROOM_SUCCESS = "FETCH_PRIVATE_CHATROOM_SUCCESS";
@@ -95,15 +94,15 @@ const GET_PERSISTEND_MESSAGE_CANCELLED = "GET_PERSISTEND_MESSAGE_CANCELLED";
 exports.GET_PERSISTEND_MESSAGE_SUCCESS = "GET_PERSISTEND_MESSAGE_SUCCESS";
 const GET_PERSISTEND_MESSAGE_FAILURE = "GET_PERSISTEND_MESSAGE_FAILURE";
 exports.getPersistendMessage = (roomId) => __awaiter(this, void 0, void 0, function* () {
-    configStore_1.store.dispatch({ type: GET_PERSISTEND_MESSAGE, payload: roomId });
+    getStore().dispatch({ type: GET_PERSISTEND_MESSAGE, payload: roomId });
     try {
         const result = yield ChatRoomComponent_1.ChatRoomComponent.getInstance().getPersistentMessage(roomId);
-        configStore_1.store.dispatch(getPersistendMessage_success(result));
-        configStore_1.store.dispatch(chatroomActions_1.checkOlderMessages());
-        configStore_1.store.dispatch(chatroomActions_1.getNewerMessageFromNet());
+        getStore().dispatch(getPersistendMessage_success(result));
+        getStore().dispatch(chatroomActions_1.checkOlderMessages());
+        getStore().dispatch(chatroomActions_1.getNewerMessageFromNet());
     }
     catch (ex) {
-        configStore_1.store.dispatch(getPersistendMessage_failure(ex.message));
+        getStore().dispatch(getPersistendMessage_failure(ex.message));
     }
 });
 const getPersistendMessage_cancel = () => ({ type: GET_PERSISTEND_MESSAGE_CANCELLED });

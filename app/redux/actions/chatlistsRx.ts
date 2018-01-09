@@ -13,12 +13,12 @@ import { getLastAccessRoom, STALK_INIT_CHATLOG, ON_CHATLOG_CHANGE } from "../cha
 import { withToken, apiHeaders } from "../../services/ServiceUtils";
 import { ChatRoomRecoder } from "../chatroom";
 
-import { store } from "../configStore";
 import InternalStore from "../../InternalStore";
 const { ajax } = Rx.Observable;
 const config = () => InternalStore.config;
 const getApiConfig = () => InternalStore.apiConfig;
 const getAuthStore = () => InternalStore.authStore;
+const getStore = () => InternalStore.store;
 
 const GET_ALL_CHATROOM = "GET_ALL_CHATROOM";
 export const GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";
@@ -28,14 +28,14 @@ const getAllChatRoomSuccess = createAction(GET_ALL_CHATROOM_SUCCESS, (payload: a
 const getAllChatRoomFailure = createAction(GET_ALL_CHATROOM_FAILURE, (error: any) => error);
 
 export const getAllChatRoom = () => {
-    store.dispatch(getAllChatRoomRequest());
+    getStore().dispatch(getAllChatRoomRequest());
 
     const observable = ajax.get(`${getApiConfig().chatroom}/all`, apiHeaders());
     observable.subscribe((x) => {
-        store.dispatch(getAllChatRoomSuccess(x.response.result));
+        getStore().dispatch(getAllChatRoomSuccess(x.response.result));
     }, (error) => {
         console.warn(error);
-        store.dispatch(getAllChatRoomFailure(error.response));
+        getStore().dispatch(getAllChatRoomFailure(error.response));
     }, () => {
         console.log("done");
     });

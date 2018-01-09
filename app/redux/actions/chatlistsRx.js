@@ -19,12 +19,12 @@ const redux_actions_1 = require("redux-actions");
 const Rx = require("rxjs/Rx");
 const chatlogs_1 = require("../chatlogs");
 const ServiceUtils_1 = require("../../services/ServiceUtils");
-const configStore_1 = require("../configStore");
 const InternalStore_1 = require("../../InternalStore");
 const { ajax } = Rx.Observable;
 const config = () => InternalStore_1.default.config;
 const getApiConfig = () => InternalStore_1.default.apiConfig;
 const getAuthStore = () => InternalStore_1.default.authStore;
+const getStore = () => InternalStore_1.default.store;
 const GET_ALL_CHATROOM = "GET_ALL_CHATROOM";
 exports.GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";
 exports.GET_ALL_CHATROOM_FAILURE = "GET_ALL_CHATROOM_FAILURE";
@@ -32,13 +32,13 @@ const getAllChatRoomRequest = redux_actions_1.createAction(GET_ALL_CHATROOM);
 const getAllChatRoomSuccess = redux_actions_1.createAction(exports.GET_ALL_CHATROOM_SUCCESS, (payload) => payload);
 const getAllChatRoomFailure = redux_actions_1.createAction(exports.GET_ALL_CHATROOM_FAILURE, (error) => error);
 exports.getAllChatRoom = () => {
-    configStore_1.store.dispatch(getAllChatRoomRequest());
+    getStore().dispatch(getAllChatRoomRequest());
     const observable = ajax.get(`${getApiConfig().chatroom}/all`, ServiceUtils_1.apiHeaders());
     observable.subscribe((x) => {
-        configStore_1.store.dispatch(getAllChatRoomSuccess(x.response.result));
+        getStore().dispatch(getAllChatRoomSuccess(x.response.result));
     }, (error) => {
         console.warn(error);
-        configStore_1.store.dispatch(getAllChatRoomFailure(error.response));
+        getStore().dispatch(getAllChatRoomFailure(error.response));
     }, () => {
         console.log("done");
     });

@@ -21,8 +21,8 @@ exports.getUnreadMessage = (roomId, userId, lastAccessTime) => {
     });
 };
 exports.getOlderMessagesCount = (roomId, topEdgeMessageTime, queryMessage) => {
-    return fetch(`${getConfig().chatroom}/olderMessagesCount/?
-    message=${queryMessage}&room_id=${roomId}&topEdgeMessageTime=${topEdgeMessageTime}`, {
+    return fetch(`${getConfig().chatroom}/olderMessagesCount
+    ?message=${queryMessage}&room_id=${roomId}&topEdgeMessageTime=${topEdgeMessageTime}`, {
         method: "GET",
         headers: ServiceUtils_1.apiHeaders(),
     });

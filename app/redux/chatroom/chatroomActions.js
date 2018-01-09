@@ -48,7 +48,7 @@ function initChatRoom(currentRoom) {
             }
         });
     }
-    const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.createInstance(InternalStore_1.default.storageObj);
+    const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.createInstance(InternalStore_1.default.dataManager);
     chatroomComp.setRoomId(currentRoom._id);
     NotificationManager.unsubscribeGlobalNotifyMessageEvent();
     chatroomComp.chatroomDelegate = onChatRoomDelegate;
@@ -126,10 +126,10 @@ function checkOlderMessages() {
 }
 exports.checkOlderMessages = checkOlderMessages;
 exports.LOAD_EARLY_MESSAGE_SUCCESS = "LOAD_EARLY_MESSAGE_SUCCESS";
-const loadEarlyMessage_success = (payload) => ({ type: exports.LOAD_EARLY_MESSAGE_SUCCESS, payload });
+const loadEarlyMessageSuccess = (payload) => ({ type: exports.LOAD_EARLY_MESSAGE_SUCCESS, payload });
 function loadEarlyMessageChunk(roomId) {
     ChatRoomComponent_1.ChatRoomComponent.getInstance().getOlderMessageChunk(roomId).then((docs) => {
-        getStore().dispatch(loadEarlyMessage_success(docs));
+        getStore().dispatch(loadEarlyMessageSuccess(docs));
         // @check older message again.
         getStore().dispatch(checkOlderMessages());
         // # update messages read.
@@ -149,11 +149,11 @@ const getNewerMessageFailure = redux_actions_1.createAction(exports.GET_NEWER_ME
 const getNewerMessageSuccess = redux_actions_1.createAction(exports.GET_NEWER_MESSAGE_SUCCESS, (messages) => messages);
 function getNewerMessageFromNet() {
     getStore().dispatch(getNewerMessage());
-    ChatRoomComponent_1.ChatRoomComponent.getInstance().getNewerMessageRecord((results, room_id) => {
+    ChatRoomComponent_1.ChatRoomComponent.getInstance().getNewerMessageRecord((results, roomId) => {
         getStore().dispatch(getNewerMessageSuccess(results));
         // # update messages read.
         if (results.length > 0) {
-            getStore().dispatch(chatroomRxEpic_1.updateMessagesRead(results, room_id));
+            getStore().dispatch(chatroomRxEpic_1.updateMessagesRead(results, roomId));
         }
     }).catch((err) => {
         if (err) {

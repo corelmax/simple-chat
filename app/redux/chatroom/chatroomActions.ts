@@ -48,7 +48,7 @@ export function initChatRoom(currentRoom: Room) {
         });
     }
 
-    const chatroomComp = ChatRoomComponent.createInstance(InternalStore.storageObj);
+    const chatroomComp = ChatRoomComponent.createInstance(InternalStore.dataManager);
     chatroomComp.setRoomId(currentRoom._id);
 
     NotificationManager.unsubscribeGlobalNotifyMessageEvent();
@@ -128,10 +128,10 @@ export function checkOlderMessages() {
 }
 
 export const LOAD_EARLY_MESSAGE_SUCCESS = "LOAD_EARLY_MESSAGE_SUCCESS";
-const loadEarlyMessage_success = (payload) => ({ type: LOAD_EARLY_MESSAGE_SUCCESS, payload });
+const loadEarlyMessageSuccess = (payload) => ({ type: LOAD_EARLY_MESSAGE_SUCCESS, payload });
 export function loadEarlyMessageChunk(roomId: string) {
     ChatRoomComponent.getInstance().getOlderMessageChunk(roomId).then((docs) => {
-        getStore().dispatch(loadEarlyMessage_success(docs));
+        getStore().dispatch(loadEarlyMessageSuccess(docs));
         // @check older message again.
         getStore().dispatch(checkOlderMessages());
 
@@ -153,12 +153,12 @@ const getNewerMessageSuccess = createAction(GET_NEWER_MESSAGE_SUCCESS, (messages
 export function getNewerMessageFromNet() {
     getStore().dispatch(getNewerMessage());
 
-    ChatRoomComponent.getInstance().getNewerMessageRecord((results, room_id: string) => {
+    ChatRoomComponent.getInstance().getNewerMessageRecord((results, roomId: string) => {
         getStore().dispatch(getNewerMessageSuccess(results));
 
         // # update messages read.
         if (results.length > 0) {
-            getStore().dispatch(updateMessagesRead(results as MessageImp[], room_id));
+            getStore().dispatch(updateMessagesRead(results as MessageImp[], roomId));
         }
     }).catch((err) => {
         if (err) { console.warn("getNewerMessageRecord fail", err); }

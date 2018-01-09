@@ -149,7 +149,7 @@ class ChatRoomComponent {
                     async.forEach(chats, function iterator(chat, result) {
                         if (chat.type === models_1.MessageType[models_1.MessageType.Text]) {
                             if (getConfig().appConfig.encryption === true) {
-                                self.secure.decryption(chat.body).then(function (res) {
+                                self.secure.decryption(chat.body).then((res) => {
                                     chat.body = res;
                                     result(null);
                                 }).catch((err) => result(null));

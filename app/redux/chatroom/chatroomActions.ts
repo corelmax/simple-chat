@@ -105,6 +105,7 @@ export const ON_MESSAGE_CHANGED = "ON_MESSAGE_CHANGED";
 const onMessageChangedAction = createAction(ON_MESSAGE_CHANGED, (messages: MessageImp[]) => messages);
 
 const onEarlyMessageReady = (data: boolean) => ({ type: ON_EARLY_MESSAGE_READY, payload: data });
+
 export function checkOlderMessages() {
     const room = getStore().getState().chatroomReducer.room;
 
@@ -133,7 +134,7 @@ export function loadEarlyMessageChunk(roomId: string) {
     ChatRoomComponent.getInstance().getOlderMessageChunk(roomId).then((docs) => {
         getStore().dispatch(loadEarlyMessageSuccess(docs));
         // @check older message again.
-        getStore().dispatch(checkOlderMessages());
+        checkOlderMessages();
 
         // # update messages read.
         if (docs.length > 0) {
@@ -149,7 +150,8 @@ export const GET_NEWER_MESSAGE_FAILURE = "GET_NEWER_MESSAGE_FAILURE";
 export const GET_NEWER_MESSAGE_SUCCESS = "GET_NEWER_MESSAGE_SUCCESS";
 const getNewerMessage = createAction(GET_NEWER_MESSAGE);
 const getNewerMessageFailure = createAction(GET_NEWER_MESSAGE_FAILURE);
-const getNewerMessageSuccess = createAction(GET_NEWER_MESSAGE_SUCCESS, (messages) => messages);
+const getNewerMessageSuccess = createAction(GET_NEWER_MESSAGE_SUCCESS, (messages: IMessage[]) => messages);
+
 export function getNewerMessageFromNet() {
     getStore().dispatch(getNewerMessage());
 
@@ -158,7 +160,7 @@ export function getNewerMessageFromNet() {
 
         // # update messages read.
         if (results.length > 0) {
-            getStore().dispatch(updateMessagesRead(results as MessageImp[], roomId));
+            // getStore().dispatch(updateMessagesRead(results as MessageImp[], roomId));
         }
     }).catch((err) => {
         if (err) { console.warn("getNewerMessageRecord fail", err); }

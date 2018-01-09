@@ -131,7 +131,7 @@ function loadEarlyMessageChunk(roomId) {
     ChatRoomComponent_1.ChatRoomComponent.getInstance().getOlderMessageChunk(roomId).then((docs) => {
         getStore().dispatch(loadEarlyMessageSuccess(docs));
         // @check older message again.
-        getStore().dispatch(checkOlderMessages());
+        checkOlderMessages();
         // # update messages read.
         if (docs.length > 0) {
             getStore().dispatch(chatroomRxEpic_1.updateMessagesRead(docs, roomId));
@@ -153,7 +153,7 @@ function getNewerMessageFromNet() {
         getStore().dispatch(getNewerMessageSuccess(results));
         // # update messages read.
         if (results.length > 0) {
-            getStore().dispatch(chatroomRxEpic_1.updateMessagesRead(results, roomId));
+            // getStore().dispatch(updateMessagesRead(results as MessageImp[], roomId));
         }
     }).catch((err) => {
         if (err) {

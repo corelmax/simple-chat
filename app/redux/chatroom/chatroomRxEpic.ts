@@ -125,9 +125,10 @@ export const UPDATE_MESSAGES_READ = "UPDATE_MESSAGES_READ";
 export const UPDATE_MESSAGES_READ_SUCCESS = "UPDATE_MESSAGES_READ_SUCCESS";
 export const UPDATE_MESSAGES_READ_FAILUER = "UPDATE_MESSAGES_READ_FAILURE";
 
-export const updateMessagesRead = createAction(UPDATE_MESSAGES_READ, (messages: MessageImp[], room_id: string) => ({ messages, room_id }));
-export const updateMessagesRead_Success = createAction(UPDATE_MESSAGES_READ_SUCCESS, (payload) => payload);
-export const updateMessagesRead_Failure = createAction(UPDATE_MESSAGES_READ_FAILUER, (payload) => payload);
+export const updateMessagesRead = createAction(UPDATE_MESSAGES_READ, (messages: MessageImp[], roomId: string) => ({ messages, roomId }));
+export const updateMessagesReadSuccess = createAction(UPDATE_MESSAGES_READ_SUCCESS, (payload) => payload);
+export const updateMessagesReadFailure = createAction(UPDATE_MESSAGES_READ_FAILUER, (payload) => payload);
+
 export const updateMessagesRead_Epic = (action$) => {
     return action$.ofType(UPDATE_MESSAGES_READ)
         .mergeMap((action) => {
@@ -143,10 +144,10 @@ export const updateMessagesRead_Epic = (action$) => {
         .mergeMap((response) => response.json())
         .map((json) => {
             if (json.success) {
-                return updateMessagesRead_Success(json);
-            } else { return updateMessagesRead_Failure(json.message); }
+                return updateMessagesReadSuccess(json);
+            } else { return updateMessagesReadFailure(json.message); }
         })
-        .catch((error) => Rx.Observable.of(updateMessagesRead_Failure(error)));
+        .catch((error) => Rx.Observable.of(updateMessagesReadFailure(error)));
 };
 
 export const CHATROOM_UPLOAD_FILE = "CHATROOM_UPLOAD_FILE";

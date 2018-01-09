@@ -112,9 +112,9 @@ exports.getPersistendMessage = (roomId) => __awaiter(this, void 0, void 0, funct
 exports.UPDATE_MESSAGES_READ = "UPDATE_MESSAGES_READ";
 exports.UPDATE_MESSAGES_READ_SUCCESS = "UPDATE_MESSAGES_READ_SUCCESS";
 exports.UPDATE_MESSAGES_READ_FAILUER = "UPDATE_MESSAGES_READ_FAILURE";
-exports.updateMessagesRead = redux_actions_1.createAction(exports.UPDATE_MESSAGES_READ, (messages, room_id) => ({ messages, room_id }));
-exports.updateMessagesRead_Success = redux_actions_1.createAction(exports.UPDATE_MESSAGES_READ_SUCCESS, (payload) => payload);
-exports.updateMessagesRead_Failure = redux_actions_1.createAction(exports.UPDATE_MESSAGES_READ_FAILUER, (payload) => payload);
+exports.updateMessagesRead = redux_actions_1.createAction(exports.UPDATE_MESSAGES_READ, (messages, roomId) => ({ messages, roomId }));
+exports.updateMessagesReadSuccess = redux_actions_1.createAction(exports.UPDATE_MESSAGES_READ_SUCCESS, (payload) => payload);
+exports.updateMessagesReadFailure = redux_actions_1.createAction(exports.UPDATE_MESSAGES_READ_FAILUER, (payload) => payload);
 exports.updateMessagesRead_Epic = (action$) => {
     return action$.ofType(exports.UPDATE_MESSAGES_READ)
         .mergeMap((action) => {
@@ -129,13 +129,13 @@ exports.updateMessagesRead_Epic = (action$) => {
         .mergeMap((response) => response.json())
         .map((json) => {
         if (json.success) {
-            return exports.updateMessagesRead_Success(json);
+            return exports.updateMessagesReadSuccess(json);
         }
         else {
-            return exports.updateMessagesRead_Failure(json.message);
+            return exports.updateMessagesReadFailure(json.message);
         }
     })
-        .catch((error) => Rx.Observable.of(exports.updateMessagesRead_Failure(error)));
+        .catch((error) => Rx.Observable.of(exports.updateMessagesReadFailure(error)));
 };
 exports.CHATROOM_UPLOAD_FILE = "CHATROOM_UPLOAD_FILE";
 exports.CHATROOM_UPLOAD_FILE_SUCCESS = "CHATROOM_UPLOAD_FILE_SUCCESS";

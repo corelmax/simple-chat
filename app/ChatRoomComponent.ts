@@ -181,10 +181,11 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         if (messages && messages.length > 0) {
             const prom = new Promise((resolve: (data: IMessage[]) => void, reject) => {
                 const chats = messages.slice(0) as IMessage[];
+
                 async.forEach(chats, function iterator(chat, result) {
                     if (chat.type === MessageType[MessageType.Text]) {
                         if (getConfig().appConfig.encryption === true) {
-                            self.secure.decryption(chat.body).then(function (res) {
+                            self.secure.decryption(chat.body).then((res) => {
                                 chat.body = res;
 
                                 result(null);

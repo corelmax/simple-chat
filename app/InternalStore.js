@@ -28,6 +28,6 @@ exports.default = new class InternalStore {
      * @param storageObj
      */
     setStorage(storageObj) {
-        this.dataManager.messageDAL = Object.assign({}, storageObj);
+        this.dataManager.messageDAL = storageObj;
     }
 };

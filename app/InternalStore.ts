@@ -48,6 +48,6 @@ export default new class InternalStore {
      * @param storageObj
      */
     setStorage(storageObj: IMessageDAL) {
-        this.dataManager.messageDAL = { ...storageObj };
+        this.dataManager.messageDAL = storageObj;
     }
 };

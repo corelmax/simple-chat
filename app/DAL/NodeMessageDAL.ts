@@ -9,7 +9,7 @@
  */
 import { IMessageDAL } from "./IMessageDAL";
 
-import store from "react-native-simple-store";
+const store = require("react-native-simple-store");
 
 export class NodeMessageDAL implements IMessageDAL {
     getData(rid: string): Promise<any> {

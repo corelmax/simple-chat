@@ -2,6 +2,11 @@ export { ChatRoomComponent, ChatsLogComponent } from "./app/index";
 
 export { IDataManager } from "./app/IDataManager";
 
+export * from "./app/redux/stalkBridge";
+export * from "./app/redux/chatroom";
+export * from "./app/redux/chatlogs";
+export * from "./app/redux/actions/chatlistsRx";
+
 import InternalStore from "./app/InternalStore";
 export default InternalStore;
 

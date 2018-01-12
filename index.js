@@ -16,5 +16,7 @@ var utils_1 = require("./app/utils");
 exports.SecureUtils = utils_1.SecureUtils;
 var SecureServiceFactory_1 = require("./app/utils/secure/SecureServiceFactory");
 exports.SecureServiceFactory = SecureServiceFactory_1.SecureServiceFactory;
+var services_1 = require("./app/services");
+exports.SimpleServices = services_1.SimpleServices;
 const InternalStore_1 = require("./app/InternalStore");
 exports.default = InternalStore_1.default;

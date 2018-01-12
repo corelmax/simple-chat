@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./app/index");
 exports.ChatRoomComponent = index_1.ChatRoomComponent;
 exports.ChatsLogComponent = index_1.ChatsLogComponent;
+exports.ON_MESSAGE_CHANGE = index_1.ON_MESSAGE_CHANGE;
 var stalkBridge_1 = require("./app/redux/stalkBridge");
 exports.StalkBridge = stalkBridge_1.StalkBridge;
 __export(require("./app/redux/chatroom"));

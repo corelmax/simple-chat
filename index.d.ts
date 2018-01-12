@@ -1,4 +1,4 @@
-export { ChatRoomComponent, ChatsLogComponent } from "./app/index";
+export { ChatRoomComponent, ChatsLogComponent, ON_MESSAGE_CHANGE } from "./app/index";
 export { IDataManager } from "./app/IDataManager";
 export { StalkBridge } from "./app/redux/stalkBridge";
 export * from "./app/redux/chatroom";

@@ -5,9 +5,10 @@ const NodeSecureService_1 = require("./NodeSecureService");
  * SecureServiceFactory
  */
 class SecureServiceFactory {
-    static createService(secret_key) {
-        if (!SecureServiceFactory.service)
-            SecureServiceFactory.service = new NodeSecureService_1.NodeSecureService(secret_key);
+    static createService(secretKey) {
+        if (!SecureServiceFactory.service) {
+            SecureServiceFactory.service = new NodeSecureService_1.NodeSecureService(secretKey);
+        }
         return SecureServiceFactory.service;
     }
     static getService() {

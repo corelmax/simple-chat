@@ -4,6 +4,6 @@ import { ISecureService } from "./ISecureService";
  */
 export declare class SecureServiceFactory {
     static service: ISecureService;
-    static createService(secret_key: string): ISecureService;
+    static createService(secretKey: string): ISecureService;
     static getService(): ISecureService;
 }

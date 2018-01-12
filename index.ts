@@ -10,7 +10,7 @@ export * from "./app/redux/actions/chatlistsRx";
 export { SecureUtils } from "./app/utils";
 export { SecureServiceFactory } from "./app/utils/secure/SecureServiceFactory";
 
-export { SimpleServices } from "./app/services";
+export { withToken, apiHeaders } from "./app/services";
 
 import InternalStore from "./app/InternalStore";
 export default InternalStore;

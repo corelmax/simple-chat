@@ -9,7 +9,7 @@ export declare class MessageImp implements IMessage {
     createTime: Date;
     readers: string[];
     meta: IMessageMeta;
-    target: string | Array<string>;
+    target: string | string[];
     user: {
         _id: string;
         username: string;

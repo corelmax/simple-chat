@@ -2,7 +2,8 @@ export { ChatRoomComponent, ChatsLogComponent } from "./app/index";
 
 export { IDataManager } from "./app/IDataManager";
 
-export * from "./app/InternalStore";
+import InternalStore from "./app/InternalStore";
+export default InternalStore;
 
 // export * from "./app/models/MessageImp";
 import * as CryptoHelper from "./app/utils/CryptoHelper";

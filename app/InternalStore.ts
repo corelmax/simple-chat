@@ -42,6 +42,7 @@ export default new class InternalStore {
     chatlogInstance: ChatsLogComponent;
     public createChatLogInstance() {
         this.chatlogInstance = new ChatsLogComponent();
+        return this.chatlogInstance;
     }
 
     dataManager: IDataManager = Object.create(null);

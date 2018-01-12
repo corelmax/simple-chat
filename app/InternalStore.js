@@ -23,6 +23,7 @@ exports.default = new class InternalStore {
     getApiConfig() { return this.apiConfig; }
     createChatLogInstance() {
         this.chatlogInstance = new ChatslogComponent_1.ChatsLogComponent();
+        return this.chatlogInstance;
     }
     /**
      * React.js please use MessageDAL module.

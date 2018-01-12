@@ -25,7 +25,7 @@ declare const _default: {
     encryption: boolean;
     secret: string;
     chatlogInstance: ChatsLogComponent;
-    createChatLogInstance(): void;
+    createChatLogInstance(): ChatsLogComponent;
     dataManager: IDataManager;
     setStorage(storageObj: IMessageDAL): void;
 };

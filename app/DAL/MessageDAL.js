@@ -12,7 +12,7 @@ class MessageDAL {
         //     description: 'some description'
         // });
         this.store = localForage.createInstance({
-            name: "message"
+            name: "message",
         });
     }
     getData(rid) {

@@ -17,7 +17,7 @@ export class MessageDAL implements IMessageDAL {
         // });
 
         this.store = localForage.createInstance({
-            name: "message"
+            name: "message",
         });
     }
 
@@ -25,7 +25,7 @@ export class MessageDAL implements IMessageDAL {
         return this.store.getItem(rid);
     }
 
-    saveData(rid: string, chatRecord: Array<any>) {
+    saveData(rid: string, chatRecord: any[]) {
         return this.store.setItem(rid, chatRecord);
     }
 

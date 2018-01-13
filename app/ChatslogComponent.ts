@@ -26,18 +26,22 @@ export interface IUnread { message: IMessage; rid: string; count: number; }
 export class Unread { message: IMessage; rid: string; count: number; }
 
 export async function getUnreadMessage(userId: string, roomAccess: RoomAccessData) {
-    const response = await chatroomService.getUnreadMessage(roomAccess.roomId,
-        userId, roomAccess.accessTime.toString());
-    const value = await response.json();
+    try {
+        const response = await chatroomService.getUnreadMessage(
+            roomAccess.roomId, userId, roomAccess.accessTime.toString());
+        const value = await response.json();
 
-    if (value.success) {
-        const unread = value.result as IUnread;
-        unread.rid = roomAccess.roomId;
-        const decoded = await CryptoHelper.decryptionText(unread.message as MessageImp);
+        if (value.success) {
+            const unread = value.result as IUnread;
+            unread.rid = roomAccess.roomId;
+            const decoded = await CryptoHelper.decryptionText(unread.message as MessageImp);
 
-        return unread;
-    } else {
-        throw new Error(value.message);
+            return unread;
+        } else {
+            return Promise.reject(value.message);
+        }
+    } catch (ex) {
+        return Promise.reject(ex.message);
     }
 }
 

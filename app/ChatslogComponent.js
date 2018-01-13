@@ -26,16 +26,21 @@ class Unread {
 exports.Unread = Unread;
 function getUnreadMessage(userId, roomAccess) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, userId, roomAccess.accessTime.toString());
-        const value = yield response.json();
-        if (value.success) {
-            const unread = value.result;
-            unread.rid = roomAccess.roomId;
-            const decoded = yield CryptoHelper.decryptionText(unread.message);
-            return unread;
+        try {
+            const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, userId, roomAccess.accessTime.toString());
+            const value = yield response.json();
+            if (value.success) {
+                const unread = value.result;
+                unread.rid = roomAccess.roomId;
+                const decoded = yield CryptoHelper.decryptionText(unread.message);
+                return unread;
+            }
+            else {
+                return Promise.reject(value.message);
+            }
         }
-        else {
-            throw new Error(value.message);
+        catch (ex) {
+            return Promise.reject(ex.message);
         }
     });
 }

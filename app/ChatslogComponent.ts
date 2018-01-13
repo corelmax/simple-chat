@@ -230,6 +230,7 @@ export class ChatsLogComponent {
 
         const response = await chatroomService.getRoomInfo(roomId);
         const json = await response.json();
+        console.log("getRoomInfo result", json);
 
         if (json.success) {
             const roomInfos = json.result as Room[];

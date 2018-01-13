@@ -198,6 +198,7 @@ class ChatsLogComponent {
             const self = this;
             const response = yield chatroomService.getRoomInfo(roomId);
             const json = yield response.json();
+            console.log("getRoomInfo result", json);
             if (json.success) {
                 const roomInfos = json.result;
                 const room = yield self.decorateRoomInfoData(roomInfos[0]);

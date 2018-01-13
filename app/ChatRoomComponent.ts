@@ -272,7 +272,6 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
         try {
             const response = await chatroomService.getNewerMessages(self.roomId, lastMessageTime);
-            console.log("getNewerMessages result", response);
             const value = await response.json();
 
             return new Promise((resolve, reject) => {
@@ -308,7 +307,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                         resolve(histories);
                     }
                 } else {
-                    console.warn("WTF god only know.", value.message);
+                    console.warn("WTF god only know.", value);
                     reject(value.message);
                 }
             });

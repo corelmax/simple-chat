@@ -237,7 +237,6 @@ class ChatRoomComponent {
             const self = this;
             try {
                 const response = yield chatroomService.getNewerMessages(self.roomId, lastMessageTime);
-                console.log("getNewerMessages result", response);
                 const value = yield response.json();
                 return new Promise((resolve, reject) => {
                     if (value.success) {
@@ -277,7 +276,7 @@ class ChatRoomComponent {
                         }
                     }
                     else {
-                        console.warn("WTF god only know.", value.message);
+                        console.warn("WTF god only know.", value);
                         reject(value.message);
                     }
                 });

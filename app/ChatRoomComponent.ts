@@ -272,8 +272,8 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
         try {
             const response = await chatroomService.getNewerMessages(self.roomId, lastMessageTime);
+            console.log("getNewerMessages result", response);
             const value = await response.json();
-            console.log("getNewerMessages result", value);
 
             return new Promise((resolve, reject) => {
                 if (value.success) {
@@ -285,15 +285,15 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                                 if (InternalStore.encryption === true) {
                                     self.secure.decryption(chat.body).then((res) => {
                                         chat.body = res;
-                                        cb(null);
+                                        cb(undefined);
                                     }).catch((err) => {
-                                        cb(null);
+                                        cb(undefined);
                                     });
                                 } else {
-                                    cb(null);
+                                    cb(undefined);
                                 }
                             } else {
-                                cb(null);
+                                cb(undefined);
                             }
                         }, function done(err) {
                             if (!!err) {
@@ -362,9 +362,9 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
                             if (hasMessage === false) {
                                 resultsArray.push(item);
-                                cb(null, null);
+                                cb(undefined, undefined);
                             } else {
-                                cb(null, null);
+                                cb(undefined, undefined);
                             }
                         }, function done(err, results) {
                             const merged = resultsArray.sort(self.compareMessage);

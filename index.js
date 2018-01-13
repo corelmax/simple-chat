@@ -19,14 +19,7 @@ exports.SecureServiceFactory = SecureServiceFactory_1.SecureServiceFactory;
 var services_1 = require("./app/services");
 exports.withToken = services_1.withToken;
 exports.apiHeaders = services_1.apiHeaders;
-const iMessageDal = require("./app/DAL/IMessageDAL");
-const messageDal = require("./app/DAL/MessageDAL");
-const nodeMessageDal = require("./app/DAL/NodeMessageDAL");
-var DAL;
-(function (DAL) {
-    DAL.MessageDAL = messageDal;
-    DAL.ReactNativeMessageDAL = nodeMessageDal;
-    DAL.IMessageDAL = iMessageDal;
-})(DAL = exports.DAL || (exports.DAL = {}));
+var MessageDAL_1 = require("./app/DAL/MessageDAL");
+exports.MessageDAL = MessageDAL_1.MessageDAL;
 const InternalStore_1 = require("./app/InternalStore");
 exports.default = InternalStore_1.default;

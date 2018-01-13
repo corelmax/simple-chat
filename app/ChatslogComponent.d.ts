@@ -38,7 +38,6 @@ export declare class ChatsLogComponent {
     addNewRoomAccessEvent: (data: any) => void;
     onAddRoomAccess(dataEvent: any): void;
     getUnreadMessages(userId: string, roomAccess: RoomAccessData[], callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void): void;
-    getUnreadMessage(userId: string, roomAccess: RoomAccessData): Promise<IUnread>;
     private decorateRoomInfoData(roomInfo);
     private getRoomInfo(roomId);
     getRoomsInfo(userId: string, chatrooms: Room[]): void;

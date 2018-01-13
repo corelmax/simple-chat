@@ -161,7 +161,7 @@ export class ChatsLogComponent {
         // create a queue object with concurrency 2
         const q = async.queue((task: RoomAccessData, cb: () => void) => {
             if (!!task.roomId && !!task.accessTime) {
-                self.getUnreadMessage(userId, task).then((value) => {
+                getUnreadMessage(userId, task).then((value) => {
                     unreadLogs.push(value);
                     cb();
                 }).catch((err) => {
@@ -190,23 +190,6 @@ export class ChatsLogComponent {
             });
         } else {
             callback(undefined, undefined);
-        }
-    }
-
-    public async getUnreadMessage(userId: string, roomAccess: RoomAccessData) {
-        const response = await chatroomService.getUnreadMessage(roomAccess.roomId,
-            userId, roomAccess.accessTime.toString());
-        const value = await response.json();
-
-        console.log("getUnreadMessage result: ", value);
-        if (value.success) {
-            const unread = value.result as IUnread;
-            unread.rid = roomAccess.roomId;
-            const decoded = await CryptoHelper.decryptionText(unread.message as MessageImp);
-
-            return unread;
-        } else {
-            throw new Error(value.message);
         }
     }
 

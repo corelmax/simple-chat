@@ -196,16 +196,21 @@ class ChatsLogComponent {
     getRoomInfo(roomId) {
         return __awaiter(this, void 0, void 0, function* () {
             const self = this;
-            const response = yield chatroomService.getRoomInfo(roomId);
-            const json = yield response.json();
-            console.log("getRoomInfo result", json);
-            if (json.success) {
-                const roomInfos = json.result;
-                const room = yield self.decorateRoomInfoData(roomInfos[0]);
-                return Promise.resolve(room);
+            try {
+                const response = yield chatroomService.getRoomInfo(roomId);
+                const json = yield response.json();
+                // console.log("getRoomInfo result", json);
+                if (json.success) {
+                    const roomInfos = json.result;
+                    const room = yield self.decorateRoomInfoData(roomInfos[0]);
+                    return Promise.resolve(room);
+                }
+                else {
+                    return Promise.reject(undefined);
+                }
             }
-            else {
-                return Promise.reject(undefined);
+            catch (ex) {
+                return Promise.reject(ex.message);
             }
         });
     }

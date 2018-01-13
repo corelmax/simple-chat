@@ -228,17 +228,21 @@ export class ChatsLogComponent {
     private async getRoomInfo(roomId: string) {
         const self = this;
 
-        const response = await chatroomService.getRoomInfo(roomId);
-        const json = await response.json();
-        console.log("getRoomInfo result", json);
+        try {
+            const response = await chatroomService.getRoomInfo(roomId);
+            const json = await response.json();
+            // console.log("getRoomInfo result", json);
 
-        if (json.success) {
-            const roomInfos = json.result as Room[];
-            const room = await self.decorateRoomInfoData(roomInfos[0]);
+            if (json.success) {
+                const roomInfos = json.result as Room[];
+                const room = await self.decorateRoomInfoData(roomInfos[0]);
 
-            return Promise.resolve(room);
-        } else {
-            return Promise.reject(undefined);
+                return Promise.resolve(room);
+            } else {
+                return Promise.reject(undefined);
+            }
+        } catch (ex) {
+            return Promise.reject(ex.message);
         }
     }
 

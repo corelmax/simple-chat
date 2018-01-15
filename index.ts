@@ -13,7 +13,7 @@ export { SecureServiceFactory } from "./app/utils/secure/SecureServiceFactory";
 export { withToken, apiHeaders } from "./app/services";
 
 export { IMessageDAL } from "./app/DAL/IMessageDAL";
-export { MessageDAL } from "./app/DAL/MessageDAL";
+// export { MessageDAL } from "./app/DAL/MessageDAL";
 
 import InternalStore from "./app/InternalStore";
 export default InternalStore;

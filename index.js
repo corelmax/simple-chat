@@ -19,7 +19,6 @@ exports.SecureServiceFactory = SecureServiceFactory_1.SecureServiceFactory;
 var services_1 = require("./app/services");
 exports.withToken = services_1.withToken;
 exports.apiHeaders = services_1.apiHeaders;
-var MessageDAL_1 = require("./app/DAL/MessageDAL");
-exports.MessageDAL = MessageDAL_1.MessageDAL;
+// export { MessageDAL } from "./app/DAL/MessageDAL";
 const InternalStore_1 = require("./app/InternalStore");
 exports.default = InternalStore_1.default;

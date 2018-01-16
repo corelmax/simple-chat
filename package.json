@@ -1,6 +1,6 @@
 {
   "name": "stalk-simplechat",
-  "version": "1.0.3",
+  "version": "1.0.3-f1",
   "description": "simple chat for stalk-js implementation.",
   "main": "index.js",
   "scripts": {

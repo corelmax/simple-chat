@@ -30,6 +30,9 @@ function getUnreadMessage(userId, roomAccess) {
         try {
             const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, userId, roomAccess.accessTime.toString());
             const value = yield response.json();
+            if (InternalStore_1.default.logLevel === index_3.LogLevel.debug) {
+                console.log("getUnreadMessage", value);
+            }
             if (value.success) {
                 const unread = value.result;
                 unread.rid = roomAccess.roomId;

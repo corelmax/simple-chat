@@ -31,6 +31,10 @@ export async function getUnreadMessage(userId: string, roomAccess: RoomAccessDat
             roomAccess.roomId, userId, roomAccess.accessTime.toString());
         const value = await response.json();
 
+        if (InternalStore.logLevel === LogLevel.debug) {
+            console.log("getUnreadMessage", value);
+        }
+
         if (value.success) {
             const unread = value.result as IUnread;
             unread.rid = roomAccess.roomId;

@@ -33,6 +33,6 @@ declare const _default: {
     createChatLogInstance(): ChatsLogComponent;
     dataManager: IDataManager;
     setStorage(storageObj: IMessageDAL): void;
-    logLevel: LogLevel.debug;
+    logLevel: LogLevel;
 };
 export default _default;

@@ -59,5 +59,5 @@ export default new class InternalStore {
         this.dataManager.messageDAL = storageObj;
     }
 
-    logLevel: LogLevel.debug;
+    logLevel = LogLevel.debug;
 };

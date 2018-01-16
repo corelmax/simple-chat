@@ -12,6 +12,7 @@ exports.default = new class InternalStore {
         this.encryption = false;
         this.secret = "";
         this.dataManager = Object.create(null);
+        this.logLevel = LogLevel.debug;
     }
     initStore(store) {
         this.store = Object.assign({}, store);

@@ -5,14 +5,12 @@ import { ChatsLogComponent } from "./ChatslogComponent";
 import { ChatRoomComponent } from "./ChatRoomComponent";
 import { IDataManager } from "./IDataManager";
 import { IMessageDAL } from "./DAL/IMessageDAL";
+import { LogLevel } from "../index";
+
 
 export interface IAuthStore {
     user: { _id: string, username: string };
     api_token: string;
-}
-
-export enum LogLevel {
-    debug = 0, warn = 1, error = 2,
 }
 
 export default new class InternalStore {

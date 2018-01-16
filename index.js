@@ -20,7 +20,11 @@ var services_1 = require("./app/services");
 exports.withToken = services_1.withToken;
 exports.apiHeaders = services_1.apiHeaders;
 // export { MessageDAL } from "./app/DAL/MessageDAL";
-var InternalStore_1 = require("./app/InternalStore");
-exports.LogLevel = InternalStore_1.LogLevel;
-const InternalStore_2 = require("./app/InternalStore");
-exports.default = InternalStore_2.default;
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["debug"] = 0] = "debug";
+    LogLevel[LogLevel["warn"] = 1] = "warn";
+    LogLevel[LogLevel["error"] = 2] = "error";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+const InternalStore_1 = require("./app/InternalStore");
+exports.default = InternalStore_1.default;

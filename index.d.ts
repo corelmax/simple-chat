@@ -8,6 +8,11 @@ export { SecureUtils } from "./app/utils";
 export { SecureServiceFactory } from "./app/utils/secure/SecureServiceFactory";
 export { withToken, apiHeaders } from "./app/services";
 export { IMessageDAL } from "./app/DAL/IMessageDAL";
-export { LogLevel, IAuthStore } from "./app/InternalStore";
+export declare enum LogLevel {
+    debug = 0,
+    warn = 1,
+    error = 2,
+}
+export { IAuthStore } from "./app/InternalStore";
 import InternalStore from "./app/InternalStore";
 export default InternalStore;

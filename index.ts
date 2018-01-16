@@ -15,6 +15,10 @@ export { withToken, apiHeaders } from "./app/services";
 export { IMessageDAL } from "./app/DAL/IMessageDAL";
 // export { MessageDAL } from "./app/DAL/MessageDAL";
 
-export { LogLevel, IAuthStore } from "./app/InternalStore";
+export enum LogLevel {
+    debug = 0, warn = 1, error = 2,
+}
+
+export { IAuthStore } from "./app/InternalStore";
 import InternalStore from "./app/InternalStore";
 export default InternalStore;

@@ -1,13 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ChatslogComponent_1 = require("./ChatslogComponent");
-const index_1 = require("../index");
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["debug"] = 0] = "debug";
+    LogLevel[LogLevel["warn"] = 1] = "warn";
+    LogLevel[LogLevel["error"] = 2] = "error";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
 exports.default = new class InternalStore {
     constructor() {
         this.encryption = false;
         this.secret = "";
         this.dataManager = Object.create(null);
-        this.logLevel = index_1.LogLevel.debug;
     }
     initStore(store) {
         this.store = Object.assign({}, store);
@@ -34,5 +38,8 @@ exports.default = new class InternalStore {
      */
     setStorage(storageObj) {
         this.dataManager.messageDAL = storageObj;
+    }
+    setLogLevel(level) {
+        this.logLevel = level;
     }
 };

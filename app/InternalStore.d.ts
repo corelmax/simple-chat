@@ -3,13 +3,17 @@ import { IStalkConfig, IApiConfig } from "stalk-js/starter";
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { IDataManager } from "./IDataManager";
 import { IMessageDAL } from "./DAL/IMessageDAL";
-import { LogLevel } from "../index";
 export interface IAuthStore {
     user: {
         _id: string;
         username: string;
     };
     api_token: string;
+}
+export declare enum LogLevel {
+    debug = 0,
+    warn = 1,
+    error = 2,
 }
 declare const _default: {
     store: Store<any>;
@@ -30,5 +34,6 @@ declare const _default: {
     dataManager: IDataManager;
     setStorage(storageObj: IMessageDAL): void;
     logLevel: LogLevel;
+    setLogLevel(level: LogLevel): void;
 };
 export default _default;

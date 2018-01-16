@@ -195,7 +195,7 @@ class ChatsLogComponent {
                     return Promise.resolve(room);
                 }
                 else {
-                    return Promise.reject(undefined);
+                    return Promise.reject(json.message);
                 }
             }
             catch (ex) {

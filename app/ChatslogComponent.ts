@@ -18,6 +18,7 @@ import ChatLog from "./models/ChatLog";
 import * as CryptoHelper from "./utils/CryptoHelper";
 import InternalStore from "./InternalStore";
 import * as chatroomService from "./services/ChatroomService";
+import { LogLevel } from "./index";
 
 export type ChatLogMap = Map<string, ChatLog>;
 export type UnreadMap = Map<string, IUnread>;
@@ -176,7 +177,10 @@ export class ChatsLogComponent {
 
         // assign a callback
         q.drain = () => {
-            console.log("getUnreadMessages from your roomAccess is done.");
+            if (InternalStore.logLevel === LogLevel.debug) {
+                console.log("getUnreadMessages from your roomAccess is done.", unreadLogs);
+            }
+
             callback(undefined, unreadLogs);
         };
 

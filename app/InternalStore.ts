@@ -11,6 +11,10 @@ export interface IAuthStore {
     api_token: string;
 }
 
+export enum LogLevel {
+    debug = 0, warn = 1, error = 2,
+}
+
 export default new class InternalStore {
     store: Store<any>;
     public initStore(store: Store<any>) {
@@ -54,4 +58,6 @@ export default new class InternalStore {
     setStorage(storageObj: IMessageDAL) {
         this.dataManager.messageDAL = storageObj;
     }
+
+    logLevel: LogLevel.debug;
 };

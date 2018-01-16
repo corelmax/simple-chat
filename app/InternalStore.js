@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ChatslogComponent_1 = require("./ChatslogComponent");
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["debug"] = 0] = "debug";
+    LogLevel[LogLevel["warn"] = 1] = "warn";
+    LogLevel[LogLevel["error"] = 2] = "error";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
 exports.default = new class InternalStore {
     constructor() {
         this.encryption = false;

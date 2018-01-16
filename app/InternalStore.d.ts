@@ -10,6 +10,11 @@ export interface IAuthStore {
     };
     api_token: string;
 }
+export declare enum LogLevel {
+    debug = 0,
+    warn = 1,
+    error = 2,
+}
 declare const _default: {
     store: Store<any>;
     initStore(store: Store<any>): void;
@@ -28,5 +33,6 @@ declare const _default: {
     createChatLogInstance(): ChatsLogComponent;
     dataManager: IDataManager;
     setStorage(storageObj: IMessageDAL): void;
+    logLevel: LogLevel.debug;
 };
 export default _default;

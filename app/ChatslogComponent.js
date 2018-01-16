@@ -21,6 +21,7 @@ const ChatLog_1 = require("./models/ChatLog");
 const CryptoHelper = require("./utils/CryptoHelper");
 const InternalStore_1 = require("./InternalStore");
 const chatroomService = require("./services/ChatroomService");
+const index_3 = require("./index");
 class Unread {
 }
 exports.Unread = Unread;
@@ -151,7 +152,9 @@ class ChatsLogComponent {
         }, 10);
         // assign a callback
         q.drain = () => {
-            console.log("getUnreadMessages from your roomAccess is done.");
+            if (InternalStore_1.default.logLevel === index_3.LogLevel.debug) {
+                console.log("getUnreadMessages from your roomAccess is done.", unreadLogs);
+            }
             callback(undefined, unreadLogs);
         };
         // add some items to the queue (batch-wise)

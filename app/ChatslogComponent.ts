@@ -5,8 +5,7 @@
  */
 import * as async from "async";
 
-import { DataListener } from "stalk-js/starter/DataListener";
-import { BackendFactory } from "stalk-js/starter/BackendFactory";
+import { BackendFactory, DataListener } from "stalk-js/starter";
 import {
     IMessage, MessageType, IMessageMeta,
     RoomAccessData, StalkAccount,

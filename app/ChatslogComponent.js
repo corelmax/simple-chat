@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * ChatRoomComponent for handle some business logic of chat room.
  */
 const async = require("async");
-const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
+const starter_1 = require("stalk-js/starter");
 const index_1 = require("stalk-js/starter/models/index");
 const index_2 = require("./models/index");
 const ChatLog_1 = require("./models/ChatLog");
@@ -52,7 +52,7 @@ class ChatsLogComponent {
         this.unreadMessageMap = new Map();
         this.chatListeners = new Array();
         console.log("Create ChatsLogComponent");
-        const backendFactory = BackendFactory_1.BackendFactory.getInstance();
+        const backendFactory = starter_1.BackendFactory.getInstance();
         this.isReady = false;
         this.dataListener = backendFactory.dataListener;
         this.dataListener.addOnRoomAccessListener(this.onAccessRoom.bind(this));

@@ -1,4 +1,4 @@
-import { DataListener } from "stalk-js/starter/DataListener";
+import { DataListener } from "stalk-js/starter";
 import { IMessage, RoomAccessData, StalkAccount } from "stalk-js/starter/models/index";
 import { Room, MessageImp } from "./models/index";
 import ChatLog from "./models/ChatLog";

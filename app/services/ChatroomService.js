@@ -4,7 +4,6 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const starter_1 = require("stalk-js/starter");
-const InternalStore_1 = require("../InternalStore");
 const ServiceUtils_1 = require("./ServiceUtils");
 const getConfig = () => starter_1.BackendFactory.getInstance().getApiConfig();
 exports.getRoomInfo = (roomId) => {

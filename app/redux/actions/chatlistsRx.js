@@ -13,12 +13,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ChatslogComponent_1 = require("../../ChatslogComponent");
-const models_1 = require("stalk-js/starter/models");
 const redux_actions_1 = require("redux-actions");
 const Rx = require("rxjs/Rx");
 const chatlogs_1 = require("../chatlogs");
-const ServiceUtils_1 = require("../../services/ServiceUtils");
 const InternalStore_1 = require("../../InternalStore");
 const { ajax } = Rx.Observable;
 const config = () => InternalStore_1.default.config;

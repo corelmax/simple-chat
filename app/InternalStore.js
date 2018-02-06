@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ChatslogComponent_1 = require("./ChatslogComponent");
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["debug"] = 0] = "debug";
@@ -27,8 +26,8 @@ exports.default = new class InternalStore {
         this.apiConfig = config;
     }
     getApiConfig() { return this.apiConfig; }
-    createChatLogInstance() {
-        this.chatlogInstance = new ChatslogComponent_1.ChatsLogComponent();
+    createChatLogInstance(backendFactory) {
+        this.chatlogInstance = new ChatslogComponent_1.ChatsLogComponent(backendFactory);
         return this.chatlogInstance;
     }
     /**

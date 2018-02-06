@@ -83,10 +83,8 @@ export class ChatsLogComponent {
         }
     }
 
-    constructor() {
+    constructor(backendFactory: BackendFactory) {
         console.log("Create ChatsLogComponent");
-
-        const backendFactory = BackendFactory.getInstance();
 
         this.isReady = false;
         this.dataListener = backendFactory.dataListener;

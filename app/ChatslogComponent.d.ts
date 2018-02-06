@@ -1,4 +1,4 @@
-import { DataListener } from "stalk-js/starter";
+import { BackendFactory, DataListener } from "stalk-js/starter";
 import { IMessage, RoomAccessData, StalkAccount } from "stalk-js/starter/models/index";
 import { Room, MessageImp } from "./models/index";
 import ChatLog from "./models/ChatLog";
@@ -30,7 +30,7 @@ export declare class ChatsLogComponent {
     getUnreadItem(roomId: string): IUnread | undefined;
     updatedLastAccessTimeEvent: (data: RoomAccessData) => void;
     onUpdatedLastAccessTime(data: RoomAccessData): void;
-    constructor();
+    constructor(backendFactory: BackendFactory);
     private chatListeners;
     addOnChatListener(listener: any): void;
     onChat(message: MessageImp): void;

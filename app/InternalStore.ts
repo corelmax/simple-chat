@@ -1,5 +1,5 @@
 import { Store } from "redux";
-import { IStalkConfig, IApiConfig } from "stalk-js/starter";
+import { IStalkConfig, IApiConfig, BackendFactory } from "stalk-js/starter";
 
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { ChatRoomComponent } from "./ChatRoomComponent";
@@ -44,8 +44,8 @@ export default new class InternalStore {
     secret: string = "";
 
     chatlogInstance: ChatsLogComponent;
-    public createChatLogInstance() {
-        this.chatlogInstance = new ChatsLogComponent();
+    public createChatLogInstance(backendFactory: BackendFactory) {
+        this.chatlogInstance = new ChatsLogComponent(backendFactory);
         return this.chatlogInstance;
     }
 

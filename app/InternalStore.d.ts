@@ -1,5 +1,5 @@
 import { Store } from "redux";
-import { IStalkConfig, IApiConfig } from "stalk-js/starter";
+import { IStalkConfig, IApiConfig, BackendFactory } from "stalk-js/starter";
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { IDataManager } from "./IDataManager";
 import { IMessageDAL } from "./DAL/IMessageDAL";
@@ -30,7 +30,7 @@ declare const _default: {
     encryption: boolean;
     secret: string;
     chatlogInstance: ChatsLogComponent;
-    createChatLogInstance(): ChatsLogComponent;
+    createChatLogInstance(backendFactory: BackendFactory): ChatsLogComponent;
     dataManager: IDataManager;
     setStorage(storageObj: IMessageDAL): void;
     logLevel: LogLevel;

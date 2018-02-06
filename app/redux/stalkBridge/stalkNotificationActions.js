@@ -8,9 +8,6 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
-const CryptoHelper = require("../../utils/CryptoHelper");
-const index_1 = require("stalk-js/starter/models/index");
 const InternalStore_1 = require("../../InternalStore");
 const getStore = () => InternalStore_1.default.store;
 exports.STALK_NOTICE_NEW_MESSAGE = "STALK_NOTICE_NEW_MESSAGE";

@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Rx = require("rxjs/Rx");
 const { ajax } = Rx.Observable;
 const starter_1 = require("stalk-js/starter");
+const ServiceProvider = require("../../services/ServiceProvider");
 const InternalStore_1 = require("../../InternalStore");
 const getStore = () => InternalStore_1.default.store;
 const authReducer = () => InternalStore_1.default.authStore;

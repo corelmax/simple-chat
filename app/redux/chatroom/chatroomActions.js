@@ -19,6 +19,7 @@ const SecureServiceFactory_1 = require("../../utils/secure/SecureServiceFactory"
 const ChatRoomComponent_1 = require("../../ChatRoomComponent");
 const models_1 = require("stalk-js/starter/models");
 const models_2 = require("../../models");
+const R = require("ramda");
 const redux_actions_1 = require("redux-actions");
 const chatroomService = require("../../services/ChatroomService");
 const MessageService = require("../../services/MessageService");

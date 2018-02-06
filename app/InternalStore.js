@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ChatslogComponent_1 = require("./ChatslogComponent");
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["debug"] = 0] = "debug";

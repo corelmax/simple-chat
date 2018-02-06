@@ -43,7 +43,7 @@ function getUnreadMessage(userId, roomAccess) {
             }
         }
         catch (ex) {
-            return Promise.reject(ex.message);
+            return Promise.reject(ex);
         }
     });
 }

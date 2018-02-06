@@ -45,7 +45,7 @@ export async function getUnreadMessage(userId: string, roomAccess: RoomAccessDat
             return Promise.reject(value.message);
         }
     } catch (ex) {
-        return Promise.reject(ex.message);
+        return Promise.reject(ex);
     }
 }
 

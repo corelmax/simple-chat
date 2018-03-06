@@ -1,6 +1,6 @@
 {
   "name": "stalk-simplechat",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "simple chat for stalk-js implementation.",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "rxjs": "^5.5.6",
-    "stalk-js": "git+https://github.com/mzget/s-talk-js-client.git#feature/starter_kit"
+    "stalk-js": "git+https://github.com/mzget/s-talk-js-client.git#develop"
   },
   "devDependencies": {
     "@types/async": "^2.0.47",

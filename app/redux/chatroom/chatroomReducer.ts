@@ -38,7 +38,7 @@ const chatroomDefaults = {
     chatrooms: [],
 } as IChatroom;
 // Define our record types with a typescript interface
-interface IChatroom {
+export interface IChatroom {
     isFetching: boolean;
     state: string;
     room: Room | null;

@@ -26,4 +26,4 @@ export declare class ChatRoomRecoder extends ChatRoomRecoder_base {
     get<T extends keyof IChatroom>(value: T): IChatroom[T];
 }
 export declare const chatRoomRecoder: ChatRoomRecoder;
-export declare const chatroomReducer: (state: ChatRoomRecoder | undefined, action: AnyAction) => ChatRoomRecoder;
+export declare const chatroomReducer: (state: ChatRoomRecoder | undefined, action: AnyAction) => immutable.Map<string, any>;

@@ -173,7 +173,7 @@ export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
             const { result } = action.payload;
             const chatrooms = state.get("chatrooms") as Array<Room>;
             const temps = chatrooms.filter(chatroom => {
-                return chatroom._id !== result[0].Id;
+                return chatroom._id !== result[0]._id;
             });
             temps.push(result[0]);
 

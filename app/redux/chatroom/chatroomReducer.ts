@@ -177,7 +177,7 @@ export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
             });
             temps.push(result[0]);
 
-            return state.set("chatrooms", temps).set("isFetching", false);
+            return state.set("chatrooms", temps).set("room", result[0]).set("isFetching", false);
         }
 
         /** Set room */

@@ -132,7 +132,7 @@ exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
                 return chatroom._id !== result[0]._id;
             });
             temps.push(result[0]);
-            return state.set("chatrooms", temps).set("isFetching", false);
+            return state.set("chatrooms", temps).set("room", result[0]).set("isFetching", false);
         }
         /** Set room */
         case chatroomActions.GET_PERSISTEND_CHATROOM:

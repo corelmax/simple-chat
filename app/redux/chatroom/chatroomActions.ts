@@ -355,7 +355,10 @@ export const getRoom = (roomId: string) => {
     return rooms[0];
 };
 
-export const createChatRoom = (myUser, contactUser) => {
+export const createPrivateChatRoomMembers = (
+    myUser: { _id: string, username: string, role: string },
+    contactUser: { _id: string, username: string, role: string }
+) => {
     if (myUser && contactUser) {
         const owner = {} as IMember;
         owner._id = myUser._id;

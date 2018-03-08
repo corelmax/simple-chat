@@ -346,7 +346,7 @@ exports.getRoom = (roomId) => {
     });
     return rooms[0];
 };
-exports.createChatRoom = (myUser, contactUser) => {
+exports.createPrivateChatRoomMembers = (myUser, contactUser) => {
     if (myUser && contactUser) {
         const owner = {};
         owner._id = myUser._id;

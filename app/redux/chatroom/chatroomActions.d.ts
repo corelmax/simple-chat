@@ -36,7 +36,15 @@ export declare const GET_PERSISTEND_CHATROOM_SUCCESS = "GET_PERSISTEND_CHATROOM_
 export declare const GET_PERSISTEND_CHATROOM_FAILURE = "GET_PERSISTEND_CHATROOM_FAILURE";
 export declare const getPersistendChatroom: (roomId: string) => void;
 export declare const getRoom: (roomId: string) => Room | null;
-export declare const createChatRoom: (myUser: any, contactUser: any) => {
+export declare const createPrivateChatRoomMembers: (myUser: {
+    _id: string;
+    username: string;
+    role: string;
+}, contactUser: {
+    _id: string;
+    username: string;
+    role: string;
+}) => {
     owner: IMember;
     contact: IMember;
 } | null;

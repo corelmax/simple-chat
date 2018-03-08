@@ -128,7 +128,10 @@ exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
         case chatroomRxActions.CREATE_PRIVATE_CHATROOM_SUCCESS: {
             const { result } = action.payload;
             const chatrooms = state.get("chatrooms");
-            const temps = [...chatrooms, ...result];
+            const temps = chatrooms.filter(chatroom => {
+                return chatroom._id !== result[0].Id;
+            });
+            temps.push(result[0]);
             return state.set("chatrooms", temps).set("isFetching", false);
         }
         /** Set room */

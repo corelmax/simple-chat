@@ -39,11 +39,11 @@ export declare const getRoom: (roomId: string) => Room | null;
 export declare const createPrivateChatRoomMembers: (myUser: {
     _id: string;
     username: string;
-    role: string;
+    role?: string | undefined;
 }, contactUser: {
     _id: string;
     username: string;
-    role: string;
+    role?: string | undefined;
 }) => {
     owner: IMember;
     contact: IMember;

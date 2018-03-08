@@ -125,6 +125,12 @@ exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
             return state.set("state", chatroomRxActions.FETCH_PRIVATE_CHATROOM_FAILURE)
                 .set("isFetching", false)
                 .set("room", null);
+        case chatroomRxActions.CREATE_PRIVATE_CHATROOM_SUCCESS: {
+            const { result } = action.payload;
+            const chatrooms = state.get("chatrooms");
+            const temps = [...chatrooms, ...result];
+            return state.set("chatrooms", temps).set("isFetching", false);
+        }
         /** Set room */
         case chatroomActions.GET_PERSISTEND_CHATROOM:
             return state.set("isFetching", false);

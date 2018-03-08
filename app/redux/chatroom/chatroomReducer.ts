@@ -13,6 +13,7 @@ import {
     GET_NEWER_MESSAGE_FAILURE,
     ON_MESSAGE_CHANGED,
 } from "./chatroomActions";
+
 import * as chatroomRxActions from "./chatroomRxEpic";
 import * as chatroomActions from "./chatroomActions";
 import * as StalkBridgeActions from "../stalkBridge/stalkBridgeActions";
@@ -167,6 +168,14 @@ export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
             return state.set("state", chatroomRxActions.FETCH_PRIVATE_CHATROOM_FAILURE)
                 .set("isFetching", false)
                 .set("room", null);
+
+        case chatroomRxActions.CREATE_PRIVATE_CHATROOM_SUCCESS: {
+            const { result } = action.payload;
+            const chatrooms = state.get("chatrooms") as Array<Room>;
+            const temps = [...chatrooms, ...result];
+
+            return state.set("chatrooms", temps).set("isFetching", false);
+        }
 
         /** Set room */
         case chatroomActions.GET_PERSISTEND_CHATROOM:

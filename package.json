@@ -15,6 +15,7 @@
     "ramda": "^0.25.0",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
+    "redux-observable": "^0.18.0",
     "rxjs": "^5.5.6",
     "stalk-js": "git+https://github.com/mzget/s-talk-js-client.git#develop"
   },
@@ -28,6 +29,7 @@
     "@types/redux-actions": "^2.2.3",
     "jest": "^22.0.6",
     "redux-logger": "^3.0.6",
-    "typescript": "^2.7.1"
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
   }
 }

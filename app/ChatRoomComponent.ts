@@ -58,6 +58,10 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
     constructor(dataManager: IDataManager) {
         console.log("ChatRoomComponent: constructor");
 
+        this.roomId = "" as string;
+        this.chatroomDelegate = undefined as any;
+        this.outsideRoomDelegete = undefined as any;
+
         this.secure = SecureServiceFactory.getService();
         const backendFactory = BackendFactory.getInstance();
 

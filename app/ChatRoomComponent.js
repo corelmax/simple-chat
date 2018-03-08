@@ -40,6 +40,9 @@ class ChatRoomComponent {
             });
         };
         console.log("ChatRoomComponent: constructor");
+        this.roomId = "";
+        this.chatroomDelegate = undefined;
+        this.outsideRoomDelegete = undefined;
         this.secure = SecureServiceFactory_1.SecureServiceFactory.getService();
         const backendFactory = BackendFactory_1.BackendFactory.getInstance();
         this.dataManager = dataManager;

@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Rx = require("rxjs/Rx");
 const { ajax } = Rx.Observable;
 const starter_1 = require("stalk-js/starter");
-const ServiceProvider = require("../../services/ServiceProvider");
+const chatlogService = require("../../services/ChatlogService");
 const InternalStore_1 = require("../../InternalStore");
 const getStore = () => InternalStore_1.default.store;
 const authReducer = () => InternalStore_1.default.authStore;
@@ -31,7 +31,7 @@ const removeRoomAccess_Failure = (error) => ({ type: exports.STALK_REMOVE_ROOM_A
 exports.removeRoomAccess_Epic = action$ => (action$.ofType(exports.STALK_REMOVE_ROOM_ACCESS)
     .mergeMap(action => {
     let { _id } = authReducer().user;
-    return ServiceProvider.removeLastAccessRoomInfo(_id, action.payload);
+    return chatlogService.removeLastAccessRoomInfo(_id, action.payload);
 }).map(json => {
     console.log("removeRoomAccess_Epic", json.response);
     let result = json.response;
@@ -69,7 +69,7 @@ exports.updateLastAccessRoomCancelled = () => ({ type: UPDATE_LAST_ACCESS_ROOM_C
 exports.updateLastAccessRoom_Epic = action$ => action$.ofType(UPDATE_LAST_ACCESS_ROOM)
     .mergeMap(action => {
     let { room_id, user_id } = action.payload;
-    return ServiceProvider.updateLastAccessRoomInfo(user_id, room_id);
+    return chatlogService.updateLastAccessRoomInfo(user_id, room_id);
 })
     .map(response => {
     console.log("updateLastAccessRoom value", response.xhr.response);
@@ -114,7 +114,7 @@ const getLastAccessRoomFailure = (error) => ({ type: exports.GET_LAST_ACCESS_ROO
 exports.getLastAccessRoom_Epic = (action$) => (action$.ofType(exports.GET_LAST_ACCESS_ROOM)
     .mergeMap((action) => {
     const { user_id } = action.payload;
-    return ServiceProvider.getLastAccessRoomInfo(user_id)
+    return chatlogService.getLastAccessRoomInfo(user_id)
         .then((response) => response.json())
         .then((json) => json)
         .catch((err) => err);

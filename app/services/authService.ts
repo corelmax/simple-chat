@@ -1,4 +1,5 @@
 import "isomorphic-fetch";
+
 import InternalStore from "../InternalStore";
 import { withToken, apiHeaders } from "./ServiceUtils";
 

@@ -55,9 +55,13 @@ exports.getUnreadMessage = getUnreadMessage;
 class ChatsLogComponent {
     constructor(backendFactory) {
         this.chatlogCount = 0;
+        this.onReady = Object.create(null);
+        this.getRoomsInfoCompleteEvent = Object.create(null);
         this.chatslog = new Map();
         this.unreadMessageMap = new Map();
+        this.updatedLastAccessTimeEvent = Object.create(null);
         this.chatListeners = new Array();
+        this.addNewRoomAccessEvent = Object.create(null);
         console.log("Create ChatsLogComponent");
         this.isReady = false;
         this.dataListener = backendFactory.dataListener;

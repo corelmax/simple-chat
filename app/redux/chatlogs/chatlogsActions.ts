@@ -13,7 +13,6 @@ import { getUnreadMessage, IUnread, Unread } from "../../ChatslogComponent";
 import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
 import { Room } from "../../models/Room";
 import ChatLog from "../../models/chatLog";
-import * as ServiceProvider from "../../services/ServiceProvider";
 import * as chatroomActions from "../chatroom/chatroomActions";
 
 import InternalStore from "../../InternalStore";

@@ -58,8 +58,8 @@ export class ChatsLogComponent {
 
     private chatlogCount: number = 0;
     public isReady: boolean;
-    public onReady: (rooms: Room[]) => void;
-    public getRoomsInfoCompleteEvent: () => void;
+    public onReady: (rooms: Room[]) => void = Object.create(null);
+    public getRoomsInfoCompleteEvent: () => void = Object.create(null);
     private chatslog = new Map<string, ChatLog>();
     public getChatsLog(): ChatLog[] {
         return Array.from(this.chatslog.values());
@@ -80,7 +80,7 @@ export class ChatsLogComponent {
     public getUnreadItem(roomId: string) {
         return this.unreadMessageMap.get(roomId);
     }
-    public updatedLastAccessTimeEvent: (data: RoomAccessData) => void;
+    public updatedLastAccessTimeEvent: (data: RoomAccessData) => void = Object.create(null);
     onUpdatedLastAccessTime(data: RoomAccessData) {
         if (!!this.updatedLastAccessTimeEvent) {
             this.updatedLastAccessTimeEvent(data);
@@ -150,7 +150,7 @@ export class ChatsLogComponent {
         });
     }
 
-    public addNewRoomAccessEvent: (data: any) => void;
+    public addNewRoomAccessEvent: (data: any) => void = Object.create(null);
     public onAddRoomAccess(dataEvent: any) {
         console.warn("ChatsLogComponent.onAddRoomAccess", JSON.stringify(dataEvent));
 

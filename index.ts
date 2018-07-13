@@ -7,6 +7,8 @@ export * from "./app/redux/chatroom/index";
 export * from "./app/redux/chatlogs/index";
 export * from "./app/redux/actions/chatlistsRx";
 
+
+export { Services } from "./app/services/index"
 export { SecureUtils } from "./app/utils/index";
 export { SecureServiceFactory } from "./app/utils/secure/SecureServiceFactory";
 

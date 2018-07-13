@@ -10,7 +10,7 @@ const { ajax } = Rx.Observable;
 import { BackendFactory } from "stalk-js/starter";
 import { StalkAccount, RoomAccessData } from "stalk-js/starter/models";
 import { ChatRoomComponent } from "../../ChatRoomComponent";
-import * as ServiceProvider from "../../services/ServiceProvider";
+import * as chatlogService from "../../services/ChatlogService";
 
 import InternalStore from "../../InternalStore";
 const getStore = () => InternalStore.store;
@@ -30,7 +30,7 @@ export const removeRoomAccess_Epic = action$ => (
     action$.ofType(STALK_REMOVE_ROOM_ACCESS)
         .mergeMap(action => {
             let { _id } = authReducer().user;
-            return ServiceProvider.removeLastAccessRoomInfo(_id, action.payload);
+            return chatlogService.removeLastAccessRoomInfo(_id, action.payload);
         }).map(json => {
             console.log("removeRoomAccess_Epic", json.response);
 
@@ -75,7 +75,7 @@ export const updateLastAccessRoom_Epic = action$ =>
     action$.ofType(UPDATE_LAST_ACCESS_ROOM)
         .mergeMap(action => {
             let { room_id, user_id } = action.payload;
-            return ServiceProvider.updateLastAccessRoomInfo(user_id, room_id);
+            return chatlogService.updateLastAccessRoomInfo(user_id, room_id);
         })
         .map(response => {
             console.log("updateLastAccessRoom value", response.xhr.response);
@@ -129,7 +129,7 @@ export const getLastAccessRoom_Epic = (action$) => (
     action$.ofType(GET_LAST_ACCESS_ROOM)
         .mergeMap((action) => {
             const { user_id } = action.payload;
-            return ServiceProvider.getLastAccessRoomInfo(user_id)
+            return chatlogService.getLastAccessRoomInfo(user_id)
                 .then((response) => response.json())
                 .then((json) => json)
                 .catch((err) => err);

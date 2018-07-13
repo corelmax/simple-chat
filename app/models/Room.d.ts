@@ -30,7 +30,7 @@ export declare enum RoomStatus {
 export declare class Room {
     _id: any;
     name: string;
-    owner: IMember;
+    owner: IMember | string;
     owner_id: string;
     type: RoomType;
     members: IMember[] | String;

@@ -6,7 +6,7 @@ import * as serviceUtils from "./ServiceUtils";
 import * as messageService from "./MessageService";
 import * as chatlogService from "./ChatlogService";
 import * as chatroomService from "./ChatroomService";
-import * as groupService from "./GroupService";
+import * as groupServices from "./GroupServices";
 
 export namespace Services {
     export import AuthService = authService;
@@ -15,5 +15,5 @@ export namespace Services {
     export import MessageService = messageService;
     export import ChatlogService = chatlogService;
     export import ChatroomService = chatroomService;
-    export import GroupService = groupService;
+    export import GroupServices = groupServices;
 }

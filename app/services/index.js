@@ -10,7 +10,7 @@ const serviceUtils = require("./ServiceUtils");
 const messageService = require("./MessageService");
 const chatlogService = require("./ChatlogService");
 const chatroomService = require("./ChatroomService");
-const groupService = require("./GroupService");
+const groupServices = require("./GroupServices");
 var Services;
 (function (Services) {
     Services.AuthService = authService;
@@ -19,5 +19,5 @@ var Services;
     Services.MessageService = messageService;
     Services.ChatlogService = chatlogService;
     Services.ChatroomService = chatroomService;
-    Services.GroupService = groupService;
+    Services.GroupServices = groupServices;
 })(Services = exports.Services || (exports.Services = {}));

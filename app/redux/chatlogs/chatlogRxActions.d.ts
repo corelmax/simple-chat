@@ -1,3 +1,8 @@
+/**
+ * Copyright 2017 Ahoo Studio.co.th.
+ *
+ * This is pure function action for redux app.
+ */
 export declare const STALK_REMOVE_ROOM_ACCESS = "STALK_REMOVE_ROOM_ACCESS";
 export declare const STALK_REMOVE_ROOM_ACCESS_FAILURE = "STALK_REMOVE_ROOM_ACCESS_FAILURE";
 export declare const STALK_REMOVE_ROOM_ACCESS_SUCCESS = "STALK_REMOVE_ROOM_ACCESS_SUCCESS";

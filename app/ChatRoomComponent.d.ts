@@ -1,5 +1,10 @@
+/**
+ * Copyright 2016 Ahoo Studio.co.th.
+ *
+ * ChatRoomComponent for handle some business logic of chat room.
+ */
 import { ChatEvents } from "stalk-js";
-import { IMessage } from "stalk-js/starter/models";
+import { IMessage } from "stalk-js/starter/models/index";
 import { MessageImp, IMember } from "./models/index";
 import { IDataManager } from "./IDataManager";
 export declare const ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
@@ -22,18 +27,18 @@ export declare class ChatRoomComponent implements ChatEvents.IChatServerEvents {
     onChat(message: MessageImp): void;
     onRoomJoin(data: any): void;
     onLeaveRoom(data: any): void;
-    private messageReadTick(messageQueue, roomId);
+    private messageReadTick;
     onMessageRead(message: IMessage): void;
     onGetMessagesReaders(dataEvent: any): void;
     getPersistentMessage(rid: string): Promise<IMessage[]>;
     getNewerMessageRecord(callback: (results: IMessage[], roomId: string) => void): Promise<void>;
-    private getNewerMessages(lastMessageTime);
+    private getNewerMessages;
     getOlderMessageChunk(roomId: string): Promise<any[]>;
     getTopEdgeMessageTime(): Promise<Date>;
-    private compareMessage(a, b);
+    private compareMessage;
     updateReadMessages(): void;
     updateWhoReadMyMessages(): Promise<void>;
-    getMemberProfile(member: IMember, callback: (err, res) => void): void;
+    getMemberProfile(member: IMember, callback: (err: any, res: any) => void): void;
     getMessages(): Promise<any>;
     dispose(): void;
 }

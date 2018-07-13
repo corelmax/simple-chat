@@ -16,7 +16,7 @@ import { decryptionText, hashComputation } from "./utils/CryptoHelper";
 import { ISecureService } from "./utils/secure/ISecureService";
 import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
 
-import { MessageType, IMessage, RoomAccessData } from "stalk-js/starter/models";
+import { MessageType, IMessage, RoomAccessData } from "stalk-js/starter/models/index";
 import { MessageImp, Room, IMember } from "./models/index";
 import { IDataManager } from "./IDataManager";
 

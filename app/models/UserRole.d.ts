@@ -3,5 +3,5 @@ export declare enum UserRole {
     section_chief = 1,
     department_chief = 2,
     division_chief = 3,
-    admin = 4,
+    admin = 4
 }

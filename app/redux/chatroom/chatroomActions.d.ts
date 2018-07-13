@@ -1,3 +1,8 @@
+/**
+ * Copyright 2016 Ahoo Studio.co.th.
+ *
+ * This is pure function action for redux app.
+ */
 import { IMessage } from "stalk-js/starter/models";
 import { Room, IMember } from "../../models";
 /**

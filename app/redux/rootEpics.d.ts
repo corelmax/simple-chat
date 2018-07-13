@@ -1,1 +1,1 @@
-export declare const rootEpic: any;
+export declare const rootEpic: (action$: any) => any;

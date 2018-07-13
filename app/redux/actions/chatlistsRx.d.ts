@@ -1,3 +1,8 @@
+/**
+ * Copyright 2017 Ahoo Studio.co.th.
+ *
+ * This is pure function action for redux app.
+ */
 export declare const GET_ALL_CHATROOM_SUCCESS = "GET_ALL_CHATROOM_SUCCESS";
 export declare const GET_ALL_CHATROOM_FAILURE = "GET_ALL_CHATROOM_FAILURE";
 export declare const getAllChatRoom: () => void;

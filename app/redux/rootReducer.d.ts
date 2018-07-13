@@ -1,2 +1,3 @@
-declare const _default: any;
+import { Reducer } from "redux";
+declare const _default: Reducer<any>;
 export default _default;

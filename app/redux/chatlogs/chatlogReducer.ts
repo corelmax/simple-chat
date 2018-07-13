@@ -11,44 +11,42 @@ import * as chatlistsRx from "../actions/chatlistsRx";
 
 import { Record } from "immutable";
 
-// Define our record defaults
-const defaultChatlog = {
-    isFetching: false,
-    state: "",
-    chatsLog: [],
-    roomAccess: null,
-    error: "",
-};
+
 
 // Define our record types with a typescript interface
 interface IChatlog {
     isFetching: boolean;
     state: string;
     chatsLog: any[];
+    logCount: number;
     roomAccess: any;
     error: string;
 }
-// Create our FruitRecord class
-export class ChatLogRecorder extends Record(defaultChatlog) {
+export const ChatLogInitState = Record({
+    isFetching: false,
+    state: "",
+    chatsLog: [],
+    logCount: null,
+    roomAccess: null,
+    error: "",
+});
+const initialState = new ChatLogInitState();
 
-    // Set the params. This will also typecheck when we instantiate a new FruitRecord
-    constructor(params: IChatlog) {
-        super(params);
-    }
-
-    // This following line is the magic. It overrides the "get" method of record
-    // and lets typescript know the return type based on our IFruitParams interface
-    get<T extends keyof IChatlog>(value: T): IChatlog[T] {
-
-        // super.get() is mapped to the original get() function on Record
-        return super.get(value);
-    }
-
-}
-export const chatlogInitRecord = new ChatLogRecorder(defaultChatlog);
-
-export function chatlogReducer(state = chatlogInitRecord, action: AnyAction) {
+export function chatlogReducer(state = initialState, action: AnyAction) {
     switch (action.type) {
+        case ChatlogsActions.STALK_GET_CHATSLOG_COMPLETE: {
+            const { chatsLog, logCount } = action.payload;
+            return state.set("chatsLog", chatsLog)
+                .set("logCount", logCount)
+                .set("state", ChatlogsActions.STALK_GET_CHATSLOG_COMPLETE);
+        }
+        case ChatlogsActions.STALK_CHATLOG_MAP_CHANGED: {
+            const { chatsLog, logCount } = action.payload;
+            const nextState = state.set("chatsLog", chatsLog)
+                .set("logCount", logCount)
+                .set("state", ChatlogsActions.STALK_CHATLOG_MAP_CHANGED);
+            return nextState;
+        }
         case ChatlogsActions.ON_CHATLOG_CHANGE: {
             const prev = state.get("chatsLog") as any[];
             const next = prev.filter((log) => log.rid !== action.payload.rid);

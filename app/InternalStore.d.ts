@@ -1,3 +1,4 @@
+import { Store } from "redux";
 import { IStalkConfig, IApiConfig, BackendFactory } from "stalk-js/starter";
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { IDataManager } from "./IDataManager";
@@ -12,11 +13,11 @@ export interface IAuthStore {
 export declare enum LogLevel {
     debug = 0,
     warn = 1,
-    error = 2,
+    error = 2
 }
 declare const _default: {
-    store: any;
-    initStore(store: any): void;
+    store: Store<any>;
+    initStore(store: Store<any>): void;
     authStore: IAuthStore;
     setAuth(newState: IAuthStore): void;
     appStateEvent: string;
@@ -31,6 +32,11 @@ declare const _default: {
     chatlogInstance: ChatsLogComponent;
     createChatLogInstance(backendFactory: BackendFactory): ChatsLogComponent;
     dataManager: IDataManager;
+    /**
+     * React.js please use MessageDAL module.
+     * React-Native please use NodeMessageDAL instead.
+     * @param storageObj
+     */
     setStorage(storageObj: IMessageDAL): void;
     logLevel: LogLevel;
     setLogLevel(level: LogLevel): void;

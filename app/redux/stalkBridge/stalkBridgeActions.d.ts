@@ -1,3 +1,8 @@
+/**
+ * Copyright 2016-2018 Ahoo Studio.co.th.
+ *
+ * This is pure function action for redux app.
+ */
 import { StalkAccount } from "stalk-js/starter/models";
 export declare const getSessionToken: () => any;
 export declare const STALK_INIT = "STALK_INIT";

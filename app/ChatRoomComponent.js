@@ -20,7 +20,7 @@ const stalk_js_1 = require("stalk-js");
 const chatroomService = require("./services/ChatroomService");
 const CryptoHelper_1 = require("./utils/CryptoHelper");
 const SecureServiceFactory_1 = require("./utils/secure/SecureServiceFactory");
-const models_1 = require("stalk-js/starter/models");
+const index_1 = require("stalk-js/starter/models/index");
 // import { imagesPath } from "../consts/StickerPath";
 const InternalStore_1 = require("./InternalStore");
 const getConfig = () => BackendFactory_1.BackendFactory.getInstance().config;
@@ -76,7 +76,7 @@ class ChatRoomComponent {
         const self = this;
         this.dataManager.messageDAL.getData(this.roomId).then((chats) => {
             const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
-            if (message.type === models_1.MessageType[models_1.MessageType.Text]) {
+            if (message.type === index_1.MessageType[index_1.MessageType.Text]) {
                 CryptoHelper_1.decryptionText(message).then((decoded) => {
                     self.saveMessages(chatMessages, message);
                 }).catch((err) => self.saveMessages(chatMessages, message));
@@ -148,7 +148,7 @@ class ChatRoomComponent {
                 const prom = new Promise((resolve, reject) => {
                     const chats = messages.slice(0);
                     async.forEach(chats, function iterator(chat, result) {
-                        if (chat.type === models_1.MessageType[models_1.MessageType.Text]) {
+                        if (chat.type === index_1.MessageType[index_1.MessageType.Text]) {
                             if (InternalStore_1.default.encryption === true) {
                                 self.secure.decryption(chat.body).then((res) => {
                                     chat.body = res;
@@ -247,7 +247,7 @@ class ChatRoomComponent {
                         histories = value.result;
                         if (histories.length > 0) {
                             async.forEach(histories, (chat, cb) => {
-                                if (chat.type === models_1.MessageType[models_1.MessageType.Text]) {
+                                if (chat.type === index_1.MessageType[index_1.MessageType.Text]) {
                                     if (InternalStore_1.default.encryption === true) {
                                         self.secure.decryption(chat.body).then((res) => {
                                             chat.body = res;

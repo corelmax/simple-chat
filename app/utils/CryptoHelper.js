@@ -9,13 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const SecureServiceFactory_1 = require("./secure/SecureServiceFactory");
-const models_1 = require("stalk-js/starter/models");
+const index_1 = require("stalk-js/starter/models/index");
 exports.decryptionText = (message) => __awaiter(this, void 0, void 0, function* () {
     if (!message) {
         return message;
     }
     const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
-    if (message.type === models_1.MessageType[models_1.MessageType.Text]) {
+    if (message.type === index_1.MessageType[index_1.MessageType.Text]) {
         const result = yield secure.decryption(message.body);
         message.body = result;
         return message;

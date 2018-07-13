@@ -38,13 +38,13 @@ export declare class ChatsLogComponent {
     addNewRoomAccessEvent: (data: any) => void;
     onAddRoomAccess(dataEvent: any): void;
     getUnreadMessages(userId: string, roomAccess: RoomAccessData[], callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void): void;
-    private decorateRoomInfoData(roomInfo);
-    private getRoomInfo(roomId);
+    private decorateRoomInfoData;
+    private getRoomInfo;
     getRoomsInfo(userId: string, chatrooms: Room[]): void;
     manageChatLog(chatrooms: Room[]): Promise<ChatLogMap>;
-    private organizeChatLogMap(unread, roomInfo, done);
-    private setLogProp(log, displayMessage, callback);
-    private addChatLog(chatLog, done);
+    private organizeChatLogMap;
+    private setLogProp;
+    private addChatLog;
     checkRoomInfo(unread: IUnread, chatrooms: Room[]): Promise<{} | undefined>;
     getChatsLogCount(): number;
     increaseChatsLogCount(num: number): void;

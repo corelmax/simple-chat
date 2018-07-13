@@ -3,6 +3,7 @@ const { ajax } = Rx.Observable;
 
 import InternalStore from "../InternalStore";
 import { apiHeaders, withToken } from "./ServiceUtils";
+
 const getConfig = () => InternalStore.apiConfig;
 const authReducer = () => InternalStore.authStore;
 

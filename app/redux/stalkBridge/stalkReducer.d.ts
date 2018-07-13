@@ -1,4 +1,10 @@
 /**
+ * Copyright 2016 Ahoo Studio.co.th.
+ *
+ * This is pure function for redux app.
+ */
+import { Record } from "immutable";
+/**
  * ## Initial State
  */
 /**
@@ -6,5 +12,5 @@
  * This Record contains the state of the form and the
  * fields it contains.
  */
-export declare const StalkInitState: any;
-export declare function stalkReducer(state: any, action: ReduxActions.Action<any>): any;
+export declare const StalkInitState: Record.Class;
+export declare function stalkReducer(state: import("../../../../../../../../Users/nattapon/Projects/stalk/simpleChat/node_modules/immutable").Map<string, any> | undefined, action: ReduxActions.Action<any>): import("../../../../../../../../Users/nattapon/Projects/stalk/simpleChat/node_modules/immutable").Map<string, any>;

@@ -17,11 +17,12 @@
     "redux-actions": "^2.2.1",
     "redux-observable": "^0.18.0",
     "rxjs": "^5.5.6",
-    "stalk-js": "0.0.43"
+    "stalk-js": "https://github.com/mzget/s-talk-js-client#develop"
   },
   "devDependencies": {
     "@types/async": "^2.0.47",
     "@types/crypto-js": "^3.1.38",
+    "@types/immutable": "^3.8.7",
     "@types/jest": "^22.0.1",
     "@types/node": "^8.5.8",
     "@types/ramda": "^0.25.15",

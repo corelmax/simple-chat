@@ -1,7 +1,7 @@
 ﻿export enum MemberRole {
     member = 0,
     admin = 1,
-    owner
+    owner,
 }
 export interface IMembersStatus {
     uid: string;
@@ -17,11 +17,11 @@ export interface IMember {
     status: string;
 }
 export enum RoomType {
-    organizationGroup, projectBaseGroup, privateGroup, privateChat
-};
+    organizationGroup, projectBaseGroup, privateGroup, privateChat,
+}
 export enum RoomStatus {
-    active, disable, delete
-};
+    active, disable, delete,
+}
 export class Room {
     _id: any;
     owner: IMember;

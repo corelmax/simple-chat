@@ -14,4 +14,4 @@ const rootReducer = combineReducers({
     chatlogReducer: any,
 }>;
 
-export default rootReducer;
+export default rootReducer as Reducer<any>;

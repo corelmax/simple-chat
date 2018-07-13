@@ -5,4 +5,4 @@ export declare const STALK_CHATLOG_CONTACT_COMPLETE = "STALK_CHATLOG_CONTACT_COM
 export declare const ON_CHATLOG_CHANGE = "ON_CHATLOG_CHANGE";
 export declare const onChatLogChanged: any;
 export declare function initChatsLog(): void;
-export declare function getChatsLogCount(): any;
+export declare function getChatsLogCount(): number | null;

@@ -122,8 +122,8 @@ export const GET_LAST_ACCESS_ROOM_SUCCESS = "GET_LAST_ACCESS_ROOM_SUCCESS";
 export const GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
 
 export const getLastAccessRoom = (user_id: string) => ({ type: GET_LAST_ACCESS_ROOM, payload: { user_id } });
-const getLastAccessRoomSuccess = (payload) => ({ type: GET_LAST_ACCESS_ROOM_SUCCESS, payload });
-const getLastAccessRoomFailure = (error) => ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error });
+const getLastAccessRoomSuccess = (payload: any) => ({ type: GET_LAST_ACCESS_ROOM_SUCCESS, payload });
+const getLastAccessRoomFailure = (error: any) => ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error });
 
 export const getLastAccessRoom_Epic = (action$) => (
     action$.ofType(GET_LAST_ACCESS_ROOM)

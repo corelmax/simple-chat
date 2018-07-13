@@ -10,4 +10,5 @@ export declare function stalkLogin(user: StalkAccount): void;
 export declare const STALK_ON_SOCKET_RECONNECT = "STALK_ON_SOCKET_RECONNECT";
 export declare const STALK_ON_SOCKET_CLOSE = "STALK_ON_SOCKET_CLOSE";
 export declare const STALK_ON_SOCKET_DISCONNECTED = "STALK_ON_SOCKET_DISCONNECTED";
+export declare const STALK_CONNECTION_PROBLEM = "STALK_CONNECTION_PROBLEM";
 export declare function stalkLogout(): Promise<any>;

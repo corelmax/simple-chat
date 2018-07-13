@@ -1,4 +1,3 @@
-import { Store } from "redux";
 import { IStalkConfig, IApiConfig, BackendFactory } from "stalk-js/starter";
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { IDataManager } from "./IDataManager";
@@ -16,8 +15,8 @@ export declare enum LogLevel {
     error = 2,
 }
 declare const _default: {
-    store: Store<any>;
-    initStore(store: Store<any>): void;
+    store: any;
+    initStore(store: any): void;
     authStore: IAuthStore;
     setAuth(newState: IAuthStore): void;
     appStateEvent: string;

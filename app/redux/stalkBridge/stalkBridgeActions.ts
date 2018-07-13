@@ -85,6 +85,8 @@ export function stalkLogin(user: StalkAccount) {
 export const STALK_ON_SOCKET_RECONNECT = "STALK_ON_SOCKET_RECONNECT";
 export const STALK_ON_SOCKET_CLOSE = "STALK_ON_SOCKET_CLOSE";
 export const STALK_ON_SOCKET_DISCONNECTED = "STALK_ON_SOCKET_DISCONNECTED";
+export const STALK_CONNECTION_PROBLEM = "STALK_CONNECTION_PROBLEM";
+
 const onStalkSocketReconnect = (data: any) => ({ type: STALK_ON_SOCKET_RECONNECT, payload: data });
 const onStalkSocketClose = (data: any) => ({ type: STALK_ON_SOCKET_CLOSE, payload: data });
 const onStalkSocketDisconnected = (data: any) => ({ type: STALK_ON_SOCKET_DISCONNECTED, payload: data });

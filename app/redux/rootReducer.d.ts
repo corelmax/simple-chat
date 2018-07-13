@@ -1,7 +1,2 @@
-import { Reducer } from "redux";
-declare const rootReducer: Reducer<{
-    stalkReducer: any;
-    chatroomReducer: any;
-    chatlogReducer: any;
-}>;
-export default rootReducer;
+declare const _default: any;
+export default _default;

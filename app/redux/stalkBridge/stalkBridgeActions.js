@@ -86,6 +86,7 @@ exports.stalkLogin = stalkLogin;
 exports.STALK_ON_SOCKET_RECONNECT = "STALK_ON_SOCKET_RECONNECT";
 exports.STALK_ON_SOCKET_CLOSE = "STALK_ON_SOCKET_CLOSE";
 exports.STALK_ON_SOCKET_DISCONNECTED = "STALK_ON_SOCKET_DISCONNECTED";
+exports.STALK_CONNECTION_PROBLEM = "STALK_CONNECTION_PROBLEM";
 const onStalkSocketReconnect = (data) => ({ type: exports.STALK_ON_SOCKET_RECONNECT, payload: data });
 const onStalkSocketClose = (data) => ({ type: exports.STALK_ON_SOCKET_CLOSE, payload: data });
 const onStalkSocketDisconnected = (data) => ({ type: exports.STALK_ON_SOCKET_DISCONNECTED, payload: data });

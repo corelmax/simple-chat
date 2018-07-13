@@ -13,14 +13,12 @@ var RoomType;
     RoomType[RoomType["privateGroup"] = 2] = "privateGroup";
     RoomType[RoomType["privateChat"] = 3] = "privateChat";
 })(RoomType = exports.RoomType || (exports.RoomType = {}));
-;
 var RoomStatus;
 (function (RoomStatus) {
     RoomStatus[RoomStatus["active"] = 0] = "active";
     RoomStatus[RoomStatus["disable"] = 1] = "disable";
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus = exports.RoomStatus || (exports.RoomStatus = {}));
-;
 class Room {
 }
 exports.Room = Room;

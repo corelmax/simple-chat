@@ -1,17 +1,17 @@
 import { IMessage, IMessageMeta } from "stalk-js/starter/models";
 
 export class MessageImp implements IMessage {
-    _id: string;
-    rid: string;
-    type: string;
-    body: string;
+    _id: string = "";
+    rid: string = "";
+    type: string = "";
+    body: string = "";
     src: any;
-    sender: string;
+    sender: string = "";
     createTime: Date;
-    readers: string[];
+    readers: string[] = [];
     meta: IMessageMeta;
-    target: string | string[];
+    target: string | string[] = "";
     user: { _id: string, username: string, avatar: string };
-    uuid: string;
-    status: string;
+    uuid: string = "";
+    status: string = "";
 }

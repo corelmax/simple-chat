@@ -1,36 +1,47 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("isomorphic-fetch");
-const ChitChatFactory_1 = require("../ChitChatFactory");
-const chitchatServiceUtils_1 = require("./chitchatServiceUtils");
-const getConfig = () => ChitChatFactory_1.ChitChatFactory.getInstance().config;
+const InternalStore_1 = require("../InternalStore");
+const ServiceUtils_1 = require("./ServiceUtils");
+const getConfig = () => InternalStore_1.default.apiConfig;
 function auth(user) {
-    return fetch(`${getConfig().api.auth}`, {
+    return fetch(`${getConfig().auth}`, {
         method: "POST",
         body: JSON.stringify({ email: user.email, password: user.password }),
-        headers: chitchatServiceUtils_1.apiHeaders()
+        headers: ServiceUtils_1.apiHeaders()
     });
 }
 exports.auth = auth;
+function authWithSocial(user) {
+    return fetch(`${getConfig().auth}/social`, {
+        method: "POST",
+        body: JSON.stringify({
+            email: user.email,
+            social_type: user.social_type,
+        }),
+        headers: ServiceUtils_1.apiHeaders(),
+    });
+}
+exports.authWithSocial = authWithSocial;
 function tokenAuth(token) {
-    return fetch(`${getConfig().api.auth}/verify`, {
+    return fetch(`${getConfig().auth}/verify`, {
         method: "POST",
         body: JSON.stringify({ token: token }),
-        headers: chitchatServiceUtils_1.apiHeaders()
+        headers: ServiceUtils_1.apiHeaders()
     });
 }
 exports.tokenAuth = tokenAuth;
 function logout(token) {
-    return fetch(`${getConfig().api.auth}/logout`, {
+    return fetch(`${getConfig().auth}/logout`, {
         method: "POST",
-        headers: chitchatServiceUtils_1.withToken(chitchatServiceUtils_1.apiHeaders())(token)
+        headers: ServiceUtils_1.withToken(ServiceUtils_1.apiHeaders())(token)
     });
 }
 exports.logout = logout;
 function signup(user) {
-    return fetch(`${getConfig().api.user}/signup`, {
+    return fetch(`${getConfig().user}/signup`, {
         method: "POST",
-        headers: chitchatServiceUtils_1.apiHeaders(),
+        headers: ServiceUtils_1.apiHeaders(),
         body: JSON.stringify({ user: user })
     });
 }

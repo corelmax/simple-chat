@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const async = require("async");
 const Rx = require("rxjs/Rx");
 const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
-const stalk_js_1 = require("stalk-js");
+const stalkjs_1 = require("stalk-js/stalkjs");
 const chatroomService = require("./services/ChatroomService");
 const CryptoHelper_1 = require("./utils/CryptoHelper");
 const SecureServiceFactory_1 = require("./utils/secure/SecureServiceFactory");
@@ -34,7 +34,7 @@ class ChatRoomComponent {
             chatMessages.push(message);
             self.dataManager.messageDAL.saveData(self.roomId, chatMessages).then((chats) => {
                 if (!!self.chatroomDelegate) {
-                    self.chatroomDelegate(stalk_js_1.ChatEvents.ON_CHAT, message);
+                    self.chatroomDelegate(stalkjs_1.ChatEvents.ON_CHAT, message);
                     self.chatroomDelegate(exports.ON_MESSAGE_CHANGE, chatMessages);
                 }
             });
@@ -96,7 +96,7 @@ class ChatRoomComponent {
         else {
             console.log("this msg come from other room.");
             if (!!this.outsideRoomDelegete) {
-                this.outsideRoomDelegete(stalk_js_1.ChatEvents.ON_CHAT, message);
+                this.outsideRoomDelegete(stalkjs_1.ChatEvents.ON_CHAT, message);
             }
         }
     }

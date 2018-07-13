@@ -22,7 +22,7 @@ const ServiceUtils_1 = require("../../services/ServiceUtils");
 const chatroomService = require("../../services/ChatroomService");
 const MessageService_1 = require("../../services/MessageService");
 const InternalStore_1 = require("../../InternalStore");
-const getConfig = () => InternalStore_1.default.config;
+const apiConfig = () => InternalStore_1.default.apiConfig;
 const authReducer = () => InternalStore_1.default.authStore;
 const getStore = () => InternalStore_1.default.store;
 exports.FETCH_PRIVATE_CHATROOM = "FETCH_PRIVATE_CHATROOM";
@@ -142,13 +142,7 @@ exports.CHATROOM_UPLOAD_FILE_SUCCESS = "CHATROOM_UPLOAD_FILE_SUCCESS";
 exports.CHATROOM_UPLOAD_FILE_FAILURE = "CHATROOM_UPLOAD_FILE_FAILURE";
 exports.CHATROOM_UPLOAD_FILE_CANCELLED = "CHATROOM_UPLOAD_FILE_CANCELLED";
 exports.uploadFile = (progressEvent, file) => ({ type: exports.CHATROOM_UPLOAD_FILE, payload: { data: progressEvent, file } });
-const uploadFileSuccess = (result) => {
-    let payload = null;
-    if (!!result.data) {
-        payload = { path: `${config.SS_REST.host}${result.data.image}` };
-    }
-    return ({ type: exports.CHATROOM_UPLOAD_FILE_SUCCESS, payload });
-};
+const uploadFileSuccess = (result) => ({ type: exports.CHATROOM_UPLOAD_FILE_SUCCESS, payload: result });
 const uploadFileFailure = (error) => ({ type: exports.CHATROOM_UPLOAD_FILE_FAILURE, payload: error });
 exports.uploadFileCanceled = () => ({ type: exports.CHATROOM_UPLOAD_FILE_CANCELLED });
 exports.uploadFileEpic = (action$) => (action$.ofType(exports.CHATROOM_UPLOAD_FILE)
@@ -157,7 +151,7 @@ exports.uploadFileEpic = (action$) => (action$.ofType(exports.CHATROOM_UPLOAD_FI
     body.append("file", action.payload.file);
     return ajax({
         method: "POST",
-        url: `${config.SS_REST.uploadChatFile}`,
+        url: `${apiConfig().fileUpload}`,
         body,
         headers: {},
     });

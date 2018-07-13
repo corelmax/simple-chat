@@ -11,5 +11,5 @@ export declare class RoomDAL implements IRoomDAL {
     get(key: any): Promise<any>;
     remove(key: any): Promise<any>;
     clear(): Promise<any>;
-    getKeys(): any;
+    getKeys(): Promise<string[]>;
 }

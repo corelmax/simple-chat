@@ -22,6 +22,10 @@ const InternalStore_1 = require("./InternalStore");
 const chatroomService = require("./services/ChatroomService");
 const index_3 = require("./index");
 class Unread {
+    constructor() {
+        this.rid = "";
+        this.count = 0;
+    }
 }
 exports.Unread = Unread;
 function getUnreadMessage(userId, roomAccess) {

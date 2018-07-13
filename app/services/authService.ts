@@ -1,19 +1,30 @@
 import "isomorphic-fetch";
-import { ChitChatFactory } from "../ChitChatFactory";
-import { withToken, apiHeaders } from "./chitchatServiceUtils";
+import InternalStore from "../InternalStore";
+import { withToken, apiHeaders } from "./ServiceUtils";
 
-const getConfig = () => ChitChatFactory.getInstance().config;
+const getConfig = () => InternalStore.apiConfig;
 
 export function auth(user: { email: string, password: string }) {
-    return fetch(`${getConfig().api.auth}`, {
+    return fetch(`${getConfig().auth}`, {
         method: "POST",
         body: JSON.stringify({ email: user.email, password: user.password }),
         headers: apiHeaders()
     });
 }
 
+export function authWithSocial(user: { email: string, social_type: string }) {
+    return fetch(`${getConfig().auth}/social`, {
+        method: "POST",
+        body: JSON.stringify({
+            email: user.email,
+            social_type: user.social_type,
+        }),
+        headers: apiHeaders(),
+    });
+}
+
 export function tokenAuth(token: string) {
-    return fetch(`${getConfig().api.auth}/verify`, {
+    return fetch(`${getConfig().auth}/verify`, {
         method: "POST",
         body: JSON.stringify({ token: token }),
         headers: apiHeaders()
@@ -21,14 +32,14 @@ export function tokenAuth(token: string) {
 }
 
 export function logout(token: string) {
-    return fetch(`${getConfig().api.auth}/logout`, {
+    return fetch(`${getConfig().auth}/logout`, {
         method: "POST",
         headers: withToken(apiHeaders())(token)
     });
 }
 
 export function signup(user) {
-    return fetch(`${getConfig().api.user}/signup`, {
+    return fetch(`${getConfig().user}/signup`, {
         method: "POST",
         headers: apiHeaders(),
         body: JSON.stringify({ user: user })

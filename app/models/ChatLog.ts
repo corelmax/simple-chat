@@ -5,9 +5,9 @@ export default class ChatLog {
     roomName: string;
     roomType: RoomType;
     room: Room;
-    lastMessageTime: string;
-    lastMessage: string;
-    count: number;
+    lastMessageTime: string = "";
+    lastMessage: string = "";
+    count: number = 0;
 
     constructor(room: Room) {
         this.id = room._id;

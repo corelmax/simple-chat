@@ -3,7 +3,7 @@
  *
  * ChatRoomComponent for handle some business logic of chat room.
  */
-import { ChatEvents } from "stalk-js";
+import { ChatEvents } from "stalk-js/stalkjs";
 import { IMessage } from "stalk-js/starter/models/index";
 import { MessageImp, IMember } from "./models/index";
 import { IDataManager } from "./IDataManager";

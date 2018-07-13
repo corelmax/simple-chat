@@ -14,4 +14,10 @@ export class MessageImp implements IMessage {
     user: { _id: string, username: string, avatar: string };
     uuid: string = "";
     status: string = "";
+
+    constructor() {
+        this.user = Object.create(null);
+        this.createTime = Object.create(null);
+        this.meta = Object.create(null);
+    }
 }

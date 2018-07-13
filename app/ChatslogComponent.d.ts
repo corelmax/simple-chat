@@ -10,7 +10,7 @@ export interface IUnread {
     count: number;
 }
 export declare class Unread {
-    message: IMessage;
+    message: IMessage | undefined;
     rid: string;
     count: number;
 }

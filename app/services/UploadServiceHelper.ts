@@ -1,9 +1,10 @@
 import { queue } from "async";
-import { ChitChatFactory } from "../ChitChatFactory";
+import InternalStore from "../InternalStore";
 
-const config = ChitChatFactory.getInstance().config;
+const config = InternalStore.config;
 
-export function manageUploadQueue(files: Array<any>, target_api: string, onFinished: (results) => void, speedCallBack: boolean = false, onSpeedCallBack: (results) => void) {
+export function manageUploadQueue(files: Array<any>, target_api: string,
+    onFinished: (results) => void, speedCallBack: boolean = false, onSpeedCallBack: (results) => void) {
     let results = [];
 
     let q = queue(function (task, callback) {

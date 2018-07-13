@@ -17,6 +17,7 @@ const Rx = require("rxjs/Rx");
 const { ajax } = Rx.Observable;
 const redux_actions_1 = require("redux-actions");
 const starter_1 = require("stalk-js/starter");
+const ChatslogComponent_1 = require("../../ChatslogComponent");
 const chatroomActions = require("../chatroom/chatroomActions");
 const InternalStore_1 = require("../../InternalStore");
 const authReducer = () => InternalStore_1.default.authStore;
@@ -28,16 +29,16 @@ exports.STALK_CHATLOG_CONTACT_COMPLETE = "STALK_CHATLOG_CONTACT_COMPLETE";
 exports.ON_CHATLOG_CHANGE = "ON_CHATLOG_CHANGE";
 exports.onChatLogChanged = redux_actions_1.createAction(exports.ON_CHATLOG_CHANGE, (payload) => payload);
 const listenerImp = (newMsg) => {
-    const dataManager = starter_1.BackendFactory.getInstance().dataManager;
+    const dataManager = InternalStore_1.default.dataManager;
     if (!dataManager.isMySelf(newMsg.sender)) {
         getStore().dispatch(exports.onChatLogChanged(newMsg));
     }
 };
 function updateLastAccessTimeEventHandler(newRoomAccess) {
     console.log("updateLastAccessTimeEventHandler", newRoomAccess);
-    const chatsLogComp = starter_1.BackendFactory.getInstance().chatLogComp;
+    const chatsLogComp = InternalStore_1.default.chatlogInstance;
     const { _id } = authReducer().user;
-    chatsLogComp.getUnreadMessage(_id, newRoomAccess).then(function (unread) {
+    ChatslogComponent_1.getUnreadMessage(_id, newRoomAccess).then((unread) => {
         chatsLogComp.addUnreadMessage(unread);
         calculateUnreadCount();
         onUnreadMessageMapChanged(unread);

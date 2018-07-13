@@ -16,9 +16,10 @@ import {
 import { apiHeaders } from "../../services/ServiceUtils";
 import * as chatroomService from "../../services/ChatroomService";
 import { updateMessagesReader } from "../../services/MessageService";
+import { FileResult } from "../../models/FileResult";
 
 import InternalStore from "../../InternalStore";
-const getConfig = () => InternalStore.config;
+const apiConfig = () => InternalStore.apiConfig;
 const authReducer = () => InternalStore.authStore;
 const getStore = () => InternalStore.store;
 
@@ -137,7 +138,7 @@ export const updateMessagesRead_Epic = (action$) => {
                 if (value.sender !== authReducer().user._id) {
                     return value._id;
                 }
-            });
+            }) as string[];
 
             return updateMessagesReader(updates, action.payload.room_id);
         })
@@ -156,13 +157,7 @@ export const CHATROOM_UPLOAD_FILE_FAILURE = "CHATROOM_UPLOAD_FILE_FAILURE";
 export const CHATROOM_UPLOAD_FILE_CANCELLED = "CHATROOM_UPLOAD_FILE_CANCELLED";
 
 export const uploadFile = (progressEvent: ProgressEvent, file) => ({ type: CHATROOM_UPLOAD_FILE, payload: { data: progressEvent, file } });
-const uploadFileSuccess = (result) => {
-    let payload = null;
-    if (!!result.data) {
-        payload = { path: `${config.SS_REST.host}${result.data.image}` };
-    }
-    return ({ type: CHATROOM_UPLOAD_FILE_SUCCESS, payload });
-};
+const uploadFileSuccess = (result: FileResult) => ({ type: CHATROOM_UPLOAD_FILE_SUCCESS, payload: result });
 const uploadFileFailure = (error) => ({ type: CHATROOM_UPLOAD_FILE_FAILURE, payload: error });
 export const uploadFileCanceled = () => ({ type: CHATROOM_UPLOAD_FILE_CANCELLED });
 export const uploadFileEpic = (action$) => (
@@ -173,7 +168,7 @@ export const uploadFileEpic = (action$) => (
 
             return ajax({
                 method: "POST",
-                url: `${config.SS_REST.uploadChatFile}`,
+                url: `${apiConfig().fileUpload}`,
                 body,
                 headers: {},
             });

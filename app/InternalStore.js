@@ -9,8 +9,15 @@ var LogLevel;
 })(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
 exports.default = new class InternalStore {
     constructor() {
+        this.appStateEvent = "";
         this.encryption = false;
         this.secret = "";
+        this.store = Object.create(null);
+        this.authStore = Object.create(null);
+        this.logLevel = Object.create(null);
+        this.config = Object.create(null);
+        this.apiConfig = Object.create(null);
+        this.chatlogInstance = Object.create(null);
         this.dataManager = Object.create(null);
     }
     initStore(store) {
@@ -22,7 +29,9 @@ exports.default = new class InternalStore {
     initConfig(config) {
         this.config = config;
     }
-    getConfig() { return this.config; }
+    getConfig() {
+        return this.config;
+    }
     initApiConfig(config) {
         this.apiConfig = config;
     }

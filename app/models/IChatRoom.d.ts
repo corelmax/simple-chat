@@ -1,4 +1,4 @@
-import { Room } from '../chats/models/Room';
+import { Room } from './Room';
 export interface IChatRoom {
     id: string;
     name: string;

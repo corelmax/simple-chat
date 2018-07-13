@@ -10,7 +10,7 @@ declare namespace IProfile {
         tel: string;
         email: string;
         image: any;
-        role: UserRole;
+        role: UserRole | undefined;
     }
     class Profile implements IProfile {
         uid: string;
@@ -22,7 +22,7 @@ declare namespace IProfile {
         tel: string;
         email: string;
         image: any;
-        role: UserRole;
+        role: UserRole | undefined;
     }
 }
 export = IProfile;

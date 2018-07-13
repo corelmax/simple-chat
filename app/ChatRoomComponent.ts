@@ -9,7 +9,7 @@ import * as Rx from "rxjs/Rx";
 
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import { DataListener } from "stalk-js/starter/DataListener";
-import { ChatEvents } from "stalk-js";
+import { ChatEvents } from "stalk-js/stalkjs";
 import * as chatroomService from "./services/ChatroomService";
 
 import { decryptionText, hashComputation } from "./utils/CryptoHelper";

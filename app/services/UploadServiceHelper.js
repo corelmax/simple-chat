@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const async_1 = require("async");
-const ChitChatFactory_1 = require("../ChitChatFactory");
-const config = ChitChatFactory_1.ChitChatFactory.getInstance().config;
+const InternalStore_1 = require("../InternalStore");
+const config = InternalStore_1.default.config;
 function manageUploadQueue(files, target_api, onFinished, speedCallBack = false, onSpeedCallBack) {
     let results = [];
     let q = async_1.queue(function (task, callback) {

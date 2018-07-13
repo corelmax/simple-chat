@@ -17,4 +17,5 @@ export declare class MessageImp implements IMessage {
     };
     uuid: string;
     status: string;
+    constructor();
 }

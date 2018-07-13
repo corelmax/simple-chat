@@ -4,7 +4,7 @@
  * This is pure function action for redux app.
  */
 
-import { HttpStatusCode, ChatEvents } from "stalk-js";
+import { HttpStatusCode, ChatEvents, IDictionary } from "stalk-js/stalkjs";
 import { BackendFactory } from "stalk-js/starter";
 import { SecureServiceFactory } from "../../utils/secure/SecureServiceFactory";
 import { ChatRoomComponent, ON_MESSAGE_CHANGE } from "../../ChatRoomComponent";
@@ -40,12 +40,15 @@ export function initChatRoom(currentRoom: Room) {
 
     const roomName = currentRoom.owner;
     if (!roomName && currentRoom.type === RoomType.privateChat) {
-        currentRoom.members.some((v, id, arr) => {
-            if (v._id !== InternalStore.authStore.user._id) {
-                currentRoom.owner.username = v.username;
-                return true;
-            }
-        });
+        if (Array.isArray(currentRoom.members)) {
+            currentRoom.members.some((v) => {
+                if (v._id !== InternalStore.authStore.user._id) {
+                    currentRoom.owner.username = v.username;
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     const chatroomComp = ChatRoomComponent.createInstance(InternalStore.dataManager);
@@ -193,7 +196,7 @@ export function sendMessage(message: IMessage) {
         secure.encryption(message.body).then((result) => {
             message.body = result;
             if (!!server) {
-                const msg = {};
+                const msg = {} as IDictionary;
                 msg.data = message;
                 msg["x-api-key"] = getConfig().apiKey;
                 msg["api-version"] = getConfig().apiVersion;
@@ -213,7 +216,7 @@ export function sendMessage(message: IMessage) {
         });
     } else {
         if (!!server) {
-            const msg = {};
+            const msg = {} as IDictionary;
             msg.data = message;
             msg["x-api-key"] = getConfig().apiKey;
             msg["api-version"] = getConfig().apiVersion;

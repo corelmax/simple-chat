@@ -23,7 +23,11 @@ import { LogLevel } from "./index";
 export type ChatLogMap = Map<string, ChatLog>;
 export type UnreadMap = Map<string, IUnread>;
 export interface IUnread { message: IMessage; rid: string; count: number; }
-export class Unread { message: IMessage; rid: string; count: number; }
+export class Unread {
+    message: IMessage | undefined;
+    rid: string = "";
+    count: number = 0;
+}
 
 export async function getUnreadMessage(userId: string, roomAccess: RoomAccessData) {
     try {

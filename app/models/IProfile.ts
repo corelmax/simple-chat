@@ -12,20 +12,20 @@ namespace IProfile {
         tel: string;
         email: string;
         image: any;
-        role: UserRole;
+        role: UserRole | undefined;
     }
 
     export class Profile implements IProfile {
-        uid: string;
-        username: string;
-        password: string;
-        firstname: string;
-        lastname: string;
-        status: string;
-        tel: string;
-        email: string;
-        image: any;
-        role: UserRole;
+        uid: string = "";
+        username: string = "";
+        password: string = "";
+        firstname: string = "";
+        lastname: string = "";
+        status: string = "";
+        tel: string = "";
+        email: string = "";
+        image: any = "";
+        role: UserRole | undefined;
     }
 }
 export = IProfile;

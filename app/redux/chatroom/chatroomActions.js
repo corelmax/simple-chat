@@ -13,7 +13,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const stalk_js_1 = require("stalk-js");
+const stalkjs_1 = require("stalk-js/stalkjs");
 const starter_1 = require("stalk-js/starter");
 const SecureServiceFactory_1 = require("../../utils/secure/SecureServiceFactory");
 const ChatRoomComponent_1 = require("../../ChatRoomComponent");
@@ -41,12 +41,15 @@ function initChatRoom(currentRoom) {
     }
     const roomName = currentRoom.owner;
     if (!roomName && currentRoom.type === models_2.RoomType.privateChat) {
-        currentRoom.members.some((v, id, arr) => {
-            if (v._id !== InternalStore_1.default.authStore.user._id) {
-                currentRoom.owner.username = v.username;
-                return true;
-            }
-        });
+        if (Array.isArray(currentRoom.members)) {
+            currentRoom.members.some((v) => {
+                if (v._id !== InternalStore_1.default.authStore.user._id) {
+                    currentRoom.owner.username = v.username;
+                    return true;
+                }
+                return false;
+            });
+        }
     }
     const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.createInstance(InternalStore_1.default.dataManager);
     chatroomComp.setRoomId(currentRoom._id);
@@ -56,8 +59,8 @@ function initChatRoom(currentRoom) {
 }
 exports.initChatRoom = initChatRoom;
 function onChatRoomDelegate(event, data) {
-    if (event === stalk_js_1.ChatEvents.ON_CHAT) {
-        console.log("onChatRoomDelegate: ", stalk_js_1.ChatEvents.ON_CHAT, data);
+    if (event === stalkjs_1.ChatEvents.ON_CHAT) {
+        console.log("onChatRoomDelegate: ", stalkjs_1.ChatEvents.ON_CHAT, data);
         const messageImp = data;
         /**
          * Todo **
@@ -96,7 +99,7 @@ function onChatRoomDelegate(event, data) {
 }
 function onOutSideRoomDelegate(event, data) {
     console.log("Call notification here..."); // active, background, inactive
-    if (event === stalk_js_1.ChatEvents.ON_CHAT) {
+    if (event === stalkjs_1.ChatEvents.ON_CHAT) {
         NotificationManager.notify(data);
     }
 }
@@ -235,7 +238,7 @@ function sendMessageResponse(err, res) {
     else {
         console.log("sendMessageResponse!", res);
         const chatroomComp = ChatRoomComponent_1.ChatRoomComponent.getInstance();
-        if (res.code === stalk_js_1.HttpStatusCode.success && res.data.hasOwnProperty("resultMsg")) {
+        if (res.code === stalkjs_1.HttpStatusCode.success && res.data.hasOwnProperty("resultMsg")) {
             const tempmsg = Object.assign({}, res.data.resultMsg);
             if (tempmsg.type === models_1.MessageType[models_1.MessageType.Text] && InternalStore_1.default.encryption) {
                 const secure = SecureServiceFactory_1.SecureServiceFactory.getService();
@@ -273,7 +276,7 @@ function joinRoom(roomId, token, username) {
     if (!!server) {
         server.getLobby().joinRoom(token, username, roomId, (err, res) => {
             console.log("JoinChatRoomRequest value", res);
-            if (err || res.code !== stalk_js_1.HttpStatusCode.success) {
+            if (err || res.code !== stalkjs_1.HttpStatusCode.success) {
                 getStore().dispatch(joinRoomFailure(err));
             }
             else {

@@ -14,7 +14,13 @@ import InternalStore from "../../InternalStore";
 const getStore = () => InternalStore.store;
 export const getSessionToken = () => {
     const backendFactory = BackendFactory.getInstance();
-    return getStore().getState().stalkReducer.stalkToken;
+    const store = getStore();
+    if (store) {
+        return store.getState().stalkReducer.stalkToken;
+    }
+    else {
+        return "";
+    }
 };
 const onGetContactProfileFail = (contactId: string) => { };
 

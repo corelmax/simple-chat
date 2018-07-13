@@ -8,4 +8,5 @@ export declare class MemberImp implements IMember {
     room_role: any;
     user_role: string;
     jobPosition: string;
+    constructor();
 }

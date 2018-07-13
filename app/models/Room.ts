@@ -24,14 +24,23 @@ export enum RoomStatus {
 }
 export class Room {
     _id: any;
+    name: string = "";
     owner: IMember;
-    owner_id: string;
+    owner_id: string = "";
     type: RoomType;
     members: IMember[] | String;
-    image: string;
-    description: string;
+    image: string = "";
+    description: string = "";
     status: RoomStatus;
     createTime: Date;
-    org_chart_id: string;
-    team_id: string;
+    org_chart_id: string = "";
+    team_id: string = "";
+
+    constructor() {
+        this.members = Object.create(null);
+        this.owner = Object.create(null);
+        this.type = Object.create(null);
+        this.status = Object.create(null);
+        this.createTime = Object.create(null);
+    }
 }

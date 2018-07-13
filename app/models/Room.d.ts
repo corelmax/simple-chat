@@ -29,6 +29,7 @@ export declare enum RoomStatus {
 }
 export declare class Room {
     _id: any;
+    name: string;
     owner: IMember;
     owner_id: string;
     type: RoomType;
@@ -39,4 +40,5 @@ export declare class Room {
     createTime: Date;
     org_chart_id: string;
     team_id: string;
+    constructor();
 }

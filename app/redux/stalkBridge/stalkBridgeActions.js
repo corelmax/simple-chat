@@ -20,7 +20,13 @@ const InternalStore_1 = require("../../InternalStore");
 const getStore = () => InternalStore_1.default.store;
 exports.getSessionToken = () => {
     const backendFactory = BackendFactory_1.BackendFactory.getInstance();
-    return getStore().getState().stalkReducer.stalkToken;
+    const store = getStore();
+    if (store) {
+        return store.getState().stalkReducer.stalkToken;
+    }
+    else {
+        return "";
+    }
 };
 const onGetContactProfileFail = (contactId) => { };
 exports.STALK_INIT = "STALK_INIT";

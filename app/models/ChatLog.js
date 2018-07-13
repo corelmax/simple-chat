@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class ChatLog {
     constructor(room) {
+        this.lastMessageTime = "";
+        this.lastMessage = "";
+        this.count = 0;
         this.id = room._id;
         this.roomName = room.name;
         this.roomType = room.type;

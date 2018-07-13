@@ -11,6 +11,9 @@ class MessageImp {
         this.target = "";
         this.uuid = "";
         this.status = "";
+        this.user = Object.create(null);
+        this.createTime = Object.create(null);
+        this.meta = Object.create(null);
     }
 }
 exports.MessageImp = MessageImp;

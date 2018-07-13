@@ -20,5 +20,18 @@ var RoomStatus;
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus = exports.RoomStatus || (exports.RoomStatus = {}));
 class Room {
+    constructor() {
+        this.name = "";
+        this.owner_id = "";
+        this.image = "";
+        this.description = "";
+        this.org_chart_id = "";
+        this.team_id = "";
+        this.members = Object.create(null);
+        this.owner = Object.create(null);
+        this.type = Object.create(null);
+        this.status = Object.create(null);
+        this.createTime = Object.create(null);
+    }
 }
 exports.Room = Room;

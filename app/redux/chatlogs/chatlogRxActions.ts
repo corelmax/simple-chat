@@ -8,7 +8,7 @@ import * as Rx from "rxjs/Rx";
 const { ajax } = Rx.Observable;
 
 import { BackendFactory } from "stalk-js/starter";
-import { StalkAccount, RoomAccessData } from "stalk-js/starter/models";
+import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
 import { ChatRoomComponent } from "../../ChatRoomComponent";
 import * as chatlogService from "../../services/ChatlogService";
 
@@ -22,23 +22,23 @@ export const STALK_REMOVE_ROOM_ACCESS_SUCCESS = "STALK_REMOVE_ROOM_ACCESS_SUCCES
 export const STALK_REMOVE_ROOM_ACCESS_CANCELLED = "STALK_REMOVE_ROOM_ACCESS_CANCELLED";
 
 export const removeRoomAccess = (roomId: string) => ({ type: STALK_REMOVE_ROOM_ACCESS, payload: roomId });
-const removeRoomAccess_Success = (payload: any) => ({ type: STALK_REMOVE_ROOM_ACCESS_SUCCESS, payload });
-const removeRoomAccess_Cancelled = () => ({ type: STALK_REMOVE_ROOM_ACCESS_CANCELLED });
-const removeRoomAccess_Failure = (error: any) => ({ type: STALK_REMOVE_ROOM_ACCESS_FAILURE, payload: error });
+const removeRoomAccessSuccess = (payload: any) => ({ type: STALK_REMOVE_ROOM_ACCESS_SUCCESS, payload });
+const removeRoomAccessCancelled = () => ({ type: STALK_REMOVE_ROOM_ACCESS_CANCELLED });
+const removeRoomAccessFailure = (error: any) => ({ type: STALK_REMOVE_ROOM_ACCESS_FAILURE, payload: error });
 
-export const removeRoomAccess_Epic = action$ => (
+export const removeRoomAccessEpic = (action$) => (
     action$.ofType(STALK_REMOVE_ROOM_ACCESS)
-        .mergeMap(action => {
-            let { _id } = authReducer().user;
+        .mergeMap((action) => {
+            const { _id } = authReducer().user;
             return chatlogService.removeLastAccessRoomInfo(_id, action.payload);
-        }).map(json => {
+        }).map((json) => {
             console.log("removeRoomAccess_Epic", json.response);
 
-            let result = json.response;
+            const result = json.response;
             if (result.success && result.result.length > 0) {
-                return removeRoomAccess_Success(result.result);
+                return removeRoomAccessSuccess(result.result);
             } else {
-                return removeRoomAccess_Failure(result.message);
+                return removeRoomAccessFailure(result.message);
             }
         })
         .do((x) => {
@@ -47,12 +47,12 @@ export const removeRoomAccess_Epic = action$ => (
             }
         })
         .takeUntil(action$.ofType(STALK_REMOVE_ROOM_ACCESS_CANCELLED))
-        .catch(error => Rx.Observable.of(removeRoomAccess_Failure(error.xhr.response)))
+        .catch((error) => Rx.Observable.of(removeRoomAccessFailure(error.xhr.response)))
 );
 
 const waitForRemovedRoom = async (data) => {
-    let id = setInterval(() => {
-        let { state } = getStore().getState().chatlogReducer;
+    const id = setInterval(() => {
+        const { state } = getStore().getState().chatlogReducer;
         if (state === STALK_REMOVE_ROOM_ACCESS_SUCCESS) {
             BackendFactory.getInstance().dataListener.onAccessRoom(data);
 
@@ -66,66 +66,66 @@ export const UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS"
 export const UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
 const UPDATE_LAST_ACCESS_ROOM_CANCELLED = "UPDATE_LAST_ACCESS_ROOM_CANCELLED";
 
-export const updateLastAccessRoom = (roomId: string, userId: string) => ({ type: UPDATE_LAST_ACCESS_ROOM, payload: ({ roomId, userId }) });
+export const updateLastAccessRoom = (roomId: string, userId: string) => ({
+    type: UPDATE_LAST_ACCESS_ROOM,
+    payload: ({ roomId, userId }),
+});
 const updateLastAccessRoomSuccess = (payload) => ({ type: UPDATE_LAST_ACCESS_ROOM_SUCCESS, payload });
 const updateLastAccessRoomFailure = (error) => ({ type: UPDATE_LAST_ACCESS_ROOM_FAILURE, payload: error });
 export const updateLastAccessRoomCancelled = () => ({ type: UPDATE_LAST_ACCESS_ROOM_CANCELLED });
 
-export const updateLastAccessRoom_Epic = action$ =>
+export const updateLastAccessRoomEpic = (action$) =>
     action$.ofType(UPDATE_LAST_ACCESS_ROOM)
-        .mergeMap(action => {
-            let { room_id, user_id } = action.payload;
+        .mergeMap((action) => {
+            const { room_id, user_id } = action.payload;
             return chatlogService.updateLastAccessRoomInfo(user_id, room_id);
         })
-        .map(response => {
+        .map((response) => {
             console.log("updateLastAccessRoom value", response.xhr.response);
 
-            let results = response.xhr.response.result[0];
-            let _tempRoomAccess = results.roomAccess as Array<RoomAccessData>;
-            let roomAccess = getStore().getState().chatlogReducer.get("roomAccess") as Array<any>;
+            const results = response.xhr.response.result[0];
+            const tempRoomAccess = results.roomAccess as RoomAccessData[];
+            const roomAccess = getStore().getState().chatlogReducer.get("roomAccess") as any[];
 
-            let _newRoomAccess = new Array();
+            let newRoomAccess = new Array();
             if (Array.isArray(roomAccess)) {
-                let _has = roomAccess.some(value => (value.roomId === _tempRoomAccess[0].roomId));
-                if (!_has) {
-                    roomAccess.push(_tempRoomAccess[0]);
-                    _newRoomAccess = roomAccess.slice();
-                }
-                else {
-                    _newRoomAccess = roomAccess.map((value, id) => {
-                        if (value.roomId === _tempRoomAccess[0].roomId) {
-                            value.accessTime = _tempRoomAccess[0].accessTime;
+                const has = roomAccess.some((value) => (value.roomId === tempRoomAccess[0].roomId));
+                if (!has) {
+                    roomAccess.push(tempRoomAccess[0]);
+                    newRoomAccess = roomAccess.slice();
+                } else {
+                    newRoomAccess = roomAccess.map((value, id) => {
+                        if (value.roomId === tempRoomAccess[0].roomId) {
+                            value.accessTime = tempRoomAccess[0].accessTime;
                         }
                         return value;
                     });
                 }
-            }
-            else {
-                _newRoomAccess = _tempRoomAccess.slice();
+            } else {
+                newRoomAccess = tempRoomAccess.slice();
             }
 
-            BackendFactory.getInstance().dataListener.onUpdatedLastAccessTime(_tempRoomAccess[0]);
+            BackendFactory.getInstance().dataListener.onUpdatedLastAccessTime(tempRoomAccess[0]);
 
-            return updateLastAccessRoomSuccess(_newRoomAccess);
+            return updateLastAccessRoomSuccess(newRoomAccess);
         })
-        .do(x => {
+        .do((x) => {
             if (x.payload) {
                 BackendFactory.getInstance().dataManager.setRoomAccessForUser(x.payload);
             }
         })
         .takeUntil(action$.ofType(UPDATE_LAST_ACCESS_ROOM_CANCELLED))
-        .catch(error => Rx.Observable.of(updateLastAccessRoomFailure(error.message)));
-
+        .catch((error) => Rx.Observable.of(updateLastAccessRoomFailure(error.message)));
 
 export const GET_LAST_ACCESS_ROOM = "GET_LAST_ACCESS_ROOM";
 export const GET_LAST_ACCESS_ROOM_SUCCESS = "GET_LAST_ACCESS_ROOM_SUCCESS";
 export const GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
 
-export const getLastAccessRoom = (user_id: string) => ({ type: GET_LAST_ACCESS_ROOM, payload: { user_id } });
+export const getLastAccessRoom = (userId: string) => ({ type: GET_LAST_ACCESS_ROOM, payload: { userId } });
 const getLastAccessRoomSuccess = (payload: any) => ({ type: GET_LAST_ACCESS_ROOM_SUCCESS, payload });
 const getLastAccessRoomFailure = (error: any) => ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error });
 
-export const getLastAccessRoom_Epic = (action$) => (
+export const getLastAccessRoomEpic = (action$) => (
     action$.ofType(GET_LAST_ACCESS_ROOM)
         .mergeMap((action) => {
             const { user_id } = action.payload;

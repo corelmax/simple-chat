@@ -1,7 +1,6 @@
 import { Store } from "redux";
 import { BackendFactory, IApiConfig, IStalkConfig } from "stalk-js/starter";
 
-import { ChatRoomComponent } from "./ChatRoomComponent";
 import { ChatsLogComponent } from "./ChatslogComponent";
 import { IMessageDAL } from "./DAL/IMessageDAL";
 import { IDataManager } from "./IDataManager";

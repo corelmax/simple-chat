@@ -3,6 +3,7 @@ export { StalkBridge } from "./app/redux/stalkBridge/index";
 export * from "./app/redux/chatroom/index";
 export * from "./app/redux/chatlogs/index";
 export * from "./app/redux/actions/chatlistsRx";
+export { ChatlogRedux } from "./app/redux/chatlogs";
 export { Models } from "./app/models/index";
 export { Services } from "./app/services/index";
 export { SecureUtils } from "./app/utils/index";

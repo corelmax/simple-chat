@@ -51,10 +51,10 @@ export var STALK_REMOVE_ROOM_ACCESS_FAILURE = "STALK_REMOVE_ROOM_ACCESS_FAILURE"
 export var STALK_REMOVE_ROOM_ACCESS_SUCCESS = "STALK_REMOVE_ROOM_ACCESS_SUCCESS";
 export var STALK_REMOVE_ROOM_ACCESS_CANCELLED = "STALK_REMOVE_ROOM_ACCESS_CANCELLED";
 export var removeRoomAccess = function (roomId) { return ({ type: STALK_REMOVE_ROOM_ACCESS, payload: roomId }); };
-var removeRoomAccess_Success = function (payload) { return ({ type: STALK_REMOVE_ROOM_ACCESS_SUCCESS, payload: payload }); };
-var removeRoomAccess_Cancelled = function () { return ({ type: STALK_REMOVE_ROOM_ACCESS_CANCELLED }); };
-var removeRoomAccess_Failure = function (error) { return ({ type: STALK_REMOVE_ROOM_ACCESS_FAILURE, payload: error }); };
-export var removeRoomAccess_Epic = function (action$) { return (action$.ofType(STALK_REMOVE_ROOM_ACCESS)
+var removeRoomAccessSuccess = function (payload) { return ({ type: STALK_REMOVE_ROOM_ACCESS_SUCCESS, payload: payload }); };
+var removeRoomAccessCancelled = function () { return ({ type: STALK_REMOVE_ROOM_ACCESS_CANCELLED }); };
+var removeRoomAccessFailure = function (error) { return ({ type: STALK_REMOVE_ROOM_ACCESS_FAILURE, payload: error }); };
+export var removeRoomAccessEpic = function (action$) { return (action$.ofType(STALK_REMOVE_ROOM_ACCESS)
     .mergeMap(function (action) {
     var _id = authReducer().user._id;
     return chatlogService.removeLastAccessRoomInfo(_id, action.payload);
@@ -62,10 +62,10 @@ export var removeRoomAccess_Epic = function (action$) { return (action$.ofType(S
     console.log("removeRoomAccess_Epic", json.response);
     var result = json.response;
     if (result.success && result.result.length > 0) {
-        return removeRoomAccess_Success(result.result);
+        return removeRoomAccessSuccess(result.result);
     }
     else {
-        return removeRoomAccess_Failure(result.message);
+        return removeRoomAccessFailure(result.message);
     }
 })
     .do(function (x) {
@@ -74,7 +74,7 @@ export var removeRoomAccess_Epic = function (action$) { return (action$.ofType(S
     }
 })
     .takeUntil(action$.ofType(STALK_REMOVE_ROOM_ACCESS_CANCELLED))
-    .catch(function (error) { return Rx.Observable.of(removeRoomAccess_Failure(error.xhr.response)); })); };
+    .catch(function (error) { return Rx.Observable.of(removeRoomAccessFailure(error.xhr.response)); })); };
 var waitForRemovedRoom = function (data) { return __awaiter(_this, void 0, void 0, function () {
     var id;
     return __generator(this, function (_a) {
@@ -92,11 +92,14 @@ var UPDATE_LAST_ACCESS_ROOM = "UPDATE_LAST_ACCESS_ROOM";
 export var UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS";
 export var UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
 var UPDATE_LAST_ACCESS_ROOM_CANCELLED = "UPDATE_LAST_ACCESS_ROOM_CANCELLED";
-export var updateLastAccessRoom = function (roomId, userId) { return ({ type: UPDATE_LAST_ACCESS_ROOM, payload: ({ roomId: roomId, userId: userId }) }); };
+export var updateLastAccessRoom = function (roomId, userId) { return ({
+    type: UPDATE_LAST_ACCESS_ROOM,
+    payload: ({ roomId: roomId, userId: userId }),
+}); };
 var updateLastAccessRoomSuccess = function (payload) { return ({ type: UPDATE_LAST_ACCESS_ROOM_SUCCESS, payload: payload }); };
 var updateLastAccessRoomFailure = function (error) { return ({ type: UPDATE_LAST_ACCESS_ROOM_FAILURE, payload: error }); };
 export var updateLastAccessRoomCancelled = function () { return ({ type: UPDATE_LAST_ACCESS_ROOM_CANCELLED }); };
-export var updateLastAccessRoom_Epic = function (action$) {
+export var updateLastAccessRoomEpic = function (action$) {
     return action$.ofType(UPDATE_LAST_ACCESS_ROOM)
         .mergeMap(function (action) {
         var _a = action.payload, room_id = _a.room_id, user_id = _a.user_id;
@@ -105,29 +108,29 @@ export var updateLastAccessRoom_Epic = function (action$) {
         .map(function (response) {
         console.log("updateLastAccessRoom value", response.xhr.response);
         var results = response.xhr.response.result[0];
-        var _tempRoomAccess = results.roomAccess;
+        var tempRoomAccess = results.roomAccess;
         var roomAccess = getStore().getState().chatlogReducer.get("roomAccess");
-        var _newRoomAccess = new Array();
+        var newRoomAccess = new Array();
         if (Array.isArray(roomAccess)) {
-            var _has = roomAccess.some(function (value) { return (value.roomId === _tempRoomAccess[0].roomId); });
-            if (!_has) {
-                roomAccess.push(_tempRoomAccess[0]);
-                _newRoomAccess = roomAccess.slice();
+            var has = roomAccess.some(function (value) { return (value.roomId === tempRoomAccess[0].roomId); });
+            if (!has) {
+                roomAccess.push(tempRoomAccess[0]);
+                newRoomAccess = roomAccess.slice();
             }
             else {
-                _newRoomAccess = roomAccess.map(function (value, id) {
-                    if (value.roomId === _tempRoomAccess[0].roomId) {
-                        value.accessTime = _tempRoomAccess[0].accessTime;
+                newRoomAccess = roomAccess.map(function (value, id) {
+                    if (value.roomId === tempRoomAccess[0].roomId) {
+                        value.accessTime = tempRoomAccess[0].accessTime;
                     }
                     return value;
                 });
             }
         }
         else {
-            _newRoomAccess = _tempRoomAccess.slice();
+            newRoomAccess = tempRoomAccess.slice();
         }
-        BackendFactory.getInstance().dataListener.onUpdatedLastAccessTime(_tempRoomAccess[0]);
-        return updateLastAccessRoomSuccess(_newRoomAccess);
+        BackendFactory.getInstance().dataListener.onUpdatedLastAccessTime(tempRoomAccess[0]);
+        return updateLastAccessRoomSuccess(newRoomAccess);
     })
         .do(function (x) {
         if (x.payload) {
@@ -140,10 +143,10 @@ export var updateLastAccessRoom_Epic = function (action$) {
 export var GET_LAST_ACCESS_ROOM = "GET_LAST_ACCESS_ROOM";
 export var GET_LAST_ACCESS_ROOM_SUCCESS = "GET_LAST_ACCESS_ROOM_SUCCESS";
 export var GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
-export var getLastAccessRoom = function (user_id) { return ({ type: GET_LAST_ACCESS_ROOM, payload: { user_id: user_id } }); };
+export var getLastAccessRoom = function (userId) { return ({ type: GET_LAST_ACCESS_ROOM, payload: { userId: userId } }); };
 var getLastAccessRoomSuccess = function (payload) { return ({ type: GET_LAST_ACCESS_ROOM_SUCCESS, payload: payload }); };
 var getLastAccessRoomFailure = function (error) { return ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error }); };
-export var getLastAccessRoom_Epic = function (action$) { return (action$.ofType(GET_LAST_ACCESS_ROOM)
+export var getLastAccessRoomEpic = function (action$) { return (action$.ofType(GET_LAST_ACCESS_ROOM)
     .mergeMap(function (action) {
     var user_id = action.payload.user_id;
     return chatlogService.getLastAccessRoomInfo(user_id)

@@ -1,4 +1,4 @@
-import * as ChatlogsActions from "../chatlogs/chatlogsActions";
+import * as ChatlogsActions from "../chatlogs/chatlogActions";
 import * as ChatlogRxActions from "../chatlogs/chatlogRxActions";
 import * as chatlistsRx from "../actions/chatlistsRx";
 import { Record } from "immutable";

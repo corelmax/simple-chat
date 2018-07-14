@@ -11,7 +11,7 @@ export declare const removeRoomAccess: (roomId: string) => {
     type: string;
     payload: string;
 };
-export declare const removeRoomAccess_Epic: (action$: any) => any;
+export declare const removeRoomAccessEpic: (action$: any) => any;
 export declare const UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS";
 export declare const UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
 export declare const updateLastAccessRoom: (roomId: string, userId: string) => {
@@ -24,14 +24,14 @@ export declare const updateLastAccessRoom: (roomId: string, userId: string) => {
 export declare const updateLastAccessRoomCancelled: () => {
     type: string;
 };
-export declare const updateLastAccessRoom_Epic: (action$: any) => any;
+export declare const updateLastAccessRoomEpic: (action$: any) => any;
 export declare const GET_LAST_ACCESS_ROOM = "GET_LAST_ACCESS_ROOM";
 export declare const GET_LAST_ACCESS_ROOM_SUCCESS = "GET_LAST_ACCESS_ROOM_SUCCESS";
 export declare const GET_LAST_ACCESS_ROOM_FAILURE = "GET_LAST_ACCESS_ROOM_FAILURE";
-export declare const getLastAccessRoom: (user_id: string) => {
+export declare const getLastAccessRoom: (userId: string) => {
     type: string;
     payload: {
-        user_id: string;
+        userId: string;
     };
 };
-export declare const getLastAccessRoom_Epic: (action$: any) => any;
+export declare const getLastAccessRoomEpic: (action$: any) => any;

@@ -73,7 +73,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess) {
     });
 }
 export function initChatsLog() {
-    var chatsLogComponent = InternalStore.chatlog;
+    var chatsLogComponent = InternalStore.createChatLogInstance(BackendFactory.getInstance());
     chatsLogComponent.onReady = function (rooms) {
         getStore().dispatch(chatroomActions.updateChatRoom(rooms));
         getUnreadMessages();

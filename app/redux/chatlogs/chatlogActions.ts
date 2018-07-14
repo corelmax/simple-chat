@@ -53,7 +53,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess: RoomAccessData) {
 }
 
 export function initChatsLog() {
-    const chatsLogComponent = InternalStore.chatlog;
+    const chatsLogComponent = InternalStore.createChatLogInstance(BackendFactory.getInstance());
 
     chatsLogComponent.onReady = (rooms: Room[]) => {
         getStore().dispatch(chatroomActions.updateChatRoom(rooms));

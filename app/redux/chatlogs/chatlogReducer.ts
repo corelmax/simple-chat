@@ -4,14 +4,12 @@
  * This is pure function for redux app.
  */
 import { AnyAction } from "redux";
-import * as ChatlogsActions from "../chatlogs/chatlogsActions";
+import * as ChatlogsActions from "../chatlogs/chatlogActions";
 import * as ChatlogRxActions from "../chatlogs/chatlogRxActions";
 
 import * as chatlistsRx from "../actions/chatlistsRx";
 
 import { Record } from "immutable";
-
-
 
 // Define our record types with a typescript interface
 interface IChatlog {

@@ -148,8 +148,8 @@ var getLastAccessRoomSuccess = function (payload) { return ({ type: GET_LAST_ACC
 var getLastAccessRoomFailure = function (error) { return ({ type: GET_LAST_ACCESS_ROOM_FAILURE, payload: error }); };
 export var getLastAccessRoomEpic = function (action$) { return (action$.ofType(GET_LAST_ACCESS_ROOM)
     .mergeMap(function (action) {
-    var user_id = action.payload.user_id;
-    return chatlogService.getLastAccessRoomInfo(user_id)
+    var userId = action.payload.userId;
+    return chatlogService.getLastAccessRoomInfo(userId)
         .then(function (response) { return response.json(); })
         .then(function (json) { return json; })
         .catch(function (err) { return err; });

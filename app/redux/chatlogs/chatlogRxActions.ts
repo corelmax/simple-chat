@@ -128,8 +128,8 @@ const getLastAccessRoomFailure = (error: any) => ({ type: GET_LAST_ACCESS_ROOM_F
 export const getLastAccessRoomEpic = (action$) => (
     action$.ofType(GET_LAST_ACCESS_ROOM)
         .mergeMap((action) => {
-            const { user_id } = action.payload;
-            return chatlogService.getLastAccessRoomInfo(user_id)
+            const { userId } = action.payload;
+            return chatlogService.getLastAccessRoomInfo(userId)
                 .then((response) => response.json())
                 .then((json) => json)
                 .catch((err) => err);

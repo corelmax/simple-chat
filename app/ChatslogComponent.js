@@ -40,20 +40,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
  */
 import * as async from "async";
 import { MessageType, } from "stalk-js/starter/models/index";
-import { RoomType, } from "./models/index";
-import ChatLog from "./models/ChatLog";
-import * as CryptoHelper from "./utils/CryptoHelper";
-import InternalStore from "./InternalStore";
-import * as chatroomService from "./services/ChatroomService";
 import { LogLevel } from "./index";
-var Unread = /** @class */ (function () {
-    function Unread() {
-        this.rid = "";
-        this.count = 0;
-    }
-    return Unread;
-}());
-export { Unread };
+import InternalStore from "./InternalStore";
+import ChatLog from "./models/ChatLog";
+import { RoomType, } from "./models/index";
+import * as chatroomService from "./services/ChatroomService";
+import * as CryptoHelper from "./utils/CryptoHelper";
 export function getUnreadMessage(userId, roomAccess) {
     return __awaiter(this, void 0, void 0, function () {
         var response, value, unread, decoded, ex_1;
@@ -97,7 +89,9 @@ var ChatsLogComponent = /** @class */ (function () {
         this.updatedLastAccessTimeEvent = Object.create(null);
         this.chatListeners = new Array();
         this.addNewRoomAccessEvent = Object.create(null);
-        console.log("Create ChatsLogComponent");
+        if (InternalStore.logLevel === LogLevel.debug) {
+            console.log("Create ChatsLogComponent");
+        }
         this.isReady = false;
         this.dataListener = backendFactory.dataListener;
         this.dataListener.addOnRoomAccessListener(this.onAccessRoom.bind(this));
@@ -132,7 +126,9 @@ var ChatsLogComponent = /** @class */ (function () {
         this.chatListeners.push(listener);
     };
     ChatsLogComponent.prototype.onChat = function (message) {
-        console.log("ChatsLogComponent.onChat", message);
+        if (InternalStore.logLevel === LogLevel.debug) {
+            console.log("ChatsLogComponent.onChat", message);
+        }
         var self = this;
         CryptoHelper.decryptionText(message).then(function (decoded) {
             // Provide chatslog service.

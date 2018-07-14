@@ -4,15 +4,13 @@
  * This is pure function action for redux app.
  */
 
-import * as Rx from "rxjs/Rx";
-const { ajax } = Rx.Observable;
 import { createAction } from "redux-actions";
 
 import { BackendFactory } from "stalk-js/starter";
-import { getUnreadMessage, IUnread, Unread } from "../../ChatslogComponent";
 import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
-import { Room } from "../../models/Room";
+import { getUnreadMessage, IUnread } from "../../ChatslogComponent";
 import ChatLog from "../../models/chatLog";
+import { Room } from "../../models/Room";
 import * as chatroomActions from "../chatroom/chatroomActions";
 
 import InternalStore from "../../InternalStore";
@@ -38,7 +36,7 @@ const listenerImp = (newMsg) => {
 function updateLastAccessTimeEventHandler(newRoomAccess: RoomAccessData) {
     console.log("updateLastAccessTimeEventHandler", newRoomAccess);
 
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     const { _id } = authReducer().user;
 
     getUnreadMessage(_id, newRoomAccess).then((unread) => {
@@ -55,7 +53,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess: RoomAccessData) {
 }
 
 export function initChatsLog() {
-    const chatsLogComponent = InternalStore.chatlogInstance;
+    const chatsLogComponent = InternalStore.chatlog;
 
     chatsLogComponent.onReady = (rooms: Room[]) => {
         getStore().dispatch(chatroomActions.updateChatRoom(rooms));
@@ -78,7 +76,7 @@ export function initChatsLog() {
 }
 
 function getUnreadMessages() {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
 
     const { _id } = authReducer().user;
     const { roomAccess, state } = getStore().getState().chatlogReducer;
@@ -99,32 +97,32 @@ function getUnreadMessages() {
 }
 
 function calculateUnreadCount() {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     chatsLogComp.calculateChatsLogCount();
 }
 
 function increaseLogsCount(count: number) {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     chatsLogComp.increaseChatsLogCount(count);
 }
 
 function decreaseLogsCount(count: number) {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     chatsLogComp.decreaseChatsLogCount(count);
 }
 
 export function getChatsLogCount() {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     return chatsLogComp ? chatsLogComp.getChatsLogCount() : null;
 }
 
 function getUnreadMessageMap() {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     return chatsLogComp.getUnreadMessageMap();
 }
 
 function getChatsLog() {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     const chatsLog = chatsLogComp.getChatsLog();
 
     getStore().dispatch({
@@ -134,7 +132,7 @@ function getChatsLog() {
 }
 
 async function onUnreadMessageMapChanged(unread: IUnread) {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
 
     const { chatrooms }: { chatrooms: Room[] } = getStore().getState().chatroomReducer;
 
@@ -155,7 +153,7 @@ async function onUnreadMessageMapChanged(unread: IUnread) {
 }
 
 function getUnreadMessageComplete() {
-    const chatsLogComp = InternalStore.chatlogInstance;
+    const chatsLogComp = InternalStore.chatlog;
     const { _id } = authReducer().user;
     const { chatrooms } = getStore().getState().chatroomReducer;
 

@@ -1,10 +1,10 @@
 import { Store } from "redux";
-import { IStalkConfig, IApiConfig, BackendFactory } from "stalk-js/starter";
+import { BackendFactory, IApiConfig, IStalkConfig } from "stalk-js/starter";
 
-import { ChatsLogComponent } from "./ChatslogComponent";
 import { ChatRoomComponent } from "./ChatRoomComponent";
-import { IDataManager } from "./IDataManager";
+import { ChatsLogComponent } from "./ChatslogComponent";
 import { IMessageDAL } from "./DAL/IMessageDAL";
+import { IDataManager } from "./IDataManager";
 
 export interface IAuthStore {
     user: { _id: string, username: string };
@@ -45,10 +45,10 @@ export default new class InternalStore {
     encryption: boolean = false;
     secret: string = "";
 
-    chatlogInstance: ChatsLogComponent;
+    chatlog: ChatsLogComponent;
     public createChatLogInstance(backendFactory: BackendFactory) {
-        this.chatlogInstance = new ChatsLogComponent(backendFactory);
-        return this.chatlogInstance;
+        this.chatlog = new ChatsLogComponent(backendFactory);
+        return this.chatlog;
     }
 
     dataManager: IDataManager;
@@ -72,7 +72,7 @@ export default new class InternalStore {
         this.logLevel = Object.create(null);
         this.config = Object.create(null);
         this.apiConfig = Object.create(null);
-        this.chatlogInstance = Object.create(null);
+        this.chatlog = Object.create(null);
         this.dataManager = Object.create(null);
     }
 };

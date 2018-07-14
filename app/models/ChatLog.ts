@@ -1,4 +1,4 @@
-﻿import { RoomType, Room } from "./Room";
+﻿import { Room, RoomType } from "./Room";
 
 export default class ChatLog {
     id: string;

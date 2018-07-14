@@ -50,10 +50,10 @@ export declare const CHATROOM_UPLOAD_FILE = "CHATROOM_UPLOAD_FILE";
 export declare const CHATROOM_UPLOAD_FILE_SUCCESS = "CHATROOM_UPLOAD_FILE_SUCCESS";
 export declare const CHATROOM_UPLOAD_FILE_FAILURE = "CHATROOM_UPLOAD_FILE_FAILURE";
 export declare const CHATROOM_UPLOAD_FILE_CANCELLED = "CHATROOM_UPLOAD_FILE_CANCELLED";
-export declare const uploadFile: (progressEvent: any, file: any) => {
+export declare const uploadFile: (progressEvent: ProgressEvent, file: any) => {
     type: string;
     payload: {
-        data: any;
+        data: ProgressEvent;
         file: any;
     };
 };

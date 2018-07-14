@@ -7,27 +7,22 @@ import * as async from "async";
 
 import { BackendFactory, DataListener } from "stalk-js/starter";
 import {
-    IMessage, MessageType, IMessageMeta,
+    IMessage, IMessageMeta, MessageType,
     RoomAccessData, StalkAccount,
 } from "stalk-js/starter/models/index";
-import {
-    Room, RoomStatus, RoomType,
-    MessageImp, MemberImp,
-} from "./models/index";
-import ChatLog from "./models/ChatLog";
-import * as CryptoHelper from "./utils/CryptoHelper";
-import InternalStore from "./InternalStore";
-import * as chatroomService from "./services/ChatroomService";
 import { LogLevel } from "./index";
+import InternalStore from "./InternalStore";
+import ChatLog from "./models/ChatLog";
+import {
+    MemberImp, MessageImp, Room,
+    RoomStatus, RoomType,
+} from "./models/index";
+import * as chatroomService from "./services/ChatroomService";
+import * as CryptoHelper from "./utils/CryptoHelper";
 
 export type ChatLogMap = Map<string, ChatLog>;
 export type UnreadMap = Map<string, IUnread>;
 export interface IUnread { message: IMessage; rid: string; count: number; }
-export class Unread {
-    message: IMessage | undefined;
-    rid: string = "";
-    count: number = 0;
-}
 
 export async function getUnreadMessage(userId: string, roomAccess: RoomAccessData) {
     try {
@@ -88,7 +83,9 @@ export class ChatsLogComponent {
     }
 
     constructor(backendFactory: BackendFactory) {
-        console.log("Create ChatsLogComponent");
+        if (InternalStore.logLevel === LogLevel.debug) {
+            console.log("Create ChatsLogComponent");
+        }
 
         this.isReady = false;
         this.dataListener = backendFactory.dataListener;
@@ -104,7 +101,10 @@ export class ChatsLogComponent {
         this.chatListeners.push(listener);
     }
     onChat(message: MessageImp) {
-        console.log("ChatsLogComponent.onChat", message);
+        if (InternalStore.logLevel === LogLevel.debug) {
+            console.log("ChatsLogComponent.onChat", message);
+        }
+
         const self = this;
 
         CryptoHelper.decryptionText(message).then((decoded) => {
@@ -160,7 +160,7 @@ export class ChatsLogComponent {
     }
 
     public getUnreadMessages(userId: string, roomAccess: RoomAccessData[],
-        callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void) {
+                             callback: (err: Error | undefined, logsData: IUnread[] | undefined) => void) {
         const self = this;
         const unreadLogs = new Array<IUnread>();
 

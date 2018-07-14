@@ -38,8 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import * as Rx from "rxjs/Rx";
-var ajax = Rx.Observable.ajax;
 import { createAction } from "redux-actions";
 import { BackendFactory } from "stalk-js/starter";
 import { getUnreadMessage } from "../../ChatslogComponent";
@@ -61,7 +59,7 @@ var listenerImp = function (newMsg) {
 };
 function updateLastAccessTimeEventHandler(newRoomAccess) {
     console.log("updateLastAccessTimeEventHandler", newRoomAccess);
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     var _id = authReducer().user._id;
     getUnreadMessage(_id, newRoomAccess).then(function (unread) {
         chatsLogComp.addUnreadMessage(unread);
@@ -75,7 +73,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess) {
     });
 }
 export function initChatsLog() {
-    var chatsLogComponent = InternalStore.chatlogInstance;
+    var chatsLogComponent = InternalStore.chatlog;
     chatsLogComponent.onReady = function (rooms) {
         getStore().dispatch(chatroomActions.updateChatRoom(rooms));
         getUnreadMessages();
@@ -94,7 +92,7 @@ export function initChatsLog() {
     getStore().dispatch({ type: STALK_INIT_CHATLOG });
 }
 function getUnreadMessages() {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     var _id = authReducer().user._id;
     var _a = getStore().getState().chatlogReducer, roomAccess = _a.roomAccess, state = _a.state;
     chatsLogComp.getUnreadMessages(_id, roomAccess, function done(err, unreadLogs) {
@@ -109,27 +107,27 @@ function getUnreadMessages() {
     });
 }
 function calculateUnreadCount() {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     chatsLogComp.calculateChatsLogCount();
 }
 function increaseLogsCount(count) {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     chatsLogComp.increaseChatsLogCount(count);
 }
 function decreaseLogsCount(count) {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     chatsLogComp.decreaseChatsLogCount(count);
 }
 export function getChatsLogCount() {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     return chatsLogComp ? chatsLogComp.getChatsLogCount() : null;
 }
 function getUnreadMessageMap() {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     return chatsLogComp.getUnreadMessageMap();
 }
 function getChatsLog() {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     var chatsLog = chatsLogComp.getChatsLog();
     getStore().dispatch({
         type: STALK_GET_CHATSLOG_COMPLETE,
@@ -142,7 +140,7 @@ function onUnreadMessageMapChanged(unread) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    chatsLogComp = InternalStore.chatlogInstance;
+                    chatsLogComp = InternalStore.chatlog;
                     chatrooms = getStore().getState().chatroomReducer.chatrooms;
                     _a.label = 1;
                 case 1:
@@ -170,7 +168,7 @@ function onUnreadMessageMapChanged(unread) {
     });
 }
 function getUnreadMessageComplete() {
-    var chatsLogComp = InternalStore.chatlogInstance;
+    var chatsLogComp = InternalStore.chatlog;
     var _id = authReducer().user._id;
     var chatrooms = getStore().getState().chatroomReducer.chatrooms;
     chatsLogComp.getRoomsInfo(_id, chatrooms);

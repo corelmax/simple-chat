@@ -40,8 +40,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import * as async from "async";
 import * as Rx from "rxjs";
-import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import { ChatEvents } from "stalk-js/stalkjs";
+import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import * as chatroomService from "./services/ChatroomService";
 import { decryptionText } from "./utils/CryptoHelper";
 import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
@@ -126,8 +126,11 @@ var ChatRoomComponent = /** @class */ (function () {
             }
         }
     };
-    ChatRoomComponent.prototype.onRoomJoin = function (data) { };
-    ChatRoomComponent.prototype.onLeaveRoom = function (data) { };
+    ChatRoomComponent.prototype.onRoomJoin = function (data) {
+        // Interface imp.
+    };
+    ChatRoomComponent.prototype.onLeaveRoom = function (data) {
+    };
     ChatRoomComponent.prototype.messageReadTick = function (messageQueue, roomId) {
         return __awaiter(this, void 0, void 0, function () {
             var chatMessages, chats, results;
@@ -145,6 +148,7 @@ var ChatRoomComponent = /** @class */ (function () {
                                     value.readers = message.readers;
                                     return true;
                                 }
+                                return false;
                             });
                         });
                         return [4 /*yield*/, this.dataManager.messageDAL.saveData(roomId, chatMessages)];

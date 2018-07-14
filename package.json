@@ -26,7 +26,7 @@
     "@types/immutable": "^3.8.7",
     "@types/jest": "^22.0.1",
     "@types/localforage": "^0.0.34",
-    "@types/node": "^8.5.8",
+    "@types/node": "8.10",
     "@types/ramda": "^0.25.15",
     "@types/redux": "^3.6.31",
     "@types/redux-actions": "^2.2.3",

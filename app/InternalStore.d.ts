@@ -1,8 +1,8 @@
 import { Store } from "redux";
-import { IStalkConfig, IApiConfig, BackendFactory } from "stalk-js/starter";
+import { BackendFactory, IApiConfig, IStalkConfig } from "stalk-js/starter";
 import { ChatsLogComponent } from "./ChatslogComponent";
-import { IDataManager } from "./IDataManager";
 import { IMessageDAL } from "./DAL/IMessageDAL";
+import { IDataManager } from "./IDataManager";
 export interface IAuthStore {
     user: {
         _id: string;
@@ -29,7 +29,7 @@ declare const _default: {
     getApiConfig(): IApiConfig;
     encryption: boolean;
     secret: string;
-    chatlogInstance: ChatsLogComponent;
+    chatlog: ChatsLogComponent;
     createChatLogInstance(backendFactory: BackendFactory): ChatsLogComponent;
     dataManager: IDataManager;
     /**

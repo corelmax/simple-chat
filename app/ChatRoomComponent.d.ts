@@ -5,8 +5,8 @@
  */
 import { ChatEvents } from "stalk-js/stalkjs";
 import { IMessage } from "stalk-js/starter/models/index";
-import { MessageImp, IMember } from "./models/index";
 import { IDataManager } from "./IDataManager";
+import { IMember, MessageImp } from "./models/index";
 export declare const ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
 export declare class ChatRoomComponent implements ChatEvents.IChatServerEvents {
     private static instance;

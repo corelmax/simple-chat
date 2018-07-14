@@ -7,18 +7,18 @@
 import * as async from "async";
 import * as Rx from "rxjs";
 
+import { ChatEvents } from "stalk-js/stalkjs";
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import { DataListener } from "stalk-js/starter/DataListener";
-import { ChatEvents } from "stalk-js/stalkjs";
 import * as chatroomService from "./services/ChatroomService";
 
 import { decryptionText, hashComputation } from "./utils/CryptoHelper";
 import { ISecureService } from "./utils/secure/ISecureService";
 import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
 
-import { MessageType, IMessage, RoomAccessData } from "stalk-js/starter/models/index";
-import { MessageImp, Room, IMember } from "./models/index";
+import { IMessage, MessageType, RoomAccessData } from "stalk-js/starter/models/index";
 import { IDataManager } from "./IDataManager";
+import { IMember, MessageImp, Room } from "./models/index";
 
 // import { imagesPath } from "../consts/StickerPath";
 import InternalStore from "./InternalStore";
@@ -123,9 +123,12 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
         }
     }
 
-    public onRoomJoin(data) { }
+    public onRoomJoin(data) {
+        // Interface imp.
+    }
 
-    public onLeaveRoom(data) { }
+    public onLeaveRoom(data) { // Interface imp.
+    }
 
     private async messageReadTick(messageQueue: MessageImp[], roomId: string) {
         let chatMessages = Object.create(null) as any[];
@@ -139,6 +142,7 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
 
                     return true;
                 }
+                return false;
             });
         });
 

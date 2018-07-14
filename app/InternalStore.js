@@ -23,7 +23,7 @@ export default new /** @class */ (function () {
         this.logLevel = Object.create(null);
         this.config = Object.create(null);
         this.apiConfig = Object.create(null);
-        this.chatlogInstance = Object.create(null);
+        this.chatlog = Object.create(null);
         this.dataManager = Object.create(null);
     }
     InternalStore.prototype.initStore = function (store) {
@@ -43,8 +43,8 @@ export default new /** @class */ (function () {
     };
     InternalStore.prototype.getApiConfig = function () { return this.apiConfig; };
     InternalStore.prototype.createChatLogInstance = function (backendFactory) {
-        this.chatlogInstance = new ChatsLogComponent(backendFactory);
-        return this.chatlogInstance;
+        this.chatlog = new ChatsLogComponent(backendFactory);
+        return this.chatlog;
     };
     /**
      * React.js please use MessageDAL module.

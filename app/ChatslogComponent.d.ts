@@ -1,16 +1,11 @@
 import { BackendFactory, DataListener } from "stalk-js/starter";
 import { IMessage, RoomAccessData, StalkAccount } from "stalk-js/starter/models/index";
-import { Room, MessageImp } from "./models/index";
 import ChatLog from "./models/ChatLog";
+import { MessageImp, Room } from "./models/index";
 export declare type ChatLogMap = Map<string, ChatLog>;
 export declare type UnreadMap = Map<string, IUnread>;
 export interface IUnread {
     message: IMessage;
-    rid: string;
-    count: number;
-}
-export declare class Unread {
-    message: IMessage | undefined;
     rid: string;
     count: number;
 }

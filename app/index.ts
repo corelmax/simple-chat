@@ -1,6 +1,7 @@
 export * from "./ChatslogComponent";
 export * from "./ChatRoomComponent";
 export * from "./InternalStore";
+export * from "./IDataManager";
 
 export * from "./redux/configStore";
 

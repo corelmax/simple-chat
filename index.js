@@ -1,8 +1,9 @@
-export { ChatRoomComponent, ChatsLogComponent, ON_MESSAGE_CHANGE } from "./app/index";
+export { ChatRoomComponent, ChatsLogComponent, ON_MESSAGE_CHANGE, } from "./app/index";
 export { StalkBridge } from "./app/redux/stalkBridge/index";
 export * from "./app/redux/chatroom/index";
 export * from "./app/redux/chatlogs/index";
 export * from "./app/redux/actions/chatlistsRx";
+export { Models } from "./app/models/index";
 export { Services } from "./app/services/index";
 export { SecureUtils } from "./app/utils/index";
 export { SecureServiceFactory } from "./app/utils/secure/SecureServiceFactory";

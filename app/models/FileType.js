@@ -1,4 +1,4 @@
-export const textType = /text.*/;
-export const imageType = /image.*/;
-export const videoType = /video.*/;
-export const file = /application.*/;
+export var textType = /text.*/;
+export var imageType = /image.*/;
+export var videoType = /video.*/;
+export var file = /application.*/;

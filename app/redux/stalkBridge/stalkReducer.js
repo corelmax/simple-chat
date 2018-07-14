@@ -14,7 +14,7 @@ import { Record } from "immutable";
  * This Record contains the state of the form and the
  * fields it contains.
  */
-export const StalkInitState = Record({
+export var StalkInitState = Record({
     isInit: false,
     isFetching: false,
     state: null,
@@ -23,8 +23,9 @@ export const StalkInitState = Record({
     user: null,
     error: "",
 });
-const initialState = new StalkInitState();
-export function stalkReducer(state = initialState, action) {
+var initialState = new StalkInitState();
+export function stalkReducer(state, action) {
+    if (state === void 0) { state = initialState; }
     if (!(state instanceof StalkInitState))
         return initialState.mergeDeep(state);
     switch (action.type) {

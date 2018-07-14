@@ -1,7 +1,7 @@
 var IProfile;
 (function (IProfile) {
-    class Profile {
-        constructor() {
+    var Profile = /** @class */ (function () {
+        function Profile() {
             this.uid = "";
             this.username = "";
             this.password = "";
@@ -12,6 +12,7 @@ var IProfile;
             this.email = "";
             this.image = "";
         }
-    }
+        return Profile;
+    }());
     IProfile.Profile = Profile;
 })(IProfile || (IProfile = {}));

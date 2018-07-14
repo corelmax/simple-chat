@@ -1,5 +1,5 @@
-export const X_MASTER_KEY = "x-master-key";
-export const X_API_KEY = "x-api-key";
-export const X_DEVICE_INFO = "x-device-info";
-export const X_ACCESS_TOKEN = "x-access-token";
-export const X_GEOIP = "x-geoip";
+export var X_MASTER_KEY = "x-master-key";
+export var X_API_KEY = "x-api-key";
+export var X_DEVICE_INFO = "x-device-info";
+export var X_ACCESS_TOKEN = "x-access-token";
+export var X_GEOIP = "x-geoip";

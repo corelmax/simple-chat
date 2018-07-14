@@ -1,5 +1,5 @@
-export default class ChatLog {
-    constructor(room) {
+var ChatLog = /** @class */ (function () {
+    function ChatLog(room) {
         this.lastMessageTime = "";
         this.lastMessage = "";
         this.count = 0;
@@ -8,13 +8,15 @@ export default class ChatLog {
         this.roomType = room.type;
         this.room = room;
     }
-    setNotiCount(count) {
+    ChatLog.prototype.setNotiCount = function (count) {
         this.count = count;
-    }
-    setLastMessage(lastMessage) {
+    };
+    ChatLog.prototype.setLastMessage = function (lastMessage) {
         this.lastMessage = lastMessage;
-    }
-    setLastMessageTime(lastMessageTime) {
+    };
+    ChatLog.prototype.setLastMessageTime = function (lastMessageTime) {
         this.lastMessageTime = lastMessageTime;
-    }
-}
+    };
+    return ChatLog;
+}());
+export default ChatLog;

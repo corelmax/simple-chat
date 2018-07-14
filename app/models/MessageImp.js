@@ -1,5 +1,5 @@
-export class MessageImp {
-    constructor() {
+var MessageImp = /** @class */ (function () {
+    function MessageImp() {
         this._id = "";
         this.rid = "";
         this.type = "";
@@ -13,4 +13,6 @@ export class MessageImp {
         this.createTime = Object.create(null);
         this.meta = Object.create(null);
     }
-}
+    return MessageImp;
+}());
+export { MessageImp };

@@ -17,8 +17,8 @@ export var RoomStatus;
     RoomStatus[RoomStatus["disable"] = 1] = "disable";
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus || (RoomStatus = {}));
-export class Room {
-    constructor() {
+var Room = /** @class */ (function () {
+    function Room() {
         this.name = "";
         this.owner_id = "";
         this.image = "";
@@ -31,4 +31,6 @@ export class Room {
         this.status = Object.create(null);
         this.createTime = Object.create(null);
     }
-}
+    return Room;
+}());
+export { Room };

@@ -1,11 +1,11 @@
 import * as Rx from "rxjs/Rx";
-const { ajax } = Rx.Observable;
+var ajax = Rx.Observable.ajax;
 import InternalStore from "../InternalStore";
 import { apiHeaders } from "./ServiceUtils";
-const getConfig = () => InternalStore.apiConfig;
+var getConfig = function () { return InternalStore.apiConfig; };
 export function getTeamProfile(token, team_id) {
     return Rx.Observable.ajax({
-        url: `${getConfig().user}/teamProfile?team_id=${team_id}`,
+        url: getConfig().user + "/teamProfile?team_id=" + team_id,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export function getTeamProfile(token, team_id) {
 export function setOrgChartId(token, user, team_id, orgChartId) {
     return Rx.Observable.ajax({
         method: "POST",
-        url: `${getConfig().user}/setOrgChartId`,
+        url: getConfig().user + "/setOrgChartId",
         body: JSON.stringify({
             user_id: user._id,
             username: user.username,
@@ -32,7 +32,7 @@ export function setOrgChartId(token, user, team_id, orgChartId) {
 export function updateTeamProfile(user_id, team_id, profile) {
     return Rx.Observable.ajax({
         method: "POST",
-        url: `${getConfig().user}/teamProfile/${team_id}/${user_id}`,
+        url: getConfig().user + "/teamProfile/" + team_id + "/" + user_id,
         body: JSON.stringify({
             profile: profile
         }),
@@ -42,14 +42,14 @@ export function updateTeamProfile(user_id, team_id, profile) {
 export function fetchUser(username) {
     return ajax({
         method: "GET",
-        url: `${getConfig().user}/?username=${username}`,
+        url: getConfig().user + "/?username=" + username,
         headers: apiHeaders()
     });
 }
 export function suggestUser(username, team_id) {
     return ajax({
         method: "GET",
-        url: `${getConfig().user}/suggest/?username=${username}&team_id=${team_id}`,
+        url: getConfig().user + "/suggest/?username=" + username + "&team_id=" + team_id,
         headers: apiHeaders()
     });
 }

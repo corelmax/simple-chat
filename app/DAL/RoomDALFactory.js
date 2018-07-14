@@ -4,15 +4,19 @@
  * RoomDALFactory.
  *
  */
-export class RoomDALFactory {
-    static getObject() {
+var RoomDALFactory = /** @class */ (function () {
+    function RoomDALFactory() {
+    }
+    RoomDALFactory.getObject = function () {
         if (!!global.userAgent) {
-            const { RoomDAL } = require("./RoomDAL");
+            var RoomDAL = require("./RoomDAL").RoomDAL;
             return new RoomDAL();
         }
         else {
             // const NodeMessageDAL = require("./nodeMessageDAL");
             // return new NodeMessageDAL();
         }
-    }
-}
+    };
+    return RoomDALFactory;
+}());
+export { RoomDALFactory };

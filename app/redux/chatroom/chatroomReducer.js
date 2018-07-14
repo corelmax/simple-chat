@@ -4,7 +4,7 @@ import * as chatroomRxActions from "./chatroomRxEpic";
 import * as chatroomActions from "./chatroomActions";
 import { GET_ALL_CHATROOM_SUCCESS, GET_ALL_CHATROOM_FAILURE } from "../actions/chatlistsRx";
 // Define our record defaults
-const chatroomDefaults = {
+var chatroomDefaults = {
     isFetching: false,
     state: "",
     room: null,
@@ -18,9 +18,10 @@ const chatroomDefaults = {
     chatDisabled: false,
     chatrooms: [],
 };
-export const ChatRoomInitState = Record(chatroomDefaults);
-const chatRoomInitState = new ChatRoomInitState();
-export const chatroomReducer = (state = chatRoomInitState, action) => {
+export var ChatRoomInitState = Record(chatroomDefaults);
+var chatRoomInitState = new ChatRoomInitState();
+export var chatroomReducer = function (state, action) {
+    if (state === void 0) { state = chatRoomInitState; }
     switch (action.type) {
         case GET_ALL_CHATROOM_SUCCESS: {
             return state.set("chatrooms", action.payload);
@@ -58,32 +59,32 @@ export const chatroomReducer = (state = chatRoomInitState, action) => {
                 .set("responseFile", action.payload);
         }
         case SEND_MESSAGE_FAILURE: {
-            const payload = action.payload;
-            const nextState = state.set("state", SEND_MESSAGE_FAILURE)
+            var payload = action.payload;
+            var nextState = state.set("state", SEND_MESSAGE_FAILURE)
                 .set("isFetching", false)
                 .set("error", payload);
             return nextState;
         }
         case ON_MESSAGE_CHANGED: {
-            const payload = action.payload;
+            var payload = action.payload;
             return state.set("messages", payload);
         }
         case ON_EARLY_MESSAGE_READY: {
-            const payload = action.payload;
+            var payload = action.payload;
             return state.set("state", ON_EARLY_MESSAGE_READY)
                 .set("earlyMessageReady", payload);
         }
         case chatroomActions.LOAD_EARLY_MESSAGE_SUCCESS: {
-            const payload = action.payload;
+            var payload = action.payload;
             return state.set("messages", payload)
                 .set("state", chatroomActions.LOAD_EARLY_MESSAGE_SUCCESS);
         }
         case chatroomRxActions.GET_PERSISTEND_MESSAGE_SUCCESS: {
-            const payload = action.payload;
+            var payload = action.payload;
             return state.set("messages", payload);
         }
         case GET_NEWER_MESSAGE_SUCCESS: {
-            const payload = action.payload;
+            var payload = action.payload;
             return state.set("messages", payload);
         }
         /** Create chat room */
@@ -111,13 +112,13 @@ export const chatroomReducer = (state = chatRoomInitState, action) => {
                 .set("isFetching", false)
                 .set("room", null);
         case chatroomRxActions.CREATE_PRIVATE_CHATROOM_SUCCESS: {
-            const { result } = action.payload;
-            const chatrooms = state.get("chatrooms");
-            const temps = chatrooms.filter(chatroom => {
-                return chatroom._id !== result[0]._id;
+            var result_1 = action.payload.result;
+            var chatrooms = state.get("chatrooms");
+            var temps = chatrooms.filter(function (chatroom) {
+                return chatroom._id !== result_1[0]._id;
             });
-            temps.push(result[0]);
-            return state.set("chatrooms", temps).set("room", result[0]).set("isFetching", false);
+            temps.push(result_1[0]);
+            return state.set("chatrooms", temps).set("room", result_1[0]).set("isFetching", false);
         }
         /** Set room */
         case chatroomActions.GET_PERSISTEND_CHATROOM:

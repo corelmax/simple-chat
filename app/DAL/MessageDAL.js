@@ -1,6 +1,6 @@
 import * as localForage from "localforage";
-export class MessageDAL {
-    constructor() {
+var MessageDAL = /** @class */ (function () {
+    function MessageDAL() {
         // localforage.config({
         //     driver: localforage.WEBSQL, // Force WebSQL; same as using setDriver()
         //     name: 'myApp',
@@ -13,30 +13,32 @@ export class MessageDAL {
             name: "message",
         });
     }
-    getData(rid) {
+    MessageDAL.prototype.getData = function (rid) {
         return this.store.getItem(rid);
-    }
-    saveData(rid, chatRecord) {
+    };
+    MessageDAL.prototype.saveData = function (rid, chatRecord) {
         return this.store.setItem(rid, chatRecord);
-    }
-    removeData(rid, callback) {
-        this.store.removeItem(rid).then(() => {
+    };
+    MessageDAL.prototype.removeData = function (rid, callback) {
+        this.store.removeItem(rid).then(function () {
             console.info("room_id %s is removed: ", rid);
             if (callback) {
                 callback(null, null);
             }
-        }).catch((err) => {
+        }).catch(function (err) {
             console.warn(err);
         });
-    }
-    clearData(next) {
+    };
+    MessageDAL.prototype.clearData = function (next) {
         console.warn("MessageDAL.clearData");
-        this.store.clear((err) => {
+        this.store.clear(function (err) {
             if (err != null) {
                 console.warn("Clear database fail", err);
             }
             console.warn("message db now empty.");
             next(err);
         });
-    }
-}
+    };
+    return MessageDAL;
+}());
+export { MessageDAL };

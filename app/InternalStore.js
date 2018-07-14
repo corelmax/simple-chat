@@ -1,3 +1,11 @@
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 import { ChatsLogComponent } from "./ChatslogComponent";
 export var LogLevel;
 (function (LogLevel) {
@@ -5,8 +13,8 @@ export var LogLevel;
     LogLevel[LogLevel["warn"] = 1] = "warn";
     LogLevel[LogLevel["error"] = 2] = "error";
 })(LogLevel || (LogLevel = {}));
-export default new class InternalStore {
-    constructor() {
+export default new /** @class */ (function () {
+    function InternalStore() {
         this.appStateEvent = "";
         this.encryption = false;
         this.secret = "";
@@ -18,35 +26,36 @@ export default new class InternalStore {
         this.chatlogInstance = Object.create(null);
         this.dataManager = Object.create(null);
     }
-    initStore(store) {
-        this.store = Object.assign({}, store);
-    }
-    setAuth(newState) {
+    InternalStore.prototype.initStore = function (store) {
+        this.store = __assign({}, store);
+    };
+    InternalStore.prototype.setAuth = function (newState) {
         this.authStore = newState;
-    }
-    initConfig(config) {
+    };
+    InternalStore.prototype.initConfig = function (config) {
         this.config = config;
-    }
-    getConfig() {
+    };
+    InternalStore.prototype.getConfig = function () {
         return this.config;
-    }
-    initApiConfig(config) {
+    };
+    InternalStore.prototype.initApiConfig = function (config) {
         this.apiConfig = config;
-    }
-    getApiConfig() { return this.apiConfig; }
-    createChatLogInstance(backendFactory) {
+    };
+    InternalStore.prototype.getApiConfig = function () { return this.apiConfig; };
+    InternalStore.prototype.createChatLogInstance = function (backendFactory) {
         this.chatlogInstance = new ChatsLogComponent(backendFactory);
         return this.chatlogInstance;
-    }
+    };
     /**
      * React.js please use MessageDAL module.
      * React-Native please use NodeMessageDAL instead.
      * @param storageObj
      */
-    setStorage(storageObj) {
+    InternalStore.prototype.setStorage = function (storageObj) {
         this.dataManager.messageDAL = storageObj;
-    }
-    setLogLevel(level) {
+    };
+    InternalStore.prototype.setLogLevel = function (level) {
         this.logLevel = level;
-    }
-};
+    };
+    return InternalStore;
+}());

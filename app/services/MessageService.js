@@ -5,19 +5,19 @@
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import { apiHeaders } from "./ServiceUtils";
 import InternalStore from "../InternalStore";
-const getConfig = () => BackendFactory.getInstance().getApiConfig();
-const authReducer = () => InternalStore.authStore;
+var getConfig = function () { return BackendFactory.getInstance().getApiConfig(); };
+var authReducer = function () { return InternalStore.authStore; };
 export function updateMessageReader(messageId, roomId) {
-    return fetch(`${getConfig().message}/updateReader`, {
+    return fetch(getConfig().message + "/updateReader", {
         method: "POST",
         headers: apiHeaders(),
-        body: JSON.stringify({ roomId, messageId }),
+        body: JSON.stringify({ roomId: roomId, messageId: messageId }),
     });
 }
 export function updateMessagesReader(messagesId, roomId) {
-    return fetch(`${getConfig().message}/updateMessagesReader`, {
+    return fetch(getConfig().message + "/updateMessagesReader", {
         method: "POST",
         headers: apiHeaders(),
-        body: JSON.stringify({ roomId, messages: messagesId }),
+        body: JSON.stringify({ roomId: roomId, messages: messagesId }),
     });
 }

@@ -2,14 +2,18 @@ import { NodeSecureService } from "./NodeSecureService";
 /**
  * SecureServiceFactory
  */
-export class SecureServiceFactory {
-    static createService(secretKey) {
+var SecureServiceFactory = /** @class */ (function () {
+    function SecureServiceFactory() {
+    }
+    SecureServiceFactory.createService = function (secretKey) {
         if (!SecureServiceFactory.service) {
             SecureServiceFactory.service = new NodeSecureService(secretKey);
         }
         return SecureServiceFactory.service;
-    }
-    static getService() {
+    };
+    SecureServiceFactory.getService = function () {
         return SecureServiceFactory.service;
-    }
-}
+    };
+    return SecureServiceFactory;
+}());
+export { SecureServiceFactory };

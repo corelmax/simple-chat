@@ -396,3 +396,26 @@ export const updateChatRoom = (rooms: Room[]) => {
         getStore().dispatch(updatedChatRoomSuccess(chatrooms));
     }
 };
+
+const GET_CHAT_TARGET_UID = "GET_CHAT_TARGET_UID";
+export const GET_CHAT_TARGET_UID_SUCCESS = "GET_CHAT_TARGET_UID_SUCCESS";
+export const GET_CHAT_TARGET_UID_FAILURE = "GET_CHAT_TARGET_UID_FAILURE";
+const getChatTargetId = createAction(GET_CHAT_TARGET_UID, (room_id: string) => room_id);
+const getChatTargetIdSuccess = createAction(GET_CHAT_TARGET_UID_SUCCESS, (payload) => payload);
+const getChatTargetIdFailure = createAction(GET_CHAT_TARGET_UID_FAILURE, (error) => error);
+export function getChatTargetIds(room_id: string) {
+    return (dispatch) => {
+        dispatch(getChatTargetId(room_id));
+
+        const { room }: { room: Room } = getStore().getState().chatroomReducer;
+        const { _id } = authReducer().user;
+        if (!room) {
+            dispatch(getChatTargetIdFailure("Has no room object!"));
+        } else {
+            const results = new Array<string>();
+            (room.members as IMember[]).map((value) => (value._id !== _id) ? results.push(value._id) : null);
+
+            dispatch(getChatTargetIdSuccess(results));
+        }
+    };
+}

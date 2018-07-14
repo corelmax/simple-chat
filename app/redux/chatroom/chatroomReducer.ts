@@ -4,7 +4,7 @@
  * This is pure function for redux app.
  */
 import { AnyAction } from "redux";
-import * as immutable from "immutable";
+import { Record } from "immutable";
 
 import {
     ON_EARLY_MESSAGE_READY,
@@ -12,6 +12,8 @@ import {
     GET_NEWER_MESSAGE_SUCCESS,
     GET_NEWER_MESSAGE_FAILURE,
     ON_MESSAGE_CHANGED,
+    GET_CHAT_TARGET_UID_SUCCESS,
+    GET_CHAT_TARGET_UID_FAILURE,
 } from "./chatroomActions";
 
 import * as chatroomRxActions from "./chatroomRxEpic";
@@ -52,25 +54,11 @@ export interface IChatroom {
     chatDisabled: boolean;
     chatrooms: Room[];
 }
-// Create our FruitRecord class
-export class ChatRoomRecoder extends immutable.Record(chatroomDefaults) {
-    // Set the params. This will also typecheck when we instantiate a new FruitRecord
-    constructor(params: IChatroom) {
-        super(params);
-    }
 
-    // This following line is the magic. It overrides the "get" method of record
-    // and lets typescript know the return type based on our IFruitParams interface
-    get<T extends keyof IChatroom>(value: T): IChatroom[T] {
-        // super.get() is mapped to the original get() function on Record
-        return super.get(value);
-    }
-    // set<T extends keyof IChatroom>(key: T, value): IChatroom[T] {
-    //     return super.set(key, value);
-    // }
-}
-export const chatRoomRecoder = new ChatRoomRecoder(chatroomDefaults);
-export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
+export const ChatRoomInitState = Record(chatroomDefaults);
+const chatRoomInitState = new ChatRoomInitState();
+
+export const chatroomReducer = (state = chatRoomInitState, action: AnyAction) => {
     switch (action.type) {
         case GET_ALL_CHATROOM_SUCCESS: {
             return state.set("chatrooms", action.payload);
@@ -194,11 +182,18 @@ export const chatroomReducer = (state = chatRoomRecoder, action: AnyAction) => {
         case chatroomActions.LEAVE_ROOM: {
             return state
                 .set("state", chatroomActions.LEAVE_ROOM)
-                .set("room", null);
+                .set("room", null)
+                .set("chatTargets", []);
         }
 
         case chatroomActions.UPDATED_CHATROOMS: {
             return state.set("chatrooms", action.payload);
+        }
+        case GET_CHAT_TARGET_UID_SUCCESS: {
+            return state.set("chatTargets", action.payload);
+        }
+        case GET_CHAT_TARGET_UID_FAILURE: {
+            return state.set("chatTargets", []);
         }
 
         // case actions.GET_ADMIN_ROLE_IDS_SUCCESS: {

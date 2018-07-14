@@ -4,7 +4,7 @@
  * This is pure function for redux app.
  */
 import { AnyAction } from "redux";
-import * as immutable from "immutable";
+import { Record } from "immutable";
 import { Room, MessageImp } from "../../models";
 export interface IChatroom {
     isFetching: boolean;
@@ -20,11 +20,5 @@ export interface IChatroom {
     chatDisabled: boolean;
     chatrooms: Room[];
 }
-declare const ChatRoomRecoder_base: immutable.Record.Class;
-export declare class ChatRoomRecoder extends ChatRoomRecoder_base {
-    constructor(params: IChatroom);
-    get<T extends keyof IChatroom>(value: T): IChatroom[T];
-}
-export declare const chatRoomRecoder: ChatRoomRecoder;
-export declare const chatroomReducer: (state: ChatRoomRecoder | undefined, action: AnyAction) => immutable.Map<string, any>;
-export {};
+export declare const ChatRoomInitState: Record.Class;
+export declare const chatroomReducer: (state: import("../../../../../../../../Users/nattapon/Projects/stalk/simpleChat/node_modules/immutable").Map<string, any> | undefined, action: AnyAction) => import("../../../../../../../../Users/nattapon/Projects/stalk/simpleChat/node_modules/immutable").Map<string, any>;

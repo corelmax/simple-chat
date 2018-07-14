@@ -59,3 +59,6 @@ export declare const updatedChatRoomSuccess: (chatrooms: Room[]) => {
     payload: Room[];
 };
 export declare const updateChatRoom: (rooms: Room[]) => void;
+export declare const GET_CHAT_TARGET_UID_SUCCESS = "GET_CHAT_TARGET_UID_SUCCESS";
+export declare const GET_CHAT_TARGET_UID_FAILURE = "GET_CHAT_TARGET_UID_FAILURE";
+export declare function getChatTargetIds(room_id: string): (dispatch: any) => void;

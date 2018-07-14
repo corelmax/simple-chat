@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const cryptoHelper = require("./CryptoHelper");
-const secureServiceFactory = require("./secure/SecureServiceFactory");
-const iSecureService = require("./secure/ISecureService");
-const nodeSecureService = require("./secure/NodeSecureService");
-var SecureUtils;
+import * as cryptoHelper from "./CryptoHelper";
+import * as secureServiceFactory from "./secure/SecureServiceFactory";
+import * as iSecureService from "./secure/ISecureService";
+import * as nodeSecureService from "./secure/NodeSecureService";
+export var SecureUtils;
 (function (SecureUtils) {
     SecureUtils.CryptoHelper = cryptoHelper;
     SecureUtils.SecureServiceFactory = secureServiceFactory;
     SecureUtils.ISecureService = iSecureService;
     SecureUtils.NodeSecureService = nodeSecureService;
-})(SecureUtils = exports.SecureUtils || (exports.SecureUtils = {}));
+})(SecureUtils || (SecureUtils = {}));

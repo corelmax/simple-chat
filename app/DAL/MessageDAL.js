@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const localForage = require("localforage");
-class MessageDAL {
+import * as localForage from "localforage";
+export class MessageDAL {
     constructor() {
         // localforage.config({
         //     driver: localforage.WEBSQL, // Force WebSQL; same as using setDriver()
@@ -42,4 +40,3 @@ class MessageDAL {
         });
     }
 }
-exports.MessageDAL = MessageDAL;

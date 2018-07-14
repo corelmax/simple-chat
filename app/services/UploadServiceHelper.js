@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const async_1 = require("async");
-const InternalStore_1 = require("../InternalStore");
-const config = InternalStore_1.default.config;
-function manageUploadQueue(files, target_api, onFinished, speedCallBack = false, onSpeedCallBack) {
+import { queue } from "async";
+import InternalStore from "../InternalStore";
+const config = InternalStore.config;
+export function manageUploadQueue(files, target_api, onFinished, speedCallBack = false, onSpeedCallBack) {
     let results = [];
-    let q = async_1.queue(function (task, callback) {
+    let q = queue(function (task, callback) {
         console.log("queue worker");
         uploadFile(task, target_api).then(url => {
             results.push(url);
@@ -29,7 +27,6 @@ function manageUploadQueue(files, target_api, onFinished, speedCallBack = false,
     //     console.log('finished processing bar');
     // });
 }
-exports.manageUploadQueue = manageUploadQueue;
 function uploadFile(file, target_api) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
@@ -81,7 +78,7 @@ function uploadFile(file, target_api) {
         xhr.send(formdata);
     });
 }
-function uploadImageChat(formdata) {
+export function uploadImageChat(formdata) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', config.api.fileUpload);
@@ -130,4 +127,3 @@ function uploadImageChat(formdata) {
         xhr.send(formdata);
     });
 }
-exports.uploadImageChat = uploadImageChat;

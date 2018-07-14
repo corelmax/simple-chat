@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const immutable = require("immutable");
-const chatroomActions_1 = require("./chatroomActions");
-const chatroomRxActions = require("./chatroomRxEpic");
-const chatroomActions = require("./chatroomActions");
-const chatlistsRx_1 = require("../actions/chatlistsRx");
+import * as immutable from "immutable";
+import { ON_EARLY_MESSAGE_READY, SEND_MESSAGE_FAILURE, GET_NEWER_MESSAGE_SUCCESS, ON_MESSAGE_CHANGED, } from "./chatroomActions";
+import * as chatroomRxActions from "./chatroomRxEpic";
+import * as chatroomActions from "./chatroomActions";
+import { GET_ALL_CHATROOM_SUCCESS, GET_ALL_CHATROOM_FAILURE } from "../actions/chatlistsRx";
 // Define our record defaults
 const chatroomDefaults = {
     isFetching: false,
@@ -21,7 +19,7 @@ const chatroomDefaults = {
     chatrooms: [],
 };
 // Create our FruitRecord class
-class ChatRoomRecoder extends immutable.Record(chatroomDefaults) {
+export class ChatRoomRecoder extends immutable.Record(chatroomDefaults) {
     // Set the params. This will also typecheck when we instantiate a new FruitRecord
     constructor(params) {
         super(params);
@@ -33,14 +31,13 @@ class ChatRoomRecoder extends immutable.Record(chatroomDefaults) {
         return super.get(value);
     }
 }
-exports.ChatRoomRecoder = ChatRoomRecoder;
-exports.chatRoomRecoder = new ChatRoomRecoder(chatroomDefaults);
-exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
+export const chatRoomRecoder = new ChatRoomRecoder(chatroomDefaults);
+export const chatroomReducer = (state = chatRoomRecoder, action) => {
     switch (action.type) {
-        case chatlistsRx_1.GET_ALL_CHATROOM_SUCCESS: {
+        case GET_ALL_CHATROOM_SUCCESS: {
             return state.set("chatrooms", action.payload);
         }
-        case chatlistsRx_1.GET_ALL_CHATROOM_FAILURE: {
+        case GET_ALL_CHATROOM_FAILURE: {
             return state;
         }
         case chatroomActions.JOIN_ROOM_FAILURE: {
@@ -72,20 +69,20 @@ exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
             return state.set("state", chatroomRxActions.CHATROOM_UPLOAD_FILE_SUCCESS)
                 .set("responseFile", action.payload);
         }
-        case chatroomActions_1.SEND_MESSAGE_FAILURE: {
+        case SEND_MESSAGE_FAILURE: {
             const payload = action.payload;
-            const nextState = state.set("state", chatroomActions_1.SEND_MESSAGE_FAILURE)
+            const nextState = state.set("state", SEND_MESSAGE_FAILURE)
                 .set("isFetching", false)
                 .set("error", payload);
             return nextState;
         }
-        case chatroomActions_1.ON_MESSAGE_CHANGED: {
+        case ON_MESSAGE_CHANGED: {
             const payload = action.payload;
             return state.set("messages", payload);
         }
-        case chatroomActions_1.ON_EARLY_MESSAGE_READY: {
+        case ON_EARLY_MESSAGE_READY: {
             const payload = action.payload;
-            return state.set("state", chatroomActions_1.ON_EARLY_MESSAGE_READY)
+            return state.set("state", ON_EARLY_MESSAGE_READY)
                 .set("earlyMessageReady", payload);
         }
         case chatroomActions.LOAD_EARLY_MESSAGE_SUCCESS: {
@@ -97,7 +94,7 @@ exports.chatroomReducer = (state = exports.chatRoomRecoder, action) => {
             const payload = action.payload;
             return state.set("messages", payload);
         }
-        case chatroomActions_1.GET_NEWER_MESSAGE_SUCCESS: {
+        case GET_NEWER_MESSAGE_SUCCESS: {
             const payload = action.payload;
             return state.set("messages", payload);
         }

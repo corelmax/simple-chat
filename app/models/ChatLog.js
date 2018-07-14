@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class ChatLog {
+export default class ChatLog {
     constructor(room) {
         this.lastMessageTime = "";
         this.lastMessage = "";
@@ -20,4 +18,3 @@ class ChatLog {
         this.lastMessageTime = lastMessageTime;
     }
 }
-exports.default = ChatLog;

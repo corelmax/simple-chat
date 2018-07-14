@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class MessageImp {
+export class MessageImp {
     constructor() {
         this._id = "";
         this.rid = "";
@@ -16,4 +14,3 @@ class MessageImp {
         this.meta = Object.create(null);
     }
 }
-exports.MessageImp = MessageImp;

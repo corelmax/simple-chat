@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Copyright 2016 Ahoo Studio.co.th.
  *
  * RoomDALFactory.
  *
  */
-class RoomDALFactory {
+export class RoomDALFactory {
     static getObject() {
         if (!!global.userAgent) {
             const { RoomDAL } = require("./RoomDAL");
@@ -18,4 +16,3 @@ class RoomDALFactory {
         }
     }
 }
-exports.RoomDALFactory = RoomDALFactory;

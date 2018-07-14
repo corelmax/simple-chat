@@ -1,13 +1,11 @@
-"use strict";
 /**
  * MessageDALFactory.
  *
  * Copyright 2016 Ahoo Studio.co.th.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 const REACT_NATIVE = "react-native";
 const REACTJS = "react-js";
-class MessageDALFactory {
+export class MessageDALFactory {
     static getObject() {
         if (!!global.userAgent && global.userAgent === REACTJS) {
             // const { MessageDAL } = require("./messageDAL");
@@ -19,4 +17,3 @@ class MessageDALFactory {
         }
     }
 }
-exports.MessageDALFactory = MessageDALFactory;

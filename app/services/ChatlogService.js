@@ -1,34 +1,29 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Rx = require("rxjs/Rx");
-const InternalStore_1 = require("../InternalStore");
-const ServiceUtils_1 = require("./ServiceUtils");
-const getConfig = () => InternalStore_1.default.apiConfig;
-function getLastAccessRoomInfo(userId) {
+import * as Rx from "rxjs/Rx";
+import InternalStore from "../InternalStore";
+import { apiHeaders } from "./ServiceUtils";
+const getConfig = () => InternalStore.apiConfig;
+export function getLastAccessRoomInfo(userId) {
     return fetch(`${getConfig().user}/lastAccessRoom?user_id=${userId}`, {
         method: "GET",
-        headers: ServiceUtils_1.apiHeaders(),
+        headers: apiHeaders(),
     });
 }
-exports.getLastAccessRoomInfo = getLastAccessRoomInfo;
-function updateLastAccessRoomInfo(userId, roomId) {
+export function updateLastAccessRoomInfo(userId, roomId) {
     return Rx.Observable.ajax({
         url: `${getConfig().user}/lastAccessRoom`,
         method: "POST",
-        headers: ServiceUtils_1.apiHeaders(),
+        headers: apiHeaders(),
         body: JSON.stringify({
             roomId,
             userId,
         }),
     });
 }
-exports.updateLastAccessRoomInfo = updateLastAccessRoomInfo;
-function removeLastAccessRoomInfo(userId, roomId) {
+export function removeLastAccessRoomInfo(userId, roomId) {
     return Rx.Observable.ajax({
         url: `${getConfig().user}/lastAccessRoom`,
         method: "DELETE",
-        headers: ServiceUtils_1.apiHeaders(),
+        headers: apiHeaders(),
         body: JSON.stringify({ room_id: roomId, user_id: userId }),
     });
 }
-exports.removeLastAccessRoomInfo = removeLastAccessRoomInfo;

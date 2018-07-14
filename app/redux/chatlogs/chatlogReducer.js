@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ChatlogsActions = require("../chatlogs/chatlogsActions");
-const ChatlogRxActions = require("../chatlogs/chatlogRxActions");
-const chatlistsRx = require("../actions/chatlistsRx");
-const immutable_1 = require("immutable");
-exports.ChatLogInitState = immutable_1.Record({
+import * as ChatlogsActions from "../chatlogs/chatlogsActions";
+import * as ChatlogRxActions from "../chatlogs/chatlogRxActions";
+import * as chatlistsRx from "../actions/chatlistsRx";
+import { Record } from "immutable";
+export const ChatLogInitState = Record({
     isFetching: false,
     state: "",
     chatsLog: [],
@@ -12,8 +10,8 @@ exports.ChatLogInitState = immutable_1.Record({
     roomAccess: null,
     error: "",
 });
-const initialState = new exports.ChatLogInitState();
-function chatlogReducer(state = initialState, action) {
+const initialState = new ChatLogInitState();
+export function chatlogReducer(state = initialState, action) {
     switch (action.type) {
         case ChatlogsActions.STALK_GET_CHATSLOG_COMPLETE: {
             const { chatsLog, logCount } = action.payload;
@@ -83,4 +81,3 @@ function chatlogReducer(state = initialState, action) {
             return state;
     }
 }
-exports.chatlogReducer = chatlogReducer;

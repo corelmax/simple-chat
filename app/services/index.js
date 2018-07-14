@@ -1,17 +1,12 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./ServiceUtils"));
-const authService = require("./authService");
-const userService = require("./UserService");
-const serviceUtils = require("./ServiceUtils");
-const messageService = require("./MessageService");
-const chatlogService = require("./ChatlogService");
-const chatroomService = require("./ChatroomService");
-const groupServices = require("./GroupServices");
-var Services;
+export * from "./ServiceUtils";
+import * as authService from "./authService";
+import * as userService from "./UserService";
+import * as serviceUtils from "./ServiceUtils";
+import * as messageService from "./MessageService";
+import * as chatlogService from "./ChatlogService";
+import * as chatroomService from "./ChatroomService";
+import * as groupServices from "./GroupServices";
+export var Services;
 (function (Services) {
     Services.AuthService = authService;
     Services.UserService = userService;
@@ -20,4 +15,4 @@ var Services;
     Services.ChatlogService = chatlogService;
     Services.ChatroomService = chatroomService;
     Services.GroupServices = groupServices;
-})(Services = exports.Services || (exports.Services = {}));
+})(Services || (Services = {}));

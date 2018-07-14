@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -7,33 +6,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Copyright 2016 Ahoo Studio.co.th.
  *
  * ChatRoomComponent for handle some business logic of chat room.
  */
-const async = require("async");
-const index_1 = require("stalk-js/starter/models/index");
-const index_2 = require("./models/index");
-const ChatLog_1 = require("./models/ChatLog");
-const CryptoHelper = require("./utils/CryptoHelper");
-const InternalStore_1 = require("./InternalStore");
-const chatroomService = require("./services/ChatroomService");
-const index_3 = require("./index");
-class Unread {
+import * as async from "async";
+import { MessageType, } from "stalk-js/starter/models/index";
+import { RoomType, } from "./models/index";
+import ChatLog from "./models/ChatLog";
+import * as CryptoHelper from "./utils/CryptoHelper";
+import InternalStore from "./InternalStore";
+import * as chatroomService from "./services/ChatroomService";
+import { LogLevel } from "./index";
+export class Unread {
     constructor() {
         this.rid = "";
         this.count = 0;
     }
 }
-exports.Unread = Unread;
-function getUnreadMessage(userId, roomAccess) {
+export function getUnreadMessage(userId, roomAccess) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield chatroomService.getUnreadMessage(roomAccess.roomId, userId, roomAccess.accessTime.toString());
             const value = yield response.json();
-            if (InternalStore_1.default.logLevel === index_3.LogLevel.debug) {
+            if (InternalStore.logLevel === LogLevel.debug) {
                 console.log("getUnreadMessage", value);
             }
             if (value.success) {
@@ -51,8 +48,7 @@ function getUnreadMessage(userId, roomAccess) {
         }
     });
 }
-exports.getUnreadMessage = getUnreadMessage;
-class ChatsLogComponent {
+export class ChatsLogComponent {
     constructor(backendFactory) {
         this.chatlogCount = 0;
         this.onReady = Object.create(null);
@@ -161,7 +157,7 @@ class ChatsLogComponent {
         }, 10);
         // assign a callback
         q.drain = () => {
-            if (InternalStore_1.default.logLevel === index_3.LogLevel.debug) {
+            if (InternalStore.logLevel === LogLevel.debug) {
                 console.log("getUnreadMessages from your roomAccess is done.", unreadLogs);
             }
             callback(undefined, unreadLogs);
@@ -180,9 +176,9 @@ class ChatsLogComponent {
     }
     decorateRoomInfoData(roomInfo) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (roomInfo.type === index_2.RoomType.privateChat) {
+            if (roomInfo.type === RoomType.privateChat) {
                 if (Array.isArray(roomInfo.members)) {
-                    const others = roomInfo.members.filter((value) => value._id !== InternalStore_1.default.authStore.user._id);
+                    const others = roomInfo.members.filter((value) => value._id !== InternalStore.authStore.user._id);
                     if (others.length > 0) {
                         const contact = others[0];
                         const avatar = require("./assets/ic_account_circle_black.png");
@@ -293,7 +289,7 @@ class ChatsLogComponent {
     organizeChatLogMap(unread, roomInfo, done) {
         return __awaiter(this, void 0, void 0, function* () {
             const self = this;
-            const log = new ChatLog_1.default(roomInfo);
+            const log = new ChatLog(roomInfo);
             log.setNotiCount(unread.count);
             if (!!unread.message) {
                 log.setLastMessageTime(unread.message.createTime.toString());
@@ -310,7 +306,7 @@ class ChatsLogComponent {
                 if (unread.message.body !== null) {
                     let displayMsg = unread.message.body;
                     switch (`${unread.message.type}`) {
-                        case index_1.MessageType[index_1.MessageType.Text]:
+                        case MessageType[MessageType.Text]:
                             /*
                                 self.main.decodeService(displayMsg, function (err, res) {
                                     if (!err) {
@@ -322,37 +318,37 @@ class ChatsLogComponent {
                                 self.addChatLog(newLog, done);
                             });
                             break;
-                        case index_1.MessageType[index_1.MessageType.Sticker]:
+                        case MessageType[MessageType.Sticker]:
                             displayMsg = sender + " sent a sticker.";
                             self.setLogProp(log, displayMsg, (newLog) => {
                                 self.addChatLog(newLog, done);
                             });
                             break;
-                        case index_1.MessageType[index_1.MessageType.Voice]:
+                        case MessageType[MessageType.Voice]:
                             displayMsg = sender + " sent a voice message.";
                             self.setLogProp(log, displayMsg, (newLog) => {
                                 self.addChatLog(newLog, done);
                             });
                             break;
-                        case index_1.MessageType[index_1.MessageType.Image]:
+                        case MessageType[MessageType.Image]:
                             displayMsg = sender + " sent a image.";
                             self.setLogProp(log, displayMsg, (newLog) => {
                                 self.addChatLog(newLog, done);
                             });
                             break;
-                        case index_1.MessageType[index_1.MessageType.Video]:
+                        case MessageType[MessageType.Video]:
                             displayMsg = sender + " sent a video.";
                             self.setLogProp(log, displayMsg, (newLog) => {
                                 self.addChatLog(newLog, done);
                             });
                             break;
-                        case index_1.MessageType[index_1.MessageType.Location]:
+                        case MessageType[MessageType.Location]:
                             displayMsg = sender + " sent a location.";
                             self.setLogProp(log, displayMsg, (newLog) => {
                                 self.addChatLog(newLog, done);
                             });
                             break;
-                        case index_1.MessageType[index_1.MessageType.File]:
+                        case MessageType[MessageType.File]:
                             self.setLogProp(log, displayMsg, (newLog) => {
                                 self.addChatLog(newLog, done);
                             });
@@ -426,4 +422,3 @@ class ChatsLogComponent {
         });
     }
 }
-exports.ChatsLogComponent = ChatsLogComponent;

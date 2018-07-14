@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // import { ChatRoomComponent } from "../app/ChatRoomComponent";
-const InternalStore_1 = require("../app/InternalStore");
+import InternalStore from "../app/InternalStore";
 test("test", () => {
-    expect(InternalStore_1.default.config).toBeUndefined();
+    expect(InternalStore.config).toBeUndefined();
 });
 test("test dataManager", () => {
-    expect(InternalStore_1.default.dataManager).toBeDefined();
+    expect(InternalStore.dataManager).toBeDefined();
 });

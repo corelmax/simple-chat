@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ChatslogComponent_1 = require("./ChatslogComponent");
-var LogLevel;
+import { ChatsLogComponent } from "./ChatslogComponent";
+export var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["debug"] = 0] = "debug";
     LogLevel[LogLevel["warn"] = 1] = "warn";
     LogLevel[LogLevel["error"] = 2] = "error";
-})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
-exports.default = new class InternalStore {
+})(LogLevel || (LogLevel = {}));
+export default new class InternalStore {
     constructor() {
         this.appStateEvent = "";
         this.encryption = false;
@@ -37,7 +35,7 @@ exports.default = new class InternalStore {
     }
     getApiConfig() { return this.apiConfig; }
     createChatLogInstance(backendFactory) {
-        this.chatlogInstance = new ChatslogComponent_1.ChatsLogComponent(backendFactory);
+        this.chatlogInstance = new ChatsLogComponent(backendFactory);
         return this.chatlogInstance;
     }
     /**

@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Copyright 2016 Ahoo Studio.co.th.
  *
@@ -12,21 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const async = require("async");
-const Rx = require("rxjs/Rx");
-const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
-const stalkjs_1 = require("stalk-js/stalkjs");
-const chatroomService = require("./services/ChatroomService");
-const CryptoHelper_1 = require("./utils/CryptoHelper");
-const SecureServiceFactory_1 = require("./utils/secure/SecureServiceFactory");
-const index_1 = require("stalk-js/starter/models/index");
+import * as async from "async";
+import * as Rx from "rxjs";
+import { BackendFactory } from "stalk-js/starter/BackendFactory";
+import { ChatEvents } from "stalk-js/stalkjs";
+import * as chatroomService from "./services/ChatroomService";
+import { decryptionText } from "./utils/CryptoHelper";
+import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
+import { MessageType } from "stalk-js/starter/models/index";
 // import { imagesPath } from "../consts/StickerPath";
-const InternalStore_1 = require("./InternalStore");
-const getConfig = () => BackendFactory_1.BackendFactory.getInstance().config;
-const getStore = () => InternalStore_1.default.store;
-exports.ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
-class ChatRoomComponent {
+import InternalStore from "./InternalStore";
+const getConfig = () => BackendFactory.getInstance().config;
+const getStore = () => InternalStore.store;
+export const ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
+export class ChatRoomComponent {
     constructor(dataManager) {
         this.updateMessageQueue = new Array();
         this.saveMessages = (chatMessages, message) => {
@@ -34,8 +32,8 @@ class ChatRoomComponent {
             chatMessages.push(message);
             self.dataManager.messageDAL.saveData(self.roomId, chatMessages).then((chats) => {
                 if (!!self.chatroomDelegate) {
-                    self.chatroomDelegate(stalkjs_1.ChatEvents.ON_CHAT, message);
-                    self.chatroomDelegate(exports.ON_MESSAGE_CHANGE, chatMessages);
+                    self.chatroomDelegate(ChatEvents.ON_CHAT, message);
+                    self.chatroomDelegate(ON_MESSAGE_CHANGE, chatMessages);
                 }
             });
         };
@@ -43,8 +41,8 @@ class ChatRoomComponent {
         this.roomId = "";
         this.chatroomDelegate = undefined;
         this.outsideRoomDelegete = undefined;
-        this.secure = SecureServiceFactory_1.SecureServiceFactory.getService();
-        const backendFactory = BackendFactory_1.BackendFactory.getInstance();
+        this.secure = SecureServiceFactory.getService();
+        const backendFactory = BackendFactory.getInstance();
         this.dataManager = dataManager;
         this.dataListener = backendFactory.dataListener;
         this.dataListener.addOnChatListener(this.onChat.bind(this));
@@ -76,8 +74,8 @@ class ChatRoomComponent {
         const self = this;
         this.dataManager.messageDAL.getData(this.roomId).then((chats) => {
             const chatMessages = (!!chats && Array.isArray(chats)) ? chats : new Array();
-            if (message.type === index_1.MessageType[index_1.MessageType.Text]) {
-                CryptoHelper_1.decryptionText(message).then((decoded) => {
+            if (message.type === MessageType[MessageType.Text]) {
+                decryptionText(message).then((decoded) => {
                     self.saveMessages(chatMessages, message);
                 }).catch((err) => self.saveMessages(chatMessages, message));
             }
@@ -96,7 +94,7 @@ class ChatRoomComponent {
         else {
             console.log("this msg come from other room.");
             if (!!this.outsideRoomDelegete) {
-                this.outsideRoomDelegete(stalkjs_1.ChatEvents.ON_CHAT, message);
+                this.outsideRoomDelegete(ChatEvents.ON_CHAT, message);
             }
         }
     }
@@ -117,7 +115,7 @@ class ChatRoomComponent {
             });
             const results = yield this.dataManager.messageDAL.saveData(roomId, chatMessages);
             if (!!this.chatroomDelegate) {
-                this.chatroomDelegate(exports.ON_MESSAGE_CHANGE, results);
+                this.chatroomDelegate(ON_MESSAGE_CHANGE, results);
             }
         });
     }
@@ -148,8 +146,8 @@ class ChatRoomComponent {
                 const prom = new Promise((resolve, reject) => {
                     const chats = messages.slice(0);
                     async.forEach(chats, function iterator(chat, result) {
-                        if (chat.type === index_1.MessageType[index_1.MessageType.Text]) {
-                            if (InternalStore_1.default.encryption === true) {
+                        if (chat.type === MessageType[MessageType.Text]) {
+                            if (InternalStore.encryption === true) {
                                 self.secure.decryption(chat.body).then((res) => {
                                     chat.body = res;
                                     result(null);
@@ -247,8 +245,8 @@ class ChatRoomComponent {
                         histories = value.result;
                         if (histories.length > 0) {
                             async.forEach(histories, (chat, cb) => {
-                                if (chat.type === index_1.MessageType[index_1.MessageType.Text]) {
-                                    if (InternalStore_1.default.encryption === true) {
+                                if (chat.type === MessageType[MessageType.Text]) {
+                                    if (InternalStore.encryption === true) {
                                         self.secure.decryption(chat.body).then((res) => {
                                             chat.body = res;
                                             cb(undefined);
@@ -393,7 +391,7 @@ class ChatRoomComponent {
     }
     updateReadMessages() {
         const self = this;
-        const backendFactory = BackendFactory_1.BackendFactory.getInstance();
+        const backendFactory = BackendFactory.getInstance();
         async.map(self.chatMessages, function itorator(message, resultCb) {
             if (!backendFactory.dataManager.isMySelf(message.sender)) {
                 const chatroomApi = backendFactory.getServer().getChatRoomAPI();
@@ -408,13 +406,13 @@ class ChatRoomComponent {
         return __awaiter(this, void 0, void 0, function* () {
             const self = this;
             const res = yield self.getTopEdgeMessageTime();
-            const backendFactory = BackendFactory_1.BackendFactory.getInstance();
+            const backendFactory = BackendFactory.getInstance();
             const chatroomApi = backendFactory.getServer().getChatRoomAPI();
             chatroomApi.getMessagesReaders(res.toString());
         });
     }
     getMemberProfile(member, callback) {
-        const server = BackendFactory_1.BackendFactory.getInstance().getServer();
+        const server = BackendFactory.getInstance().getServer();
         if (server) {
             server.getMemberProfile(member._id, callback);
         }
@@ -431,4 +429,3 @@ class ChatRoomComponent {
         delete ChatRoomComponent.instance;
     }
 }
-exports.ChatRoomComponent = ChatRoomComponent;

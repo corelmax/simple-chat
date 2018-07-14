@@ -1,4 +1,3 @@
-"use strict";
 /**
  *  NotificationManager
  *
@@ -7,31 +6,30 @@
  * The NotificationManager for react.js.
  *
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const BackendFactory_1 = require("stalk-js/starter/BackendFactory");
-const CryptoHelper = require("../../utils/CryptoHelper");
-const index_1 = require("stalk-js/starter/models/index");
-const InternalStore_1 = require("../../InternalStore");
-const getStore = () => InternalStore_1.default.store;
-exports.STALK_NOTICE_NEW_MESSAGE = "STALK_NOTICE_NEW_MESSAGE";
-const stalkNotiNewMessage = (payload) => ({ type: exports.STALK_NOTICE_NEW_MESSAGE, payload });
+import { BackendFactory } from "stalk-js/starter/BackendFactory";
+import * as CryptoHelper from "../../utils/CryptoHelper";
+import { MessageType } from "stalk-js/starter/models/index";
+import InternalStore from "../../InternalStore";
+const getStore = () => InternalStore.store;
+export const STALK_NOTICE_NEW_MESSAGE = "STALK_NOTICE_NEW_MESSAGE";
+const stalkNotiNewMessage = (payload) => ({ type: STALK_NOTICE_NEW_MESSAGE, payload });
 const init = (onSuccess) => {
     console.log("Initialize NotificationManager.");
 };
-exports.regisNotifyNewMessageEvent = () => {
+export const regisNotifyNewMessageEvent = () => {
     console.log("subscribe global notify message event");
-    BackendFactory_1.BackendFactory.getInstance().dataListener.addOnChatListener(exports.notify);
+    BackendFactory.getInstance().dataListener.addOnChatListener(notify);
 };
-exports.unsubscribeGlobalNotifyMessageEvent = () => {
-    BackendFactory_1.BackendFactory.getInstance().dataListener.removeOnChatListener(exports.notify);
+export const unsubscribeGlobalNotifyMessageEvent = () => {
+    BackendFactory.getInstance().dataListener.removeOnChatListener(notify);
 };
-exports.notify = (messageObj) => {
+export const notify = (messageObj) => {
     const messageImp = messageObj;
     const message = {
         title: messageImp.user.username,
         image: messageImp.user.avatar,
     };
-    if (messageImp.type === index_1.MessageType[index_1.MessageType.Text]) {
+    if (messageImp.type === MessageType[MessageType.Text]) {
         CryptoHelper.decryptionText(messageImp).then((decoded) => {
             message.body = decoded.body;
             getStore().dispatch(stalkNotiNewMessage(message));

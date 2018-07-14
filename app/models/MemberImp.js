@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class MemberImp {
+export class MemberImp {
     constructor() {
         this._id = "";
         this.username = "";
@@ -9,4 +7,3 @@ class MemberImp {
         this.jobPosition = "";
     }
 }
-exports.MemberImp = MemberImp;

@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const stalkBridgeActions = require("./stalkBridgeActions");
-const stalkNotificationActions = require("./stalkNotificationActions");
-const stalkReducer = require("./stalkReducer");
-var StalkBridge;
+import * as stalkBridgeActions from "./stalkBridgeActions";
+import * as stalkNotificationActions from "./stalkNotificationActions";
+import * as stalkReducer from "./stalkReducer";
+export var StalkBridge;
 (function (StalkBridge) {
     StalkBridge.StalkReducer = stalkReducer;
     StalkBridge.StalkNotificationActions = stalkNotificationActions;
     StalkBridge.StalkBridgeActions = stalkBridgeActions;
-})(StalkBridge = exports.StalkBridge || (exports.StalkBridge = {}));
+})(StalkBridge || (StalkBridge = {}));

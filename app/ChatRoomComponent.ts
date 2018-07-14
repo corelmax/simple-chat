@@ -5,7 +5,7 @@
  */
 
 import * as async from "async";
-import * as Rx from "rxjs/Rx";
+import * as Rx from "rxjs";
 
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import { DataListener } from "stalk-js/starter/DataListener";

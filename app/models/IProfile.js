@@ -1,4 +1,3 @@
-"use strict";
 var IProfile;
 (function (IProfile) {
     class Profile {
@@ -16,4 +15,3 @@ var IProfile;
     }
     IProfile.Profile = Profile;
 })(IProfile || (IProfile = {}));
-module.exports = IProfile;

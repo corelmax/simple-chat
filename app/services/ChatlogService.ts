@@ -1,7 +1,7 @@
 import * as Rx from "rxjs/Rx";
 
 import InternalStore from "../InternalStore";
-import { withToken, apiHeaders } from "./ServiceUtils";
+import { apiHeaders, withToken } from "./ServiceUtils";
 const getConfig = () => InternalStore.apiConfig;
 
 export function getLastAccessRoomInfo(userId: string) {

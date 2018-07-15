@@ -56,7 +56,7 @@ export function initChatsLog() {
     const chatsLogComponent = InternalStore.createChatLogInstance(BackendFactory.getInstance());
 
     chatsLogComponent.onReady = (rooms: Room[]) => {
-        getStore().dispatch(chatroomActions.updateChatRoom(rooms));
+        chatroomActions.updateChatRoom(rooms);
 
         getUnreadMessages();
     };
@@ -164,11 +164,14 @@ function getUnreadMessageComplete() {
 
 const getChatLogContact = (chatlog: ChatLog) => {
     const dataManager = BackendFactory.getInstance().dataManager;
-    const contacts = chatlog.room.members.filter((value) => {
-        return !dataManager.isMySelf(value._id);
-    });
+    const members = chatlog.room.members;
+    if (Array.isArray(members)) {
+        const contacts = members.filter((value) => {
+            return !dataManager.isMySelf(value._id);
+        });
 
-    return (contacts.length > 0) ? contacts[0]._id : null;
+        return (contacts.length > 0) ? contacts[0]._id : null;
+    }
 };
 
 async function updateRooms(room: Room) {
@@ -190,5 +193,5 @@ async function updateRooms(room: Room) {
         chatrooms.push(room);
     }
 
-    getStore().dispatch(chatroomActions.updateChatRoom(chatrooms));
+    chatroomActions.updateChatRoom(chatrooms);
 }

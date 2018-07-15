@@ -150,8 +150,7 @@ var ChatsLogComponent = /** @class */ (function () {
             }
         };
         async.each(roomAccess, function (item, resultCallback) {
-            self.getRoomInfo(item.roomId)
-                .then(function (room) {
+            self.getRoomInfo(item.roomId).then(function (room) {
                 results.push(room);
                 resultCallback();
             }).catch(function (err) {

@@ -75,7 +75,7 @@ function updateLastAccessTimeEventHandler(newRoomAccess) {
 export function initChatsLog() {
     var chatsLogComponent = InternalStore.createChatLogInstance(BackendFactory.getInstance());
     chatsLogComponent.onReady = function (rooms) {
-        getStore().dispatch(chatroomActions.updateChatRoom(rooms));
+        chatroomActions.updateChatRoom(rooms);
         getUnreadMessages();
     };
     chatsLogComponent.getRoomsInfoCompleteEvent = function () {
@@ -176,10 +176,13 @@ function getUnreadMessageComplete() {
 }
 var getChatLogContact = function (chatlog) {
     var dataManager = BackendFactory.getInstance().dataManager;
-    var contacts = chatlog.room.members.filter(function (value) {
-        return !dataManager.isMySelf(value._id);
-    });
-    return (contacts.length > 0) ? contacts[0]._id : null;
+    var members = chatlog.room.members;
+    if (Array.isArray(members)) {
+        var contacts = members.filter(function (value) {
+            return !dataManager.isMySelf(value._id);
+        });
+        return (contacts.length > 0) ? contacts[0]._id : null;
+    }
 };
 function updateRooms(room) {
     return __awaiter(this, void 0, void 0, function () {
@@ -201,7 +204,7 @@ function updateRooms(room) {
                 chatrooms = new Array();
                 chatrooms.push(room);
             }
-            getStore().dispatch(chatroomActions.updateChatRoom(chatrooms));
+            chatroomActions.updateChatRoom(chatrooms);
             return [2 /*return*/];
         });
     });

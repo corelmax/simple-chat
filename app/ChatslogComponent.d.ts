@@ -40,7 +40,7 @@ export declare class ChatsLogComponent {
     private organizeChatLogMap;
     private setLogProp;
     private addChatLog;
-    checkRoomInfo(unread: IUnread, chatrooms: Room[]): Promise<{} | undefined>;
+    checkRoomInfo(unread: IUnread, chatrooms: Room[]): Promise<Room | undefined>;
     getChatsLogCount(): number;
     increaseChatsLogCount(num: number): void;
     decreaseChatsLogCount(num: number): void;

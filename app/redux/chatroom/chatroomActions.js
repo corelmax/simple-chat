@@ -401,9 +401,11 @@ export var createPrivateChatRoomMembers = function (myUser, contactUser) {
     }
 };
 export var UPDATED_CHATROOMS = "UPDATED_CHATROOMS";
-export var updatedChatRoomSuccess = function (chatrooms) { return ({ type: UPDATED_CHATROOMS, payload: chatrooms }); };
+export var updatedChatRoomSuccess = function (chatrooms) { return ({
+    type: UPDATED_CHATROOMS, payload: chatrooms,
+}); };
 export var updateChatRoom = function (rooms) {
-    var chatrooms = getStore().getState().chatroomReducer.get("chatrooms");
+    var chatrooms = getStore().getState().chatroomReducer.chatrooms;
     if (chatrooms) {
         // R.unionWith(R.eqBy(R.prop('a')), l1, l2);
         var newRooms = R.unionWith(R.eqBy(R.prop("_id")), rooms, chatrooms);

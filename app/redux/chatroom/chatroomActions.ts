@@ -384,9 +384,11 @@ export const createPrivateChatRoomMembers = (
 };
 
 export const UPDATED_CHATROOMS = "UPDATED_CHATROOMS";
-export const updatedChatRoomSuccess = (chatrooms: Room[]) => ({ type: UPDATED_CHATROOMS, payload: chatrooms });
+export const updatedChatRoomSuccess = (chatrooms: Room[]) => ({
+    type: UPDATED_CHATROOMS, payload: chatrooms,
+});
 export const updateChatRoom = (rooms: Room[]) => {
-    let chatrooms: Room[] = getStore().getState().chatroomReducer.get("chatrooms");
+    let chatrooms: Room[] = getStore().getState().chatroomReducer.chatrooms;
     if (chatrooms) {
         // R.unionWith(R.eqBy(R.prop('a')), l1, l2);
         const newRooms = R.unionWith(R.eqBy(R.prop("_id")), rooms, chatrooms) as Room[];

@@ -133,17 +133,17 @@ export class ChatsLogComponent {
         };
 
         async.each(roomAccess, (item, resultCallback) => {
-            self.getRoomInfo(item.roomId)
-                .then((room) => {
-                    results.push(room);
-                    resultCallback();
-                }).catch((err) => {
-                    if (err) {
-                        console.warn("getRoomInfo", err);
-                    }
+            self.getRoomInfo(item.roomId).then((room) => {
+                results.push(room);
 
-                    resultCallback();
-                });
+                resultCallback();
+            }).catch((err) => {
+                if (err) {
+                    console.warn("getRoomInfo", err);
+                }
+
+                resultCallback();
+            });
         }, (err) => {
             console.log("onAccessRoom.finished!", err);
             done();
@@ -429,7 +429,7 @@ export class ChatsLogComponent {
             console.warn("No have roomInfo in room store.", unread.rid);
 
             const room = await self.getRoomInfo(unread.rid);
-            const p = new Promise((resolve, rejected) => {
+            const p = new Promise((resolve: (room: Room) => void, rejected) => {
                 if (!room) {
                     rejected();
                 } else {

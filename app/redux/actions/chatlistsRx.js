@@ -39,12 +39,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-import { getUnreadMessage } from "../../ChatslogComponent";
-import { RoomAccessData } from "stalk-js/starter/models";
 import { createAction } from "redux-actions";
 import * as Rx from "rxjs/Rx";
-import { getLastAccessRoom, STALK_INIT_CHATLOG, ON_CHATLOG_CHANGE } from "../chatlogs";
+import { RoomAccessData } from "stalk-js/starter/models";
+import { getUnreadMessage } from "../../ChatslogComponent";
 import { apiHeaders } from "../../services/ServiceUtils";
+import { getLastAccessRoom, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
 import InternalStore from "../../InternalStore";
 var ajax = Rx.Observable.ajax;
 var config = function () { return InternalStore.config; };
@@ -74,12 +74,12 @@ export var GET_RECENT_MESSAGE_SUCCESS = "GET_RECENT_MESSAGE_SUCCESS";
 export var GET_RECENT_MESSAGE_FAILURE = "GET_RECENT_MESSAGE_FAILURE";
 var getRecentMessageSuccess = createAction(GET_RECENT_MESSAGE_SUCCESS, function (payload) { return payload; });
 var getRecentMessageFailure = createAction(GET_RECENT_MESSAGE_FAILURE, function (error) { return error; });
-export var getRecentMessage_Epic = function (action$) {
+export var getRecentMessageEpic = function (action$) {
     return action$.filter(function (action) { return action.type === GET_ALL_CHATROOM_SUCCESS || action.type === ON_CHATLOG_CHANGE; })
         .mergeMap(function (action) {
         var chatroomReducer = getStore().getState().chatroomReducer;
         var roomAccess = getStore().getState().chatlogReducer.roomAccess;
-        var id = getAuthStore().user.id;
+        var _id = getAuthStore().user._id;
         var chatlogs = new Array();
         var rooms = chatroomReducer.get("chatrooms");
         var access = [];
@@ -100,7 +100,7 @@ export var getRecentMessage_Epic = function (action$) {
                 var value, log;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, getUnreadMessage(id, new RoomAccessData(room.roomId, room.accessTime))];
+                        case 0: return [4 /*yield*/, getUnreadMessage(_id, new RoomAccessData(room.roomId, room.accessTime))];
                         case 1:
                             value = _a.sent();
                             log = { rid: value.rid, count: value.count, lastMessage: value.message };
@@ -119,17 +119,20 @@ export var getRecentMessage_Epic = function (action$) {
         }));
     })
         .map(function (response) { return getRecentMessageSuccess(response); })
-        .catch(function (error) { console.warn("errrrrrr", error); return Rx.Observable.of(getRecentMessageFailure(error)); });
+        .catch(function (error) {
+        console.warn("errrrrrr", error);
+        return Rx.Observable.of(getRecentMessageFailure(error));
+    });
 };
-export var initChatlogs_Epic = function (action$) {
+export var initChatlogsEpic = function (action$) {
     return action$.ofType(STALK_INIT_CHATLOG)
         .mergeMap(function (action) { return __awaiter(_this, void 0, void 0, function () {
-        var id;
+        var _id;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    id = getAuthStore().user.id;
-                    return [4 /*yield*/, id];
+                    _id = getAuthStore().user._id;
+                    return [4 /*yield*/, _id];
                 case 1: return [2 /*return*/, _a.sent()];
             }
         });

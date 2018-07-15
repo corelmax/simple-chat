@@ -39,18 +39,18 @@ var _this = this;
  *
  * This is pure function action for redux app.
  */
-import * as Rx from "rxjs/Rx";
 import { createAction } from "redux-actions";
-var _a = Rx.Observable, ajax = _a.ajax, fromPromise = _a.fromPromise;
+import * as Rx from "rxjs/Rx";
 import { ChatRoomComponent } from "../../ChatRoomComponent";
-import { checkOlderMessages, getNewerMessageFromNet, } from "./chatroomActions";
-import { apiHeaders } from "../../services/ServiceUtils";
+import InternalStore from "../../InternalStore";
 import * as chatroomService from "../../services/ChatroomService";
 import { updateMessagesReader } from "../../services/MessageService";
-import InternalStore from "../../InternalStore";
+import { apiHeaders } from "../../services/ServiceUtils";
+import { checkOlderMessages, getNewerMessageFromNet, } from "./chatroomActions";
 var apiConfig = function () { return InternalStore.apiConfig; };
 var authReducer = function () { return InternalStore.authStore; };
 var getStore = function () { return InternalStore.store; };
+var _a = Rx.Observable, ajax = _a.ajax, fromPromise = _a.fromPromise;
 export var FETCH_PRIVATE_CHATROOM = "FETCH_PRIVATE_CHATROOM";
 export var FETCH_PRIVATE_CHATROOM_FAILURE = "FETCH_PRIVATE_CHATROOM_FAILURE";
 export var FETCH_PRIVATE_CHATROOM_SUCCESS = "FETCH_PRIVATE_CHATROOM_SUCCESS";
@@ -61,7 +61,7 @@ export var fetchPrivateChatRoom = function (ownerId, roommateId) {
 var fetchPrivateChatRoomSuccess = function (payload) { return ({ type: FETCH_PRIVATE_CHATROOM_SUCCESS, payload: payload }); };
 var cancelFetchPrivateChatRoom = function () { return ({ type: FETCH_PRIVATE_CHATROOM_CANCELLED }); };
 var fetchPrivateChatRoomFailure = function (payload) { return ({ type: FETCH_PRIVATE_CHATROOM_FAILURE, payload: payload }); };
-export var getPrivateChatRoom_Epic = function (action$) {
+export var getPrivateChatRoomEpic = function (action$) {
     return action$.ofType(FETCH_PRIVATE_CHATROOM)
         .mergeMap(function (action) {
         return fromPromise(chatroomService.getPrivateChatroom(action.payload.ownerId, action.payload.roommateId));
@@ -108,7 +108,9 @@ export var createPrivateChatRoomEpic = function (action$) {
 export var GET_MY_ROOM = "GET_MY_ROOM";
 export var GET_MY_ROOM_SUCCESS = "GET_MY_ROOM_SUCCESS";
 export var GET_MY_ROOM_FAILURE = "GET_MY_ROOM_FAILURE";
-export var getMyRoom = createAction(GET_MY_ROOM, function (user_id, username, avatar) { return ({ user_id: user_id, username: username, avatar: avatar }); });
+export var getMyRoom = createAction(GET_MY_ROOM, function (userId, username, avatar) { return ({
+    userId: userId, username: username, avatar: avatar,
+}); });
 export var getMyRoomSuccess = createAction(GET_MY_ROOM_SUCCESS, function (payload) { return payload; });
 export var getMyRoomFailure = createAction(GET_MY_ROOM_FAILURE, function (error) { return error; });
 export var getMyRoomEpic = function (action$) {
@@ -159,7 +161,7 @@ export var UPDATE_MESSAGES_READ_FAILUER = "UPDATE_MESSAGES_READ_FAILURE";
 export var updateMessagesRead = createAction(UPDATE_MESSAGES_READ, function (messages, roomId) { return ({ messages: messages, roomId: roomId }); });
 export var updateMessagesReadSuccess = createAction(UPDATE_MESSAGES_READ_SUCCESS, function (payload) { return payload; });
 export var updateMessagesReadFailure = createAction(UPDATE_MESSAGES_READ_FAILUER, function (payload) { return payload; });
-export var updateMessagesRead_Epic = function (action$) {
+export var updateMessagesReadEpic = function (action$) {
     return action$.ofType(UPDATE_MESSAGES_READ)
         .mergeMap(function (action) {
         var messages = action.payload.messages;
@@ -185,7 +187,9 @@ export var CHATROOM_UPLOAD_FILE = "CHATROOM_UPLOAD_FILE";
 export var CHATROOM_UPLOAD_FILE_SUCCESS = "CHATROOM_UPLOAD_FILE_SUCCESS";
 export var CHATROOM_UPLOAD_FILE_FAILURE = "CHATROOM_UPLOAD_FILE_FAILURE";
 export var CHATROOM_UPLOAD_FILE_CANCELLED = "CHATROOM_UPLOAD_FILE_CANCELLED";
-export var uploadFile = function (progressEvent, file) { return ({ type: CHATROOM_UPLOAD_FILE, payload: { data: progressEvent, file: file } }); };
+export var uploadFile = function (progressEvent, file) {
+    return ({ type: CHATROOM_UPLOAD_FILE, payload: { data: progressEvent, file: file } });
+};
 var uploadFileSuccess = function (result) { return ({ type: CHATROOM_UPLOAD_FILE_SUCCESS, payload: result }); };
 var uploadFileFailure = function (error) { return ({ type: CHATROOM_UPLOAD_FILE_FAILURE, payload: error }); };
 export var uploadFileCanceled = function () { return ({ type: CHATROOM_UPLOAD_FILE_CANCELLED }); };

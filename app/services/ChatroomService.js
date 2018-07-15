@@ -3,7 +3,7 @@
  */
 import { BackendFactory } from "stalk-js/starter";
 import InternalStore from "../InternalStore";
-import { withToken, apiHeaders } from "./ServiceUtils";
+import { apiHeaders, withToken } from "./ServiceUtils";
 var getConfig = function () { return BackendFactory.getInstance().getApiConfig(); };
 export var getRoomInfo = function (roomId) {
     return fetch(getConfig().chatroom + "/roomInfo?room_id=" + roomId, {
@@ -12,13 +12,13 @@ export var getRoomInfo = function (roomId) {
     });
 };
 export var getUnreadMessage = function (roomId, userId, lastAccessTime) {
-    return fetch(getConfig().chatroom + "/unreadMessage?room_id=" + roomId + "&user_id=" + userId + "&lastAccessTime=" + lastAccessTime, {
+    return fetch(getConfig().chatroom + "/\n    unreadMessage?room_id=" + roomId + "&user_id=" + userId + "&lastAccessTime=" + lastAccessTime, {
         method: "GET",
         headers: apiHeaders(),
     });
 };
 export var getOlderMessagesCount = function (roomId, topEdgeMessageTime, queryMessage) {
-    return fetch(getConfig().chatroom + "/olderMessagesCount?message=" + queryMessage + "&room_id=" + roomId + "&topEdgeMessageTime=" + topEdgeMessageTime, {
+    return fetch(getConfig().chatroom + "/\n    olderMessagesCount?message=" + queryMessage + "&room_id=" + roomId + "&topEdgeMessageTime=" + topEdgeMessageTime, {
         method: "GET",
         headers: apiHeaders(),
     });

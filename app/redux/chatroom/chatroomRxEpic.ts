@@ -3,25 +3,24 @@
  *
  * This is pure function action for redux app.
  */
-import * as Rx from "rxjs/Rx";
 import { createAction } from "redux-actions";
-
-const { ajax, fromPromise } = Rx.Observable;
-import { MessageImp } from "../../models";
-
+import * as Rx from "rxjs/Rx";
 import { ChatRoomComponent } from "../../ChatRoomComponent";
-import {
-    checkOlderMessages, getNewerMessageFromNet, GET_NEWER_MESSAGE_SUCCESS,
-} from "./chatroomActions";
-import { apiHeaders } from "../../services/ServiceUtils";
+import InternalStore from "../../InternalStore";
+import { MessageImp } from "../../models";
+import { FileResult } from "../../models/FileResult";
 import * as chatroomService from "../../services/ChatroomService";
 import { updateMessagesReader } from "../../services/MessageService";
-import { FileResult } from "../../models/FileResult";
+import { apiHeaders } from "../../services/ServiceUtils";
+import {
+    checkOlderMessages, GET_NEWER_MESSAGE_SUCCESS, getNewerMessageFromNet,
+} from "./chatroomActions";
 
-import InternalStore from "../../InternalStore";
 const apiConfig = () => InternalStore.apiConfig;
 const authReducer = () => InternalStore.authStore;
 const getStore = () => InternalStore.store;
+
+const { ajax, fromPromise } = Rx.Observable;
 
 export const FETCH_PRIVATE_CHATROOM = "FETCH_PRIVATE_CHATROOM";
 export const FETCH_PRIVATE_CHATROOM_FAILURE = "FETCH_PRIVATE_CHATROOM_FAILURE";
@@ -33,7 +32,7 @@ export const fetchPrivateChatRoom = (ownerId: string, roommateId: string) =>
 const fetchPrivateChatRoomSuccess = (payload: any) => ({ type: FETCH_PRIVATE_CHATROOM_SUCCESS, payload });
 const cancelFetchPrivateChatRoom = () => ({ type: FETCH_PRIVATE_CHATROOM_CANCELLED });
 const fetchPrivateChatRoomFailure = (payload: any) => ({ type: FETCH_PRIVATE_CHATROOM_FAILURE, payload });
-export const getPrivateChatRoom_Epic = (action$) =>
+export const getPrivateChatRoomEpic = (action$) =>
     action$.ofType(FETCH_PRIVATE_CHATROOM)
         .mergeMap((action) =>
             fromPromise(chatroomService.getPrivateChatroom(action.payload.ownerId, action.payload.roommateId)))
@@ -85,7 +84,10 @@ export const createPrivateChatRoomEpic = (action$) => {
 export const GET_MY_ROOM = "GET_MY_ROOM";
 export const GET_MY_ROOM_SUCCESS = "GET_MY_ROOM_SUCCESS";
 export const GET_MY_ROOM_FAILURE = "GET_MY_ROOM_FAILURE";
-export const getMyRoom = createAction(GET_MY_ROOM, (user_id: string, username: string, avatar: string) => ({ user_id, username, avatar }));
+export const getMyRoom = createAction(GET_MY_ROOM,
+    (userId: string, username: string, avatar: string) => ({
+        userId, username, avatar,
+    }));
 export const getMyRoomSuccess = createAction(GET_MY_ROOM_SUCCESS, (payload) => payload);
 export const getMyRoomFailure = createAction(GET_MY_ROOM_FAILURE, (error) => error);
 export const getMyRoomEpic = (action$) => {
@@ -129,11 +131,12 @@ export const UPDATE_MESSAGES_READ = "UPDATE_MESSAGES_READ";
 export const UPDATE_MESSAGES_READ_SUCCESS = "UPDATE_MESSAGES_READ_SUCCESS";
 export const UPDATE_MESSAGES_READ_FAILUER = "UPDATE_MESSAGES_READ_FAILURE";
 
-export const updateMessagesRead = createAction(UPDATE_MESSAGES_READ, (messages: MessageImp[], roomId: string) => ({ messages, roomId }));
+export const updateMessagesRead = createAction(UPDATE_MESSAGES_READ,
+    (messages: MessageImp[], roomId: string) => ({ messages, roomId }));
 export const updateMessagesReadSuccess = createAction(UPDATE_MESSAGES_READ_SUCCESS, (payload) => payload);
 export const updateMessagesReadFailure = createAction(UPDATE_MESSAGES_READ_FAILUER, (payload) => payload);
 
-export const updateMessagesRead_Epic = (action$) => {
+export const updateMessagesReadEpic = (action$) => {
     return action$.ofType(UPDATE_MESSAGES_READ)
         .mergeMap((action) => {
             const messages = action.payload.messages as MessageImp[];
@@ -159,7 +162,8 @@ export const CHATROOM_UPLOAD_FILE_SUCCESS = "CHATROOM_UPLOAD_FILE_SUCCESS";
 export const CHATROOM_UPLOAD_FILE_FAILURE = "CHATROOM_UPLOAD_FILE_FAILURE";
 export const CHATROOM_UPLOAD_FILE_CANCELLED = "CHATROOM_UPLOAD_FILE_CANCELLED";
 
-export const uploadFile = (progressEvent: ProgressEvent, file) => ({ type: CHATROOM_UPLOAD_FILE, payload: { data: progressEvent, file } });
+export const uploadFile = (progressEvent: ProgressEvent, file) =>
+    ({ type: CHATROOM_UPLOAD_FILE, payload: { data: progressEvent, file } });
 const uploadFileSuccess = (result: FileResult) => ({ type: CHATROOM_UPLOAD_FILE_SUCCESS, payload: result });
 const uploadFileFailure = (error) => ({ type: CHATROOM_UPLOAD_FILE_FAILURE, payload: error });
 export const uploadFileCanceled = () => ({ type: CHATROOM_UPLOAD_FILE_CANCELLED });

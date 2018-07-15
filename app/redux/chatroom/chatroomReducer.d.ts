@@ -3,9 +3,9 @@
  *
  * This is pure function for redux app.
  */
-import { AnyAction } from "redux";
 import { Record } from "immutable";
-import { Room, MessageImp } from "../../models";
+import { AnyAction } from "redux";
+import { MessageImp, Room } from "../../models";
 export interface IChatroom {
     isFetching: boolean;
     state: string;

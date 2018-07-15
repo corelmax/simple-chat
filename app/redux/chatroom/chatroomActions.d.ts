@@ -4,7 +4,7 @@
  * This is pure function action for redux app.
  */
 import { IMessage } from "stalk-js/starter/models";
-import { Room, IMember } from "../../models";
+import { IMember, Room } from "../../models";
 /**
  * ChatRoomActionsType
  */
@@ -61,4 +61,4 @@ export declare const updatedChatRoomSuccess: (chatrooms: Room[]) => {
 export declare const updateChatRoom: (rooms: Room[]) => void;
 export declare const GET_CHAT_TARGET_UID_SUCCESS = "GET_CHAT_TARGET_UID_SUCCESS";
 export declare const GET_CHAT_TARGET_UID_FAILURE = "GET_CHAT_TARGET_UID_FAILURE";
-export declare function getChatTargetIds(room_id: string): (dispatch: any) => void;
+export declare function getChatTargetIds(roomId: string): (dispatch: any) => void;

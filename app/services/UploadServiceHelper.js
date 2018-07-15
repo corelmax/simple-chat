@@ -8,8 +8,9 @@ export function manageUploadQueue(files, target_api, onFinished, speedCallBack, 
         console.log("queue worker");
         uploadFile(task, target_api).then(function (url) {
             results.push(url);
-            if (speedCallBack)
+            if (speedCallBack) {
                 onSpeedCallBack({ url: url, id: task.uniqueId });
+            }
             callback();
         }).catch(function (err) {
             callback(err);
@@ -21,7 +22,7 @@ export function manageUploadQueue(files, target_api, onFinished, speedCallBack, 
     };
     // add some items to the queue (batch-wise)
     q.push(files, function (err) {
-        console.log('finished processing item', err);
+        console.log("finished processing item", err);
     });
     // add some items to the front of the queue
     // q.unshift({ name: 'bar' }, function (err) {
@@ -31,15 +32,15 @@ export function manageUploadQueue(files, target_api, onFinished, speedCallBack, 
 function uploadFile(file, target_api) {
     return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', target_api);
+        xhr.open("POST", target_api);
         xhr.onload = function () {
             if (xhr.status !== 200) {
-                console.log('Upload failed. ' + 'Expected HTTP 200 OK response, got ' + xhr.responseText);
+                console.log("Upload failed. " + "Expected HTTP 200 OK response, got " + xhr.responseText);
                 reject(xhr.status);
                 return;
             }
             if (!xhr.responseText) {
-                alert('Upload failed. ' + 'No response payload.');
+                alert("Upload failed. " + "No response payload.");
                 reject(xhr.status);
                 return;
             }
@@ -49,52 +50,48 @@ function uploadFile(file, target_api) {
             resolve(url);
         };
         function onTimeout() {
-            console.warn('Timeout', xhr.responseText);
+            console.warn("Timeout", xhr.responseText);
             reject(xhr.responseText);
         }
-        ;
         function onError() {
-            console.warn('Error', xhr.responseText);
+            console.warn("Error", xhr.responseText);
             reject(xhr.responseText);
         }
-        ;
         xhr.ontimeout = onTimeout;
         xhr.onerror = onError;
         if (xhr.upload) {
             xhr.upload.onprogress = function (event) {
                 if (event.lengthComputable) {
-                    console.log('upload onprogress', event.loaded + '/' + event.total);
+                    console.log("upload onprogress", event.loaded + "/" + event.total);
                 }
             };
         }
         var formdata = new FormData();
-        formdata.append('image', {
+        formdata.append("image", {
             uri: file.image,
             name: file.image.slice((Math.max(0, file.image.lastIndexOf("/")) || Infinity) + 1),
-            type: 'image/jpg'
+            type: "image/jpg",
         });
-        formdata.append('extension', 'JPG');
-        xhr.setRequestHeader('Content-Type', 'image/JPG');
-        xhr.setRequestHeader('x-api-key', config.BOL_REST.apiKey);
+        formdata.append("extension", "JPG");
+        xhr.setRequestHeader("Content-Type", "image/JPG");
+        xhr.setRequestHeader("x-api-key", config.BOL_REST.apiKey);
         xhr.send(formdata);
     });
 }
 export function uploadImageChat(formdata) {
     return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', config.api.fileUpload);
+        xhr.open("POST", config.api.fileUpload);
         function onTimeout() {
-            console.warn('Timeout');
+            console.warn("Timeout");
             console.log(xhr.responseText);
             reject(xhr.responseText);
         }
-        ;
         function onError() {
-            console.warn('General network error');
+            console.warn("General network error");
             console.log(xhr.responseText);
             reject(xhr.responseText);
         }
-        ;
         function onloaded() {
             if (xhr.status !== 200) {
                 console.dir(xhr);
@@ -112,13 +109,12 @@ export function uploadImageChat(formdata) {
             console.log("result image url: ", profilePicUrl);
             resolve(profilePicUrl);
         }
-        ;
         xhr.onload = onloaded;
         xhr.ontimeout = onTimeout;
         xhr.onerror = onError;
         if (xhr.upload) {
             xhr.upload.onprogress = function (event) {
-                console.log('upload onprogress', event);
+                console.log("upload onprogress", event);
             };
         }
         // xhr.setRequestHeader('Content-Type', 'multipart/form-data');

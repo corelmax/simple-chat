@@ -1,7 +1,7 @@
 import * as CryptoJS from "crypto-js";
 var NodeSecureService = /** @class */ (function () {
-    function NodeSecureService(secret_key) {
-        this.key = secret_key;
+    function NodeSecureService(secretKey) {
+        this.key = secretKey;
         this.passiv = "chitchat#1234";
     }
     NodeSecureService.prototype.hashCompute = function (content) {
@@ -17,8 +17,9 @@ var NodeSecureService = /** @class */ (function () {
             if (!!ciphertext) {
                 resolve(ciphertext.toString());
             }
-            else
+            else {
                 reject();
+            }
         });
     };
     NodeSecureService.prototype.decryption = function (content) {
@@ -26,10 +27,12 @@ var NodeSecureService = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             var bytes = CryptoJS.AES.decrypt(content, self.key);
             var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-            if (!!plaintext)
+            if (!!plaintext) {
                 resolve(plaintext);
-            else
+            }
+            else {
                 reject();
+            }
         });
     };
     NodeSecureService.prototype.encryptWithSecureRandom = function (content, callback) {

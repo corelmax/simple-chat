@@ -53,7 +53,9 @@ export var getSessionToken = function () {
         return "";
     }
 };
-var onGetContactProfileFail = function (contactId) { };
+var onGetContactProfileFail = function (contactId) {
+    // Event delegate function.
+};
 export var STALK_INIT = "STALK_INIT";
 export var STALK_INIT_SUCCESS = "STALK_INIT_SUCCESS";
 export var STALK_INIT_FAILURE = "STALK_INIT_FAILURE";

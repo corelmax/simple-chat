@@ -5,7 +5,7 @@
  */
 
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
-import { StalkAccount, RoomAccessData } from "stalk-js/starter/models";
+import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
 import * as StalkNotificationAction from "./stalkNotificationActions";
 
 import { createAction } from "redux-actions";
@@ -17,12 +17,13 @@ export const getSessionToken = () => {
     const store = getStore();
     if (store) {
         return store.getState().stalkReducer.stalkToken;
-    }
-    else {
+    } else {
         return "";
     }
 };
-const onGetContactProfileFail = (contactId: string) => { };
+const onGetContactProfileFail = (contactId: string) => {
+    // Event delegate function.
+};
 
 export const STALK_INIT = "STALK_INIT";
 export const STALK_INIT_SUCCESS = "STALK_INIT_SUCCESS";

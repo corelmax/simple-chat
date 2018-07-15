@@ -1,7 +1,7 @@
 import * as cryptoHelper from "./CryptoHelper";
-import * as secureServiceFactory from "./secure/SecureServiceFactory";
 import * as iSecureService from "./secure/ISecureService";
 import * as nodeSecureService from "./secure/NodeSecureService";
+import * as secureServiceFactory from "./secure/SecureServiceFactory";
 
 export namespace SecureUtils {
     export import CryptoHelper = cryptoHelper;

@@ -1,8 +1,13 @@
+/**
+ * Copyright 2016-2018 Ahoo Studio.co.th.
+ *
+ * This is pure function for redux app.
+ */
 import { Record } from "immutable";
-import { ON_EARLY_MESSAGE_READY, SEND_MESSAGE_FAILURE, GET_NEWER_MESSAGE_SUCCESS, ON_MESSAGE_CHANGED, GET_CHAT_TARGET_UID_SUCCESS, GET_CHAT_TARGET_UID_FAILURE, } from "./chatroomActions";
-import * as chatroomRxActions from "./chatroomRxEpic";
+import { GET_CHAT_TARGET_UID_FAILURE, GET_CHAT_TARGET_UID_SUCCESS, GET_NEWER_MESSAGE_SUCCESS, ON_EARLY_MESSAGE_READY, ON_MESSAGE_CHANGED, SEND_MESSAGE_FAILURE, } from "./chatroomActions";
 import * as chatroomActions from "./chatroomActions";
-import { GET_ALL_CHATROOM_SUCCESS, GET_ALL_CHATROOM_FAILURE } from "../actions/chatlistsRx";
+import * as chatroomRxActions from "./chatroomRxEpic";
+import { GET_ALL_CHATROOM_FAILURE, GET_ALL_CHATROOM_SUCCESS } from "../actions/chatlistsRx";
 // Define our record defaults
 var chatroomDefaults = {
     isFetching: false,

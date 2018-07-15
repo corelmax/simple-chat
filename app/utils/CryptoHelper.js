@@ -34,8 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-import { SecureServiceFactory } from "./secure/SecureServiceFactory";
 import { MessageType } from "stalk-js/starter/models/index";
+import { SecureServiceFactory } from "./secure/SecureServiceFactory";
 export var decryptionText = function (message) { return __awaiter(_this, void 0, void 0, function () {
     var secure, result;
     return __generator(this, function (_a) {

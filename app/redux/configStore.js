@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware } from "redux";
-import { createEpicMiddleware } from 'redux-observable';
-import rootReducer from "./rootReducer";
+import { applyMiddleware, createStore } from "redux";
+import { createEpicMiddleware } from "redux-observable";
 import { rootEpic } from "./rootEpics";
+import rootReducer from "./rootReducer";
 // export const store = createStore(rootReducer);
 var epicMiddleware = createEpicMiddleware(rootEpic);
 var middlewares = [];

@@ -3,30 +3,31 @@ import InternalStore from "../InternalStore";
 
 const config = InternalStore.config;
 
-export function manageUploadQueue(files: Array<any>, target_api: string,
-    onFinished: (results) => void, speedCallBack: boolean = false, onSpeedCallBack: (results) => void) {
-    let results = [];
+export function manageUploadQueue(files: any[], target_api: string,
+                                  onFinished: (results) => void,
+                                  speedCallBack: boolean = false, onSpeedCallBack: (results) => void) {
+    const results = [];
 
-    let q = queue(function (task, callback) {
+    const q = queue(function(task, callback) {
         console.log("queue worker");
-        uploadFile(task, target_api).then(url => {
+        uploadFile(task, target_api).then((url) => {
             results.push(url);
-            if (speedCallBack) onSpeedCallBack({ url: url, id: task.uniqueId })
+            if (speedCallBack) { onSpeedCallBack({ url, id: task.uniqueId }); }
 
             callback();
-        }).catch(err => {
+        }).catch((err) => {
             callback(err);
         });
     }, 1);
 
     // assign a callback
-    q.drain = function () {
+    q.drain = function() {
         onFinished(results);
     };
 
     // add some items to the queue (batch-wise)
-    q.push(files, function (err) {
-        console.log('finished processing item', err);
+    q.push(files, function(err) {
+        console.log("finished processing item", err);
     });
 
     // add some items to the front of the queue
@@ -37,77 +38,77 @@ export function manageUploadQueue(files: Array<any>, target_api: string,
 
 function uploadFile(file, target_api: string): Promise<any> {
     return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', target_api);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", target_api);
         xhr.onload = () => {
             if (xhr.status !== 200) {
                 console.log(
-                    'Upload failed. ' + 'Expected HTTP 200 OK response, got ' + xhr.responseText
+                    "Upload failed. " + "Expected HTTP 200 OK response, got " + xhr.responseText,
                 );
                 reject(xhr.status);
                 return;
             }
             if (!xhr.responseText) {
                 alert(
-                    'Upload failed. ' + 'No response payload.'
+                    "Upload failed. " + "No response payload.",
                 );
                 reject(xhr.status);
                 return;
             }
 
-            let response = JSON.parse(xhr.response);
-            let filename = response.filename;
-            let url = config.BOL_REST.host + filename;
+            const response = JSON.parse(xhr.response);
+            const filename = response.filename;
+            const url = config.BOL_REST.host + filename;
 
             resolve(url);
         };
         function onTimeout() {
-            console.warn('Timeout', xhr.responseText);
+            console.warn("Timeout", xhr.responseText);
 
             reject(xhr.responseText);
-        };
+        }
         function onError() {
-            console.warn('Error', xhr.responseText);
+            console.warn("Error", xhr.responseText);
 
             reject(xhr.responseText);
-        };
+        }
         xhr.ontimeout = onTimeout;
         xhr.onerror = onError;
         if (xhr.upload) {
             xhr.upload.onprogress = (event) => {
                 if (event.lengthComputable) {
-                    console.log('upload onprogress', event.loaded + '/' + event.total);
+                    console.log("upload onprogress", event.loaded + "/" + event.total);
                 }
             };
         }
-        let formdata = new FormData();
-        formdata.append('image', {
+        const formdata = new FormData();
+        formdata.append("image", {
             uri: file.image,
             name: file.image.slice((Math.max(0, file.image.lastIndexOf("/")) || Infinity) + 1),
-            type: 'image/jpg'
+            type: "image/jpg",
         });
-        formdata.append('extension', 'JPG');
-        xhr.setRequestHeader('Content-Type', 'image/JPG');
-        xhr.setRequestHeader('x-api-key', config.BOL_REST.apiKey);
+        formdata.append("extension", "JPG");
+        xhr.setRequestHeader("Content-Type", "image/JPG");
+        xhr.setRequestHeader("x-api-key", config.BOL_REST.apiKey);
         xhr.send(formdata);
     });
 }
 
 export function uploadImageChat(formdata: FormData): Promise<any> {
     return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', config.api.fileUpload);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", config.api.fileUpload);
 
         function onTimeout() {
-            console.warn('Timeout');
+            console.warn("Timeout");
             console.log(xhr.responseText);
             reject(xhr.responseText);
-        };
+        }
         function onError() {
-            console.warn('General network error');
+            console.warn("General network error");
             console.log(xhr.responseText);
             reject(xhr.responseText);
-        };
+        }
         function onloaded() {
             if (xhr.status !== 200) {
                 console.dir(xhr);
@@ -119,19 +120,19 @@ export function uploadImageChat(formdata: FormData): Promise<any> {
                 reject(xhr.status);
                 return;
             }
-            let response = JSON.parse(xhr.response);
-            let filename = response.filename;
-            let path = config.BOL_REST.host.substring(0, config.BOL_REST.host.length - 1);
-            let profilePicUrl = path + filename;
+            const response = JSON.parse(xhr.response);
+            const filename = response.filename;
+            const path = config.BOL_REST.host.substring(0, config.BOL_REST.host.length - 1);
+            const profilePicUrl = path + filename;
             console.log("result image url: ", profilePicUrl);
             resolve(profilePicUrl);
-        };
+        }
         xhr.onload = onloaded;
         xhr.ontimeout = onTimeout;
         xhr.onerror = onError;
         if (xhr.upload) {
             xhr.upload.onprogress = (event) => {
-                console.log('upload onprogress', event);
+                console.log("upload onprogress", event);
             };
         }
 
@@ -141,5 +142,5 @@ export function uploadImageChat(formdata: FormData): Promise<any> {
         // var sBoundary = "---------------------------" + Date.now().toString(16);
         // oAjaxReq.setRequestHeader("Content-Type", "multipart\/form-data; boundary=" + sBoundary);
         xhr.send(formdata);
-    })
+    });
 }

@@ -4,7 +4,7 @@
 
 import { BackendFactory } from "stalk-js/starter";
 import InternalStore from "../InternalStore";
-import { withToken, apiHeaders } from "./ServiceUtils";
+import { apiHeaders, withToken } from "./ServiceUtils";
 const getConfig = () => BackendFactory.getInstance().getApiConfig();
 
 export const getRoomInfo = (roomId: string): Promise<any> => {
@@ -15,17 +15,19 @@ export const getRoomInfo = (roomId: string): Promise<any> => {
 };
 
 export const getUnreadMessage = (roomId: string, userId: string, lastAccessTime: string): Promise<any> => {
-    return fetch(`${getConfig().chatroom}/unreadMessage?room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
-        method: "GET",
-        headers: apiHeaders(),
-    });
+    return fetch(`${getConfig().chatroom}/
+    unreadMessage?room_id=${roomId}&user_id=${userId}&lastAccessTime=${lastAccessTime}`, {
+            method: "GET",
+            headers: apiHeaders(),
+        });
 };
 
 export const getOlderMessagesCount = (roomId: string, topEdgeMessageTime: string, queryMessage: boolean) => {
-    return fetch(`${getConfig().chatroom}/olderMessagesCount?message=${queryMessage}&room_id=${roomId}&topEdgeMessageTime=${topEdgeMessageTime}`, {
-        method: "GET",
-        headers: apiHeaders(),
-    });
+    return fetch(`${getConfig().chatroom}/
+    olderMessagesCount?message=${queryMessage}&room_id=${roomId}&topEdgeMessageTime=${topEdgeMessageTime}`, {
+            method: "GET",
+            headers: apiHeaders(),
+        });
 };
 
 export const getNewerMessages = (roomId: string, lastMessageTime: Date) => {

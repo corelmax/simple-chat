@@ -46,14 +46,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { HttpStatusCode, ChatEvents } from "stalk-js/stalkjs";
-import { BackendFactory } from "stalk-js/starter";
-import { SecureServiceFactory } from "../../utils/secure/SecureServiceFactory";
-import { ChatRoomComponent, ON_MESSAGE_CHANGE } from "../../ChatRoomComponent";
-import { MessageType } from "stalk-js/starter/models";
-import { RoomType, } from "../../models";
 import * as R from "ramda";
 import { createAction } from "redux-actions";
+import { ChatEvents, HttpStatusCode } from "stalk-js/stalkjs";
+import { BackendFactory } from "stalk-js/starter";
+import { MessageType } from "stalk-js/starter/models";
+import { ChatRoomComponent, ON_MESSAGE_CHANGE } from "../../ChatRoomComponent";
+import { RoomType, } from "../../models";
+import { SecureServiceFactory } from "../../utils/secure/SecureServiceFactory";
 import * as chatroomService from "../../services/ChatroomService";
 import * as MessageService from "../../services/MessageService";
 import * as NotificationManager from "../stalkBridge/stalkNotificationActions";
@@ -417,12 +417,12 @@ export var updateChatRoom = function (rooms) {
 var GET_CHAT_TARGET_UID = "GET_CHAT_TARGET_UID";
 export var GET_CHAT_TARGET_UID_SUCCESS = "GET_CHAT_TARGET_UID_SUCCESS";
 export var GET_CHAT_TARGET_UID_FAILURE = "GET_CHAT_TARGET_UID_FAILURE";
-var getChatTargetId = createAction(GET_CHAT_TARGET_UID, function (room_id) { return room_id; });
+var getChatTargetId = createAction(GET_CHAT_TARGET_UID, function (roomId) { return roomId; });
 var getChatTargetIdSuccess = createAction(GET_CHAT_TARGET_UID_SUCCESS, function (payload) { return payload; });
 var getChatTargetIdFailure = createAction(GET_CHAT_TARGET_UID_FAILURE, function (error) { return error; });
-export function getChatTargetIds(room_id) {
+export function getChatTargetIds(roomId) {
     return function (dispatch) {
-        dispatch(getChatTargetId(room_id));
+        dispatch(getChatTargetId(roomId));
         var room = getStore().getState().chatroomReducer.room;
         var _id = authReducer().user._id;
         if (!room) {

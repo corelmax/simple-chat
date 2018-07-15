@@ -10,7 +10,7 @@ export declare const fetchPrivateChatRoom: (ownerId: string, roommateId: string)
         roommateId: string;
     };
 };
-export declare const getPrivateChatRoom_Epic: (action$: any) => any;
+export declare const getPrivateChatRoomEpic: (action$: any) => any;
 export declare const CREATE_PRIVATE_CHATROOM = "CREATE_PRIVATE_CHATROOM";
 export declare const CREATE_PRIVATE_CHATROOM_SUCCESS = "CREATE_PRIVATE_CHATROOM_SUCCESS";
 export declare const CREATE_PRIVATE_CHATROOM_CANCELLED = "CREATE_PRIVATE_CHATROOM_CANCELLED";
@@ -27,7 +27,7 @@ export declare const GET_MY_ROOM = "GET_MY_ROOM";
 export declare const GET_MY_ROOM_SUCCESS = "GET_MY_ROOM_SUCCESS";
 export declare const GET_MY_ROOM_FAILURE = "GET_MY_ROOM_FAILURE";
 export declare const getMyRoom: import("redux-actions").ActionFunction3<string, string, string, import("redux-actions").Action<{
-    user_id: string;
+    userId: string;
     username: string;
     avatar: string;
 }>>;
@@ -45,7 +45,7 @@ export declare const updateMessagesRead: import("redux-actions").ActionFunction2
 }>>;
 export declare const updateMessagesReadSuccess: import("redux-actions").ActionFunction1<any, import("redux-actions").Action<any>>;
 export declare const updateMessagesReadFailure: import("redux-actions").ActionFunction1<any, import("redux-actions").Action<any>>;
-export declare const updateMessagesRead_Epic: (action$: any) => any;
+export declare const updateMessagesReadEpic: (action$: any) => any;
 export declare const CHATROOM_UPLOAD_FILE = "CHATROOM_UPLOAD_FILE";
 export declare const CHATROOM_UPLOAD_FILE_SUCCESS = "CHATROOM_UPLOAD_FILE_SUCCESS";
 export declare const CHATROOM_UPLOAD_FILE_FAILURE = "CHATROOM_UPLOAD_FILE_FAILURE";

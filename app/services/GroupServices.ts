@@ -7,20 +7,20 @@ import { apiHeaders, withToken } from "./ServiceUtils";
 const getConfig = () => InternalStore.apiConfig;
 const authReducer = () => InternalStore.authStore;
 
-export function addMember(room_id: string, member: any) {
+export function addMember(roomId: string, member: any) {
     return ajax({
         method: "POST",
-        url: `${getConfig().group}/addMember/${room_id}`,
-        body: JSON.stringify({ member: member }),
-        headers: apiHeaders()
+        url: `${getConfig().group}/addMember/${roomId}`,
+        body: JSON.stringify({ member }),
+        headers: apiHeaders(),
     });
 }
 
-export function removeMember(room_id: string, member_id: string) {
+export function removeMember(roomId: string, memberId: string) {
     return ajax({
         method: "POST",
-        url: `${getConfig().group}/removeMember/${room_id}`,
-        body: JSON.stringify({ member_id: member_id }),
-        headers: withToken(apiHeaders())(authReducer().api_token)
+        url: `${getConfig().group}/removeMember/${roomId}`,
+        body: JSON.stringify({ memberId }),
+        headers: withToken(apiHeaders())(authReducer().api_token),
     });
 }

@@ -4,9 +4,7 @@
  */
 import { BackendFactory } from "stalk-js/starter/BackendFactory";
 import { apiHeaders } from "./ServiceUtils";
-import InternalStore from "../InternalStore";
 var getConfig = function () { return BackendFactory.getInstance().getApiConfig(); };
-var authReducer = function () { return InternalStore.authStore; };
 export function updateMessageReader(messageId, roomId) {
     return fetch(getConfig().message + "/updateReader", {
         method: "POST",

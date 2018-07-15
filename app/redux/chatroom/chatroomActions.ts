@@ -4,17 +4,17 @@
  * This is pure function action for redux app.
  */
 
-import { HttpStatusCode, ChatEvents, IDictionary } from "stalk-js/stalkjs";
-import { BackendFactory } from "stalk-js/starter";
-import { SecureServiceFactory } from "../../utils/secure/SecureServiceFactory";
-import { ChatRoomComponent, ON_MESSAGE_CHANGE } from "../../ChatRoomComponent";
-import { MessageType, IMessage } from "stalk-js/starter/models";
-import {
-    Room, RoomType, IMember, MessageImp, MemberImp,
-} from "../../models";
-import * as Rx from "rxjs/Rx";
 import * as R from "ramda";
 import { createAction } from "redux-actions";
+import * as Rx from "rxjs/Rx";
+import { ChatEvents, HttpStatusCode, IDictionary } from "stalk-js/stalkjs";
+import { BackendFactory } from "stalk-js/starter";
+import { IMessage, MessageType } from "stalk-js/starter/models";
+import { ChatRoomComponent, ON_MESSAGE_CHANGE } from "../../ChatRoomComponent";
+import {
+    IMember, MemberImp, MessageImp, Room, RoomType,
+} from "../../models";
+import { SecureServiceFactory } from "../../utils/secure/SecureServiceFactory";
 
 import * as chatroomService from "../../services/ChatroomService";
 import * as MessageService from "../../services/MessageService";
@@ -360,7 +360,7 @@ export const getRoom = (roomId: string) => {
 
 export const createPrivateChatRoomMembers = (
     myUser: { _id: string, username: string, role?: string },
-    contactUser: { _id: string, username: string, role?: string }
+    contactUser: { _id: string, username: string, role?: string },
 ) => {
     if (myUser && contactUser) {
         const owner = {} as IMember;
@@ -400,12 +400,12 @@ export const updateChatRoom = (rooms: Room[]) => {
 const GET_CHAT_TARGET_UID = "GET_CHAT_TARGET_UID";
 export const GET_CHAT_TARGET_UID_SUCCESS = "GET_CHAT_TARGET_UID_SUCCESS";
 export const GET_CHAT_TARGET_UID_FAILURE = "GET_CHAT_TARGET_UID_FAILURE";
-const getChatTargetId = createAction(GET_CHAT_TARGET_UID, (room_id: string) => room_id);
+const getChatTargetId = createAction(GET_CHAT_TARGET_UID, (roomId: string) => roomId);
 const getChatTargetIdSuccess = createAction(GET_CHAT_TARGET_UID_SUCCESS, (payload) => payload);
 const getChatTargetIdFailure = createAction(GET_CHAT_TARGET_UID_FAILURE, (error) => error);
-export function getChatTargetIds(room_id: string) {
+export function getChatTargetIds(roomId: string) {
     return (dispatch) => {
-        dispatch(getChatTargetId(room_id));
+        dispatch(getChatTargetId(roomId));
 
         const { room }: { room: Room } = getStore().getState().chatroomReducer;
         const { _id } = authReducer().user;

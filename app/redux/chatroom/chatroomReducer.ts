@@ -3,26 +3,26 @@
  *
  * This is pure function for redux app.
  */
-import { AnyAction } from "redux";
 import { Record } from "immutable";
+import { AnyAction } from "redux";
 
 import {
-    ON_EARLY_MESSAGE_READY,
-    SEND_MESSAGE_FAILURE,
-    GET_NEWER_MESSAGE_SUCCESS,
-    GET_NEWER_MESSAGE_FAILURE,
-    ON_MESSAGE_CHANGED,
-    GET_CHAT_TARGET_UID_SUCCESS,
     GET_CHAT_TARGET_UID_FAILURE,
+    GET_CHAT_TARGET_UID_SUCCESS,
+    GET_NEWER_MESSAGE_FAILURE,
+    GET_NEWER_MESSAGE_SUCCESS,
+    ON_EARLY_MESSAGE_READY,
+    ON_MESSAGE_CHANGED,
+    SEND_MESSAGE_FAILURE,
 } from "./chatroomActions";
 
-import * as chatroomRxActions from "./chatroomRxEpic";
-import * as chatroomActions from "./chatroomActions";
-import * as StalkBridgeActions from "../stalkBridge/stalkBridgeActions";
 import * as chatlogsActions from "../chatlogs/chatlogsActions";
+import * as StalkBridgeActions from "../stalkBridge/stalkBridgeActions";
+import * as chatroomActions from "./chatroomActions";
+import * as chatroomRxActions from "./chatroomRxEpic";
 
-import { Room, MessageImp } from "../../models";
-import { GET_ALL_CHATROOM_SUCCESS, GET_ALL_CHATROOM_FAILURE } from "../actions/chatlistsRx";
+import { MessageImp, Room } from "../../models";
+import { GET_ALL_CHATROOM_FAILURE, GET_ALL_CHATROOM_SUCCESS } from "../actions/chatlistsRx";
 
 // Define our record defaults
 const chatroomDefaults = {
@@ -159,8 +159,8 @@ export const chatroomReducer = (state = chatRoomInitState, action: AnyAction) =>
 
         case chatroomRxActions.CREATE_PRIVATE_CHATROOM_SUCCESS: {
             const { result } = action.payload;
-            const chatrooms = state.get("chatrooms") as Array<Room>;
-            const temps = chatrooms.filter(chatroom => {
+            const chatrooms = state.get("chatrooms") as Room[];
+            const temps = chatrooms.filter((chatroom) => {
                 return chatroom._id !== result[0]._id;
             });
             temps.push(result[0]);

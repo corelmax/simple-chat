@@ -4,14 +4,13 @@
  * This is pure function action for redux app.
  */
 
-import { getUnreadMessage } from "../../ChatslogComponent";
-import { StalkAccount, RoomAccessData } from "stalk-js/starter/models";
 import { createAction } from "redux-actions";
 import * as Rx from "rxjs/Rx";
+import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
+import { getUnreadMessage } from "../../ChatslogComponent";
 
-import { getLastAccessRoom, STALK_INIT_CHATLOG, ON_CHATLOG_CHANGE } from "../chatlogs";
-import { withToken, apiHeaders } from "../../services/ServiceUtils";
-import { ChatRoomRecoder } from "../chatroom";
+import { apiHeaders, withToken } from "../../services/ServiceUtils";
+import { getLastAccessRoom, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
 
 import InternalStore from "../../InternalStore";
 const { ajax } = Rx.Observable;
@@ -47,17 +46,17 @@ export const GET_RECENT_MESSAGE_FAILURE = "GET_RECENT_MESSAGE_FAILURE";
 const getRecentMessageSuccess = createAction(GET_RECENT_MESSAGE_SUCCESS, (payload) => payload);
 const getRecentMessageFailure = createAction(GET_RECENT_MESSAGE_FAILURE, (error) => error);
 
-export const getRecentMessage_Epic = (action$) =>
+export const getRecentMessageEpic = (action$) =>
     action$.filter((action) => action.type === GET_ALL_CHATROOM_SUCCESS || action.type === ON_CHATLOG_CHANGE)
         .mergeMap((action) => {
-            const chatroomReducer = getStore().getState().chatroomReducer as ChatRoomRecoder;
+            const chatroomReducer = getStore().getState().chatroomReducer;
             const { roomAccess }: { roomAccess: RoomAccessData[] } = getStore().getState().chatlogReducer;
-            const { id } = getAuthStore().user;
+            const { _id } = getAuthStore().user;
             const chatlogs = new Array<{ rid, count, lastMessage }>();
 
             const rooms = chatroomReducer.get("chatrooms");
 
-            let access = [];
+            let access = [] as RoomAccessData[];
             if (!!roomAccess) { access = roomAccess.slice(); }
             rooms.map((item) => {
                 const has = access.some((acc) =>
@@ -70,7 +69,7 @@ export const getRecentMessage_Epic = (action$) =>
             return Rx.Observable.fromPromise(new Promise((resolve, reject) => {
                 Rx.Observable.from(access)
                     .map(async (room) => {
-                        const value = await getUnreadMessage(id, new RoomAccessData(room.roomId, room.accessTime));
+                        const value = await getUnreadMessage(_id, new RoomAccessData(room.roomId, room.accessTime));
                         const log = { rid: value.rid, count: value.count, lastMessage: value.message };
                         return log;
                     })
@@ -85,11 +84,14 @@ export const getRecentMessage_Epic = (action$) =>
             }));
         })
         .map((response) => getRecentMessageSuccess(response))
-        .catch((error) => { console.warn("errrrrrr", error); return Rx.Observable.of(getRecentMessageFailure(error)); });
+        .catch((error) => {
+            console.warn("errrrrrr", error);
+            return Rx.Observable.of(getRecentMessageFailure(error));
+        });
 
-export const initChatlogs_Epic = (action$) =>
+export const initChatlogsEpic = (action$) =>
     action$.ofType(STALK_INIT_CHATLOG)
         .mergeMap(async (action) => {
-            const { id } = getAuthStore().user;
-            return await id;
+            const { _id } = getAuthStore().user;
+            return await _id;
         }).map((id) => getLastAccessRoom(id));

@@ -1,6 +1,6 @@
-import { SecureServiceFactory } from "./secure/SecureServiceFactory";
-import { MessageImp } from "../models/index";
 import { MessageType } from "stalk-js/starter/models/index";
+import { MessageImp } from "../models/index";
+import { SecureServiceFactory } from "./secure/SecureServiceFactory";
 
 export const decryptionText = async (message: MessageImp) => {
     if (!message) { return message; }

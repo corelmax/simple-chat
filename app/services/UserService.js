@@ -3,9 +3,9 @@ var ajax = Rx.Observable.ajax;
 import InternalStore from "../InternalStore";
 import { apiHeaders } from "./ServiceUtils";
 var getConfig = function () { return InternalStore.apiConfig; };
-export function getTeamProfile(token, team_id) {
+export function getTeamProfile(token, teamId) {
     return Rx.Observable.ajax({
-        url: getConfig().user + "/teamProfile?team_id=" + team_id,
+        url: getConfig().user + "/teamProfile?team_id=" + teamId,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -13,14 +13,14 @@ export function getTeamProfile(token, team_id) {
         },
     });
 }
-export function setOrgChartId(token, user, team_id, orgChartId) {
+export function setOrgChartId(token, user, teamId, orgChartId) {
     return Rx.Observable.ajax({
         method: "POST",
         url: getConfig().user + "/setOrgChartId",
         body: JSON.stringify({
             user_id: user._id,
             username: user.username,
-            team_id: team_id,
+            teamId: teamId,
             org_chart_id: orgChartId,
         }),
         headers: {
@@ -29,10 +29,10 @@ export function setOrgChartId(token, user, team_id, orgChartId) {
         },
     });
 }
-export function updateTeamProfile(user_id, team_id, profile) {
+export function updateTeamProfile(userId, teamId, profile) {
     return Rx.Observable.ajax({
         method: "POST",
-        url: getConfig().user + "/teamProfile/" + team_id + "/" + user_id,
+        url: getConfig().user + "/teamProfile/" + teamId + "/" + userId,
         body: JSON.stringify({
             profile: profile,
         }),
@@ -46,10 +46,10 @@ export function fetchUser(username) {
         headers: apiHeaders(),
     });
 }
-export function suggestUser(username, team_id) {
+export function suggestUser(username, teamId) {
     return ajax({
         method: "GET",
-        url: getConfig().user + "/suggest/?username=" + username + "&team_id=" + team_id,
+        url: getConfig().user + "/suggest/?username=" + username + "&team_id=" + teamId,
         headers: apiHeaders(),
     });
 }

@@ -21,7 +21,7 @@ import { IDataManager } from "./IDataManager";
 import { IMember, MessageImp, Room } from "./models/index";
 
 // import { imagesPath } from "../consts/StickerPath";
-import InternalStore from "./InternalStore";
+import InternalStore, { LogLevel } from "./InternalStore";
 const getConfig = () => BackendFactory.getInstance().config;
 const getStore = () => InternalStore.store;
 
@@ -311,7 +311,9 @@ export class ChatRoomComponent implements ChatEvents.IChatServerEvents {
                             }
                         });
                     } else {
-                        console.log("Have no newer message.");
+                        if (InternalStore.logLevel <= LogLevel.debug) {
+                            console.log("Have no newer message.");
+                        }
                         resolve(histories);
                     }
                 } else {

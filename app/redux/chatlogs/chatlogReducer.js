@@ -2,14 +2,15 @@ import * as ChatlogsActions from "../chatlogs/chatlogActions";
 import * as ChatlogRxActions from "../chatlogs/chatlogRxActions";
 import * as chatlistsRx from "../actions/chatlistsRx";
 import { Record } from "immutable";
-export var ChatLogInitState = Record({
+var defaultChatlog = {
     isFetching: false,
     state: "",
     chatsLog: [],
     logCount: null,
     roomAccess: null,
     error: "",
-});
+};
+export var ChatLogInitState = Record(defaultChatlog);
 var initialState = new ChatLogInitState();
 export function chatlogReducer(state, action) {
     if (state === void 0) { state = initialState; }

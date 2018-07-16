@@ -47,7 +47,7 @@ import { decryptionText } from "./utils/CryptoHelper";
 import { SecureServiceFactory } from "./utils/secure/SecureServiceFactory";
 import { MessageType } from "stalk-js/starter/models/index";
 // import { imagesPath } from "../consts/StickerPath";
-import InternalStore from "./InternalStore";
+import InternalStore, { LogLevel } from "./InternalStore";
 var getConfig = function () { return BackendFactory.getInstance().config; };
 var getStore = function () { return InternalStore.store; };
 export var ON_MESSAGE_CHANGE = "ON_MESSAGE_CHANGE";
@@ -361,7 +361,9 @@ var ChatRoomComponent = /** @class */ (function () {
                                         });
                                     }
                                     else {
-                                        console.log("Have no newer message.");
+                                        if (InternalStore.logLevel <= LogLevel.debug) {
+                                            console.log("Have no newer message.");
+                                        }
                                         resolve(histories_1);
                                     }
                                 }

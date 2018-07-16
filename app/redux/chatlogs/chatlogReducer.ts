@@ -12,7 +12,7 @@ import * as chatlistsRx from "../actions/chatlistsRx";
 import { Record } from "immutable";
 
 // Define our record types with a typescript interface
-interface IChatlog {
+export interface IChatlog {
     isFetching: boolean;
     state: string;
     chatsLog: any[];
@@ -20,14 +20,15 @@ interface IChatlog {
     roomAccess: any;
     error: string;
 }
-export const ChatLogInitState = Record({
+const defaultChatlog = {
     isFetching: false,
     state: "",
     chatsLog: [],
     logCount: null,
     roomAccess: null,
     error: "",
-});
+} as IChatlog;
+export const ChatLogInitState = Record(defaultChatlog);
 const initialState = new ChatLogInitState();
 
 export function chatlogReducer(state = initialState, action: AnyAction) {

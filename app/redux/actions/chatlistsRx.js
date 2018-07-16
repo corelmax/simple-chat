@@ -45,7 +45,7 @@ import { RoomAccessData } from "stalk-js/starter/models";
 import { getUnreadMessage } from "../../ChatslogComponent";
 import { apiHeaders } from "../../services/ServiceUtils";
 import { getLastAccessRoom, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
-import InternalStore from "../../InternalStore";
+import InternalStore, { LogLevel } from "../../InternalStore";
 var ajax = Rx.Observable.ajax;
 var config = function () { return InternalStore.config; };
 var getApiConfig = function () { return InternalStore.apiConfig; };
@@ -66,7 +66,9 @@ export var getAllChatRoom = function () {
         console.warn(error);
         getStore().dispatch(getAllChatRoomFailure(error.response));
     }, function () {
-        console.log("done");
+        if (InternalStore.logLevel <= LogLevel.debug) {
+            console.log("getAllChatRoom done");
+        }
     });
 };
 var GET_RECENT_MESSAGE = "GET_RECENT_MESSAGE";
@@ -74,50 +76,58 @@ export var GET_RECENT_MESSAGE_SUCCESS = "GET_RECENT_MESSAGE_SUCCESS";
 export var GET_RECENT_MESSAGE_FAILURE = "GET_RECENT_MESSAGE_FAILURE";
 var getRecentMessageSuccess = createAction(GET_RECENT_MESSAGE_SUCCESS, function (payload) { return payload; });
 var getRecentMessageFailure = createAction(GET_RECENT_MESSAGE_FAILURE, function (error) { return error; });
-export var getRecentMessageEpic = function (action$) {
-    return action$.filter(function (action) { return action.type === GET_ALL_CHATROOM_SUCCESS || action.type === ON_CHATLOG_CHANGE; })
-        .mergeMap(function (action) {
-        var chatroomReducer = getStore().getState().chatroomReducer;
-        var roomAccess = getStore().getState().chatlogReducer.roomAccess;
-        var _id = getAuthStore().user._id;
-        var chatlogs = new Array();
-        var rooms = chatroomReducer.get("chatrooms");
-        var access = [];
-        if (!!roomAccess) {
-            access = roomAccess.slice();
-        }
+export function getRecentMessage() {
+    var _this = this;
+    var chatroomReducer = getStore().getState().chatroomReducer;
+    var roomAccess = getStore().getState().chatlogReducer.roomAccess;
+    var _id = getAuthStore().user._id;
+    var chatlogs = new Array();
+    var rooms = chatroomReducer.chatrooms;
+    var access = [];
+    if (!!roomAccess) {
+        access = roomAccess.slice();
+    }
+    if (rooms && rooms.length > 0) {
         rooms.map(function (item) {
             var has = access.some(function (acc) {
                 return (acc.roomId === item._id);
             });
             if (!has) {
-                access.push(new RoomAccessData(item._id, item.createTime));
+                var roomAc = { roomId: item._id, accessTime: item.createTime };
+                access.push(roomAc);
             }
         });
-        return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
-            Rx.Observable.from(access)
-                .map(function (room) { return __awaiter(_this, void 0, void 0, function () {
-                var value, log;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, getUnreadMessage(_id, new RoomAccessData(room.roomId, room.accessTime))];
-                        case 1:
-                            value = _a.sent();
-                            log = { rid: value.rid, count: value.count, lastMessage: value.message };
-                            return [2 /*return*/, log];
-                    }
-                });
-            }); })
-                .flatMap(function (data) { return data; })
-                .subscribe(function (log) {
-                chatlogs.push(log);
-            }, function (err) {
-                reject(err);
-            }, function () {
-                resolve(chatlogs);
+    }
+    return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
+        Rx.Observable.from(access)
+            .map(function (room) { return __awaiter(_this, void 0, void 0, function () {
+            var value, log;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, getUnreadMessage(_id, new RoomAccessData(room.roomId, room.accessTime))];
+                    case 1:
+                        value = _a.sent();
+                        log = { rid: value.rid, count: value.count, lastMessage: value.message };
+                        return [2 /*return*/, log];
+                }
             });
-        }));
-    })
+        }); })
+            .flatMap(function (data) { return data; })
+            .subscribe(function (log) {
+            chatlogs.push(log);
+        }, function (err) {
+            if (InternalStore.logLevel <= LogLevel.debug) {
+                console.log("FromPromise Fail", err);
+            }
+            reject(err);
+        }, function () {
+            resolve(chatlogs);
+        });
+    }));
+}
+export var getRecentMessageEpic = function (action$) {
+    return action$.filter(function (action) { return action.type === GET_ALL_CHATROOM_SUCCESS || action.type === ON_CHATLOG_CHANGE; })
+        .mergeMap(function (action) { return getRecentMessage(); })
         .map(function (response) { return getRecentMessageSuccess(response); })
         .catch(function (error) {
         console.warn("errrrrrr", error);

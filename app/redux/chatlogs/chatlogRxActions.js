@@ -93,8 +93,7 @@ export var UPDATE_LAST_ACCESS_ROOM_SUCCESS = "UPDATE_LAST_ACCESS_ROOM_SUCCESS";
 export var UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE";
 var UPDATE_LAST_ACCESS_ROOM_CANCELLED = "UPDATE_LAST_ACCESS_ROOM_CANCELLED";
 export var updateLastAccessRoom = function (roomId, userId) { return ({
-    type: UPDATE_LAST_ACCESS_ROOM,
-    payload: ({ roomId: roomId, userId: userId }),
+    type: UPDATE_LAST_ACCESS_ROOM, payload: ({ roomId: roomId, userId: userId }),
 }); };
 var updateLastAccessRoomSuccess = function (payload) { return ({ type: UPDATE_LAST_ACCESS_ROOM_SUCCESS, payload: payload }); };
 var updateLastAccessRoomFailure = function (error) { return ({ type: UPDATE_LAST_ACCESS_ROOM_FAILURE, payload: error }); };
@@ -102,8 +101,8 @@ export var updateLastAccessRoomCancelled = function () { return ({ type: UPDATE_
 export var updateLastAccessRoomEpic = function (action$) {
     return action$.ofType(UPDATE_LAST_ACCESS_ROOM)
         .mergeMap(function (action) {
-        var _a = action.payload, room_id = _a.room_id, user_id = _a.user_id;
-        return chatlogService.updateLastAccessRoomInfo(user_id, room_id);
+        var _a = action.payload, roomId = _a.roomId, userId = _a.userId;
+        return chatlogService.updateLastAccessRoomInfo(userId, roomId);
     })
         .map(function (response) {
         console.log("updateLastAccessRoom value", response.xhr.response);

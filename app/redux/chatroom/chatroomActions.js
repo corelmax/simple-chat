@@ -277,12 +277,13 @@ function sendMessageResponse(err, res) {
             var tempmsg_1 = __assign({}, res.data.resultMsg);
             if (tempmsg_1.type === MessageType[MessageType.Text] && InternalStore.encryption) {
                 var secure = SecureServiceFactory.getService();
-                secure.decryption(tempmsg_1.body).then(function (res) {
-                    tempmsg_1.body = res;
+                secure.decryption(tempmsg_1.body)
+                    .then(function (response) {
+                    tempmsg_1.body = response;
                     chatroomComp_1.saveToPersisted(tempmsg_1);
                     getStore().dispatch(sendMessageSuccess());
-                }).catch(function (err) {
-                    console.error(err);
+                }).catch(function (error) {
+                    console.error(error);
                     tempmsg_1.body = err.toString();
                     chatroomComp_1.saveToPersisted(tempmsg_1);
                     getStore().dispatch(sendMessageSuccess());
@@ -331,7 +332,6 @@ export function leaveRoomAction() {
     var room = getStore().getState().chatroomReducer.get("room");
     var _id = authReducer().user._id;
     if (!!room) {
-        var token = getStore().getState().stalkReducer.stalkToken;
         var roomId = room._id;
         ChatRoomComponent.getInstance().dispose();
         NotificationManager.regisNotifyNewMessageEvent();

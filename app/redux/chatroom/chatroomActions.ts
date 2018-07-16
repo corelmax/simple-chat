@@ -244,16 +244,18 @@ function sendMessageResponse(err, res) {
             const tempmsg = { ...res.data.resultMsg } as IMessage;
             if (tempmsg.type === MessageType[MessageType.Text] && InternalStore.encryption) {
                 const secure = SecureServiceFactory.getService();
-                secure.decryption(tempmsg.body).then((res) => {
-                    tempmsg.body = res;
-                    chatroomComp.saveToPersisted(tempmsg as MessageImp);
-                    getStore().dispatch(sendMessageSuccess());
-                }).catch((err) => {
-                    console.error(err);
-                    tempmsg.body = err.toString();
-                    chatroomComp.saveToPersisted(tempmsg as MessageImp);
-                    getStore().dispatch(sendMessageSuccess());
-                });
+                secure.decryption(tempmsg.body)
+                    .then((response) => {
+                        tempmsg.body = response;
+                        chatroomComp.saveToPersisted(tempmsg as MessageImp);
+                        getStore().dispatch(sendMessageSuccess());
+                    }).catch((error) => {
+                        console.error(error);
+
+                        tempmsg.body = err.toString();
+                        chatroomComp.saveToPersisted(tempmsg as MessageImp);
+                        getStore().dispatch(sendMessageSuccess());
+                    });
             } else {
                 chatroomComp.saveToPersisted(tempmsg as MessageImp);
                 getStore().dispatch(sendMessageSuccess());
@@ -299,7 +301,6 @@ export function leaveRoomAction() {
     const room = getStore().getState().chatroomReducer.get("room");
     const { _id } = authReducer().user;
     if (!!room) {
-        const token = getStore().getState().stalkReducer.stalkToken;
         const roomId = room._id;
         ChatRoomComponent.getInstance().dispose();
         NotificationManager.regisNotifyNewMessageEvent();

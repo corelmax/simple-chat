@@ -67,8 +67,7 @@ export const UPDATE_LAST_ACCESS_ROOM_FAILURE = "UPDATE_LAST_ACCESS_ROOM_FAILURE"
 const UPDATE_LAST_ACCESS_ROOM_CANCELLED = "UPDATE_LAST_ACCESS_ROOM_CANCELLED";
 
 export const updateLastAccessRoom = (roomId: string, userId: string) => ({
-    type: UPDATE_LAST_ACCESS_ROOM,
-    payload: ({ roomId, userId }),
+    type: UPDATE_LAST_ACCESS_ROOM, payload: ({ roomId, userId }),
 });
 const updateLastAccessRoomSuccess = (payload) => ({ type: UPDATE_LAST_ACCESS_ROOM_SUCCESS, payload });
 const updateLastAccessRoomFailure = (error) => ({ type: UPDATE_LAST_ACCESS_ROOM_FAILURE, payload: error });
@@ -77,8 +76,8 @@ export const updateLastAccessRoomCancelled = () => ({ type: UPDATE_LAST_ACCESS_R
 export const updateLastAccessRoomEpic = (action$) =>
     action$.ofType(UPDATE_LAST_ACCESS_ROOM)
         .mergeMap((action) => {
-            const { room_id, user_id } = action.payload;
-            return chatlogService.updateLastAccessRoomInfo(user_id, room_id);
+            const { roomId, userId } = action.payload;
+            return chatlogService.updateLastAccessRoomInfo(userId, roomId);
         })
         .map((response) => {
             console.log("updateLastAccessRoom value", response.xhr.response);

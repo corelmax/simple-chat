@@ -117,9 +117,9 @@ export function getRecentMessage() {
             chatlogs.push(log);
         }, function (err) {
             if (InternalStore.logLevel <= LogLevel.debug) {
-                console.log("FromPromise Fail", err);
+                console.log("FromPromise Fail but not reject anything.", err);
             }
-            reject(err);
+            // reject(err);
         }, function () {
             resolve(chatlogs);
         });

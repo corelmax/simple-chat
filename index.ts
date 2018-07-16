@@ -2,6 +2,10 @@ export {
     ChatRoomComponent, ChatsLogComponent,
     IDataManager,
     ON_MESSAGE_CHANGE,
+    IUnread,
+    ChatLogMap,
+    UnreadMap,
+    getUnreadMessage,
 } from "./app/index";
 
 export { StalkBridge } from "./app/redux/stalkBridge/index";

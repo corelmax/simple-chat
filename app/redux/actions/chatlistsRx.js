@@ -101,25 +101,33 @@ export function getRecentMessage() {
     return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
         Rx.Observable.from(access)
             .map(function (room) { return __awaiter(_this, void 0, void 0, function () {
-            var value, log;
+            var value, log, ex_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, getUnreadMessage(_id, new RoomAccessData(room.roomId, room.accessTime))];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, getUnreadMessage(_id, new RoomAccessData(room.roomId, room.accessTime))];
                     case 1:
                         value = _a.sent();
                         log = { rid: value.rid, count: value.count, lastMessage: value.message };
                         return [2 /*return*/, log];
+                    case 2:
+                        ex_1 = _a.sent();
+                        return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); })
             .flatMap(function (data) { return data; })
             .subscribe(function (log) {
-            chatlogs.push(log);
+            if (log) {
+                chatlogs.push(log);
+            }
         }, function (err) {
             if (InternalStore.logLevel <= LogLevel.debug) {
-                console.log("FromPromise Fail but not reject anything.", err);
+                console.log("FromPromise Fail.", err);
             }
-            // reject(err);
+            reject(err);
         }, function () {
             resolve(chatlogs);
         });

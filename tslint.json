@@ -11,7 +11,8 @@
         "new-parens": false,
         "object-literal-sort-keys": false,
         "no-namespace": false,
-        "interface-name": false
+        "interface-name": false,
+        "max-line-length": false
     },
     "rulesDirectory": []
 }

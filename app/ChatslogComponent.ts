@@ -30,20 +30,28 @@ export async function getUnreadMessage(userId: string, roomAccess: RoomAccessDat
             roomAccess.roomId, userId, roomAccess.accessTime.toString());
         const value = await response.json();
 
-        if (InternalStore.logLevel === LogLevel.debug) {
-            console.log("getUnreadMessage", value);
-        }
-
         if (value.success) {
+            if (InternalStore.logLevel === LogLevel.debug) {
+                console.log("getUnreadMessage success", value);
+            }
+
             const unread = value.result as IUnread;
             unread.rid = roomAccess.roomId;
             const decoded = await CryptoHelper.decryptionText(unread.message as MessageImp);
 
             return unread;
         } else {
+            if (InternalStore.logLevel <= LogLevel.error) {
+                console.warn("getUnreadMessage Fail", value);
+            }
+
             return Promise.reject(value.message);
         }
     } catch (ex) {
+        if (InternalStore.logLevel <= LogLevel.error) {
+            console.warn("getUnreadMessage Fail", ex);
+        }
+
         return Promise.reject(ex);
     }
 }

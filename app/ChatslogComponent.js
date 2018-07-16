@@ -59,20 +59,27 @@ export function getUnreadMessage(userId, roomAccess) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     value = _a.sent();
-                    if (InternalStore.logLevel === LogLevel.debug) {
-                        console.log("getUnreadMessage", value);
-                    }
                     if (!value.success) return [3 /*break*/, 4];
+                    if (InternalStore.logLevel === LogLevel.debug) {
+                        console.log("getUnreadMessage success", value);
+                    }
                     unread = value.result;
                     unread.rid = roomAccess.roomId;
                     return [4 /*yield*/, CryptoHelper.decryptionText(unread.message)];
                 case 3:
                     decoded = _a.sent();
                     return [2 /*return*/, unread];
-                case 4: return [2 /*return*/, Promise.reject(value.message)];
+                case 4:
+                    if (InternalStore.logLevel <= LogLevel.error) {
+                        console.warn("getUnreadMessage Fail", value);
+                    }
+                    return [2 /*return*/, Promise.reject(value.message)];
                 case 5: return [3 /*break*/, 7];
                 case 6:
                     ex_1 = _a.sent();
+                    if (InternalStore.logLevel <= LogLevel.error) {
+                        console.warn("getUnreadMessage Fail", ex_1);
+                    }
                     return [2 /*return*/, Promise.reject(ex_1)];
                 case 7: return [2 /*return*/];
             }

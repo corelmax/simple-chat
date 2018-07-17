@@ -105,7 +105,9 @@ export var updateLastAccessRoomEpic = function (action$) {
         return chatlogService.updateLastAccessRoomInfo(userId, roomId);
     })
         .map(function (response) {
-        console.log("updateLastAccessRoom value", response.xhr.response);
+        if (InternalStore.logLevel <= LogLevel.debug) {
+            console.log("updateLastAccessRoom value", response.xhr.response);
+        }
         var results = response.xhr.response.result[0];
         var tempRoomAccess = results.roomAccess;
         var roomAccess = getStore().getState().chatlogReducer.roomAccess;
@@ -130,14 +132,6 @@ export var updateLastAccessRoomEpic = function (action$) {
         }
         BackendFactory.getInstance().dataListener.onUpdatedLastAccessTime(tempRoomAccess[0]);
         return updateLastAccessRoomSuccess(newRoomAccess);
-    })
-        .do(function (x) {
-        if (x.payload) {
-            // BackendFactory.getInstance().dataManager.setRoomAccessForUser(x.payload);
-            if (InternalStore.logLevel <= LogLevel.debug) {
-                console.log("updateLastAccessRoom", x);
-            }
-        }
     })
         .takeUntil(action$.ofType(UPDATE_LAST_ACCESS_ROOM_CANCELLED))
         .catch(function (error) { return Rx.Observable.of(updateLastAccessRoomFailure(error.message)); });

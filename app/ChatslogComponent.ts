@@ -218,6 +218,7 @@ export class ChatsLogComponent {
 
                 if (others.length > 0) {
                     const contact = others[0];
+                    // @ts-ignore
                     const avatar = require("./assets/ic_account_circle_black.png");
 
                     roomInfo.owner = (contact.username) ? contact.username : "EMPTY ROOM";
@@ -344,7 +345,7 @@ export class ChatsLogComponent {
         if (!!unread.message) {
             log.setLastMessageTime(unread.message.createTime.toString());
 
-            let contact = null;
+            let contact = null as any;
             try {
                 contact = await chatlogActionsHelper.getContactProfile(unread.message.sender);
             } catch (err) {

@@ -9,11 +9,12 @@ import * as Rx from "rxjs/Rx";
 import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
 import { getUnreadMessage } from "../../ChatslogComponent";
 
-import { apiHeaders, withToken } from "../../services/ServiceUtils";
-import { getLastAccessRoom, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
-import { IChatroom } from "../chatroom";
-
 import InternalStore, { LogLevel } from "../../InternalStore";
+import { apiHeaders, withToken } from "../../services/ServiceUtils";
+import { getLastAccessRoom, initChatsLog, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
+import { IChatroom } from "../chatroom";
+import { STALK_INIT_SUCCESS } from "../stalkBridge/stalkBridgeActions";
+
 const { ajax } = Rx.Observable;
 const config = () => InternalStore.config;
 const getApiConfig = () => InternalStore.apiConfig;
@@ -104,9 +105,14 @@ export const getRecentMessageEpic = (action$) =>
             return Rx.Observable.of(getRecentMessageFailure(error));
         });
 
-export const initChatlogsEpic = (action$) =>
-    action$.ofType(STALK_INIT_CHATLOG)
-        .mergeMap(async (action) => {
-            const { _id } = getAuthStore().user;
-            return await _id;
-        }).map((id) => getLastAccessRoom(id));
+export const initChatlogsEpic = (action$) => action$.ofType(STALK_INIT_CHATLOG)
+    .mergeMap(async (action) => {
+        const { _id } = getAuthStore().user;
+        return await _id;
+    })
+    .map((id) => getLastAccessRoom(id));
+
+export const autoInitChatlogEpic = (action$) => action$.ofType(STALK_INIT_SUCCESS).map((x) => {
+    initChatsLog();
+    return { type: "" };
+});

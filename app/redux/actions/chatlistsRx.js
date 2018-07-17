@@ -43,9 +43,10 @@ import { createAction } from "redux-actions";
 import * as Rx from "rxjs/Rx";
 import { RoomAccessData } from "stalk-js/starter/models";
 import { getUnreadMessage } from "../../ChatslogComponent";
-import { apiHeaders } from "../../services/ServiceUtils";
-import { getLastAccessRoom, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
 import InternalStore, { LogLevel } from "../../InternalStore";
+import { apiHeaders } from "../../services/ServiceUtils";
+import { getLastAccessRoom, initChatsLog, ON_CHATLOG_CHANGE, STALK_INIT_CHATLOG } from "../chatlogs";
+import { STALK_INIT_SUCCESS } from "../stalkBridge/stalkBridgeActions";
 var ajax = Rx.Observable.ajax;
 var config = function () { return InternalStore.config; };
 var getApiConfig = function () { return InternalStore.apiConfig; };
@@ -142,17 +143,20 @@ export var getRecentMessageEpic = function (action$) {
         return Rx.Observable.of(getRecentMessageFailure(error));
     });
 };
-export var initChatlogsEpic = function (action$) {
-    return action$.ofType(STALK_INIT_CHATLOG)
-        .mergeMap(function (action) { return __awaiter(_this, void 0, void 0, function () {
-        var _id;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _id = getAuthStore().user._id;
-                    return [4 /*yield*/, _id];
-                case 1: return [2 /*return*/, _a.sent()];
-            }
-        });
-    }); }).map(function (id) { return getLastAccessRoom(id); });
-};
+export var initChatlogsEpic = function (action$) { return action$.ofType(STALK_INIT_CHATLOG)
+    .mergeMap(function (action) { return __awaiter(_this, void 0, void 0, function () {
+    var _id;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _id = getAuthStore().user._id;
+                return [4 /*yield*/, _id];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); })
+    .map(function (id) { return getLastAccessRoom(id); }); };
+export var autoInitChatlogEpic = function (action$) { return action$.ofType(STALK_INIT_SUCCESS).map(function (x) {
+    initChatsLog();
+    return { type: "" };
+}); };

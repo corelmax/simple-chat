@@ -12,3 +12,4 @@ export declare const GET_RECENT_MESSAGE_FAILURE = "GET_RECENT_MESSAGE_FAILURE";
 export declare function getRecentMessage(): Rx.Observable<{}>;
 export declare const getRecentMessageEpic: (action$: any) => any;
 export declare const initChatlogsEpic: (action$: any) => any;
+export declare const autoInitChatlogEpic: (action$: any) => any;

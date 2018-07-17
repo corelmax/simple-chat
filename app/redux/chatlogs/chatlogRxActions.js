@@ -43,7 +43,7 @@ import * as Rx from "rxjs/Rx";
 var ajax = Rx.Observable.ajax;
 import { BackendFactory } from "stalk-js/starter";
 import * as chatlogService from "../../services/ChatlogService";
-import InternalStore from "../../InternalStore";
+import InternalStore, { LogLevel } from "../../InternalStore";
 var getStore = function () { return InternalStore.store; };
 var authReducer = function () { return InternalStore.authStore; };
 export var STALK_REMOVE_ROOM_ACCESS = "STALK_REMOVE_ROOM_ACCESS";
@@ -108,7 +108,7 @@ export var updateLastAccessRoomEpic = function (action$) {
         console.log("updateLastAccessRoom value", response.xhr.response);
         var results = response.xhr.response.result[0];
         var tempRoomAccess = results.roomAccess;
-        var roomAccess = getStore().getState().chatlogReducer.get("roomAccess");
+        var roomAccess = getStore().getState().chatlogReducer.roomAccess;
         var newRoomAccess = new Array();
         if (Array.isArray(roomAccess)) {
             var has = roomAccess.some(function (value) { return (value.roomId === tempRoomAccess[0].roomId); });
@@ -133,7 +133,10 @@ export var updateLastAccessRoomEpic = function (action$) {
     })
         .do(function (x) {
         if (x.payload) {
-            BackendFactory.getInstance().dataManager.setRoomAccessForUser(x.payload);
+            // BackendFactory.getInstance().dataManager.setRoomAccessForUser(x.payload);
+            if (InternalStore.logLevel <= LogLevel.debug) {
+                console.log("updateLastAccessRoom", x);
+            }
         }
     })
         .takeUntil(action$.ofType(UPDATE_LAST_ACCESS_ROOM_CANCELLED))

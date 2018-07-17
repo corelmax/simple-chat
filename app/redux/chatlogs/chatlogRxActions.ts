@@ -12,7 +12,7 @@ import { RoomAccessData, StalkAccount } from "stalk-js/starter/models";
 import { ChatRoomComponent } from "../../ChatRoomComponent";
 import * as chatlogService from "../../services/ChatlogService";
 
-import InternalStore from "../../InternalStore";
+import InternalStore, { LogLevel } from "../../InternalStore";
 const getStore = () => InternalStore.store;
 const authReducer = () => InternalStore.authStore;
 
@@ -84,7 +84,7 @@ export const updateLastAccessRoomEpic = (action$) =>
 
             const results = response.xhr.response.result[0];
             const tempRoomAccess = results.roomAccess as RoomAccessData[];
-            const roomAccess = getStore().getState().chatlogReducer.get("roomAccess") as any[];
+            const roomAccess = getStore().getState().chatlogReducer.roomAccess as any[];
 
             let newRoomAccess = new Array();
             if (Array.isArray(roomAccess)) {
@@ -110,7 +110,10 @@ export const updateLastAccessRoomEpic = (action$) =>
         })
         .do((x) => {
             if (x.payload) {
-                BackendFactory.getInstance().dataManager.setRoomAccessForUser(x.payload);
+                // BackendFactory.getInstance().dataManager.setRoomAccessForUser(x.payload);
+                if (InternalStore.logLevel <= LogLevel.debug) {
+                    console.log("updateLastAccessRoom", x);
+                }
             }
         })
         .takeUntil(action$.ofType(UPDATE_LAST_ACCESS_ROOM_CANCELLED))
